@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 
 import Navbar from "@/components/layouts/Navbar";
 import Footer from "@/components/layouts/Footer";
-import { ContainerProps } from "@/interfaces/interface";
+import { App } from "@/interfaces/app";
 
 export const Container = ({
   children,
   customTitle,
-}: ContainerProps): JSX.Element => {
+}: App.ContainerProps): JSX.Element => {
   const router = useRouter();
   const meta = {
     title: customTitle ? customTitle : "Mert Samet Atalı – Developer.",

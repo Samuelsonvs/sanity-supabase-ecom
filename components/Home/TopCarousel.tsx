@@ -30,7 +30,7 @@ export const TopCarousel = () => {
   }
 
   return (
-      <section className="relative w-full carousel">
+      <section className="relative w-full carousel max-w-screen-3xl mx-auto">
         {images.map((image, idx) => {
           return (
             <div key={idx} className={`relative w-full h-96 sm:h-full carousel-item transition transform duration-200 ease-in-out ${idx === current ? "" : "hidden"}`}>

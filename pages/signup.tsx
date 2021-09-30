@@ -8,7 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useUser } from "@/contexts/AuthContext";
 import { insertUserInProfiles, isUserInDB } from "@/utils/supabaseClient";
 import Container from "@/container/Container";
-import { FormSignupValues } from "@/interfaces/interface";
+import { App } from "@/interfaces/app";
 
 export const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -19,11 +19,11 @@ export const Signup: NextPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormSignupValues>();
+  } = useForm<App.FormSignupValues>();
   const { session, signUp } = useUser();
   const router = useRouter();
 
-  const handleRegister: SubmitHandler<FormSignupValues> = async () => {
+  const handleRegister: SubmitHandler<App.FormSignupValues> = async () => {
     const { data } = await isUserInDB(name);
     if (data) {
       return alert("Pls chance username!");

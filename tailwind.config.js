@@ -15,7 +15,11 @@ module.exports = {
       'secondary': "#ffb338",
       'tertiary': "#f2f2f2",
     }),
-    extend: {},
+    extend: {
+      screens: {
+        '3xl': '1920px',
+      }
+    },
   },
   variants: {
     extend: {},

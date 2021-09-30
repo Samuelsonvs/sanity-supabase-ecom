@@ -1,11 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
 import { supabase, avatarData } from "@/utils/supabaseClient";
-import { AvatarTypes } from "@/interfaces/interface";
+import { App } from "@/interfaces/app";
 import { useUser } from "@/contexts/AuthContext";
 
-export const Avatar = ({ size, onUpload }: AvatarTypes) => {
+export const Avatar = ({ size, onUpload }: App.AvatarTypes) => {
   const { session, avatarUrl } = useUser();
   const [uploading, setUploading] = useState<boolean>(false);
 

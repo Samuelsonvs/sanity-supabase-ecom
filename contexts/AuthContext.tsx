@@ -2,11 +2,11 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { User, AuthSession, UserCredentials } from "@supabase/supabase-js";
 
 import { supabase, getAvatarUrl } from "@/utils/supabaseClient";
-import { AuthContextType, AuthChildren } from "@/interfaces/interface";
+import { Auth } from "@/interfaces/auth";
 
-export const AuthContext = createContext({} as AuthContextType);
+export const AuthContext = createContext({} as Auth.AuthContextType);
 
-export function AuthProvider({ children }: AuthChildren) {
+export function AuthProvider({ children }: Auth.AuthChildren) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<AuthSession | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: AuthChildren) {
 }
 
 export const useUser = () => {
-  const context = useContext<AuthContextType>(AuthContext);
+  const context = useContext<Auth.AuthContextType>(AuthContext);
   if (context === undefined) {
     throw new Error(`useUser must be used within a UserContextProvider.`);
   }

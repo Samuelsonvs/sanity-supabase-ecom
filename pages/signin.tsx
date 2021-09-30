@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import { useUser } from "@/contexts/AuthContext";
 import Container from "@/container/Container";
-import { FormSigninValues } from "@/interfaces/interface";
+import { App } from "@/interfaces/app";
 
 export const Signin: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,11 +17,11 @@ export const Signin: NextPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormSigninValues>();
+  } = useForm<App.FormSigninValues>();
   const { session, signIn } = useUser();
   const router = useRouter();
 
-  const handleLogin: SubmitHandler<FormSigninValues> = async () => {
+  const handleLogin: SubmitHandler<App.FormSigninValues> = async () => {
     try {
       setLoading(true);
       const { error } = await signIn({ email, password });

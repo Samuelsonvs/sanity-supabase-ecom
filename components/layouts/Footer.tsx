@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import Link from "next/link";
 
-import { FormSigninValues } from "@/interfaces/interface";
+import { App } from "@/interfaces/app";
 
 export const Footer = () => {
   const [email, setEmail] = useState<string>("");
@@ -11,9 +11,9 @@ export const Footer = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormSigninValues>();
+  } = useForm<App.FormSigninValues>();
 
-  const handleLogin: SubmitHandler<FormSigninValues> = async () => {
+  const handleLogin: SubmitHandler<App.FormSigninValues> = async () => {
     // try {
     //   setLoading(true);
     //   const { error } = await signIn({ email, password });
@@ -26,7 +26,7 @@ export const Footer = () => {
   };
   return (
     <>
-    <div className="py-10 prose-lg bg-primary">
+    <div className="prose-lg bg-primary">
       <div className="py-3 grid grid-cols-1 sm:grid-cols-2 w-full border-b-2 border-white">
         <div className="card uppercase">
           <form onSubmit={handleSubmit(handleLogin)}

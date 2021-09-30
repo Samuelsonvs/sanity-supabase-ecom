@@ -1,17 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { SanityProduct } from "@/interfaces/interface";
+import { GroqData } from "@/interfaces/groqData";
 import { urlFor } from "@/utils/sanity";
 import { useState } from "react";
 
-export const FeaturedProduct = ({ products }: SanityProduct) => {
+export const FeaturedProduct = ({ products }: GroqData.SanityProduct) => {
   const [sliceNumber, setSliceNumber] = useState<number>(9);
   const productsLength = products.length;
   return (
-    <section className="prose max-w-none mt-10">
+    <section className="prose max-w-6xl mx-auto mt-10">
       <h1 className="w-full text-center">Featured Product</h1>
-      <div className="px-2 py-10 max-w-6xl mx-auto grid grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="px-2 py-10 grid grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.isArray(products) &&
           products.slice(0, sliceNumber).map((product: any, idx: number) => {
             const image = product.defaultProductVariant.images[0];

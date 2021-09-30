@@ -6,11 +6,11 @@ import { GetStaticProps, GetStaticPropsContext } from "next";
 import TopCarousel from "@/components/Home/TopCarousel";
 import FeaturedProduct from "@/components/Home/FeaturedProduct";
 import BambooProducts from "@/components/Home/BambooProducts"
-import { SanityProduct } from "@/interfaces/interface";
+import { GroqData } from "@/interfaces/groqData";
 import Container from "@/container/Container";
 
 
-const Home = ({ products }: SanityProduct) => {
+const Home = ({ products }: GroqData.SanityProduct) => {
   return (
     <Container>
       <>

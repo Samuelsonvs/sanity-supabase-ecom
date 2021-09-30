@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import Image from "next/image"
+import Link from "next/link"
 
-import { SanityProduct } from "@/interfaces/interface";
+import { GroqData } from "@/interfaces/groqData";
 import { urlFor } from "@/utils/sanity";
 
 const menuNames = [
@@ -11,7 +12,7 @@ const menuNames = [
     "TV Stands"
 ]
 
-export const BambooProducts = ({ products }: SanityProduct) => {
+export const BambooProducts = ({ products }: GroqData.SanityProduct) => {
     const [selectedMenu, setSelectedMenu] = useState<number>(0)
     return (
         <section className="px-3 py-28 prose max-w-6xl mx-auto">
@@ -37,17 +38,19 @@ export const BambooProducts = ({ products }: SanityProduct) => {
                     if (product.category === menuNames[selectedMenu]) {
                         const image = product.defaultProductVariant.images[0];
                         return (
-                            <div key={idx} className={`carousel-item`}>
-                                <Image
-                                alt="ss"
-                                src={urlFor(image).width(300).height(200).url() || ""}
-                                loading="lazy"
-                                title={"ss"}
-                                className="rounded-2xl"
-                                width={300}
-                                height={200}
-                                />         
-                            </div> 
+                            <Link key={idx} passHref href={`/product/${product.slug.current}`}>
+                                <a className="carousel-item">                              
+                                    <Image
+                                    alt="ss"
+                                    src={urlFor(image).width(300).height(200).url() || ""}
+                                    loading="lazy"
+                                    title={"ss"}
+                                    className="rounded-2xl"
+                                    width={300}
+                                    height={200}
+                                    />         
+                                </a>
+                            </Link>
                         )
                     }
                 })}
