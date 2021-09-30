@@ -10,7 +10,7 @@ export const insertUserInProfiles = async (user: User, name: string) => {
     {
       id: user!.id,
       username: name,
-      avatar_url: "0.761417900981517.png",
+      avatar_url: "0.111111111111111.png",
       updated_at: new Date(),
     },
     { returning: "minimal" }
