@@ -5,7 +5,7 @@ import { supabase, avatarData } from "@/utils/supabaseClient";
 import { App } from "@/interfaces/app";
 import { useUser } from "@/contexts/AuthContext";
 
-export const Avatar = ({ size, onUpload }: App.AvatarTypes) => {
+export const Avatar = ({size, avatarPathSetter, tempAvatarSetter, tempAvatar }: App.AvatarTypes) => {
   const { session, avatarUrl } = useUser();
   const [uploading, setUploading] = useState<boolean>(false);
 
@@ -29,11 +29,11 @@ export const Avatar = ({ size, onUpload }: App.AvatarTypes) => {
       if (uploadError) {
         throw uploadError;
       }
-
       const { data } = await avatarData(filePath);
       if (data) {
-        const url = URL.createObjectURL(data);
-        onUpload(url);
+        const blob = URL.createObjectURL(data);
+        tempAvatarSetter(blob)
+        avatarPathSetter(filePath)
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -50,7 +50,7 @@ export const Avatar = ({ size, onUpload }: App.AvatarTypes) => {
         <div className="p-2 flex justify-center">
           <div className="mb-8 rounded-box w-24 h-24 ring ring-yellow-600 ring-offset-base-100 ring-offset-2">
             <Image
-              src={avatarUrl}
+              src={tempAvatar ? tempAvatar : avatarUrl}
               alt="Avatar"
               className="rounded-box"
               width={size}
@@ -77,7 +77,7 @@ export const Avatar = ({ size, onUpload }: App.AvatarTypes) => {
           type="file"
           id="single"
           accept="image/*"
-          onChange={(e: ChangeEvent<HTMLInputElement>) => uploadAvatar(e)}
+          onChange={(e) => uploadAvatar(e)}
           disabled={uploading}
         />
       </div>

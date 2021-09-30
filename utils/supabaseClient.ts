@@ -40,15 +40,16 @@ export const avatarData = async (path: string) => {
   return { data, error };
 };
 
-export const getAvatarUrl = async (session: AuthSession) => {
+export const getAvatarUsername = async (session: AuthSession) => {
   const { data, error, status } = await profilesInfo(session);
 
-  const { avatar_url } = data;
+  const { avatar_url, username } = data;
   if (avatar_url) {
     const { data, error } = await avatarData(avatar_url);
-
     const url = URL.createObjectURL(data);
-    if (url) return { url };
+    if (url && username) {
+      return { url, username}
+    };
     return { error };
   }
 

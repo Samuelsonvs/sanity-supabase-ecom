@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { User, AuthSession, UserCredentials } from "@supabase/supabase-js";
 
-import { supabase, getAvatarUrl } from "@/utils/supabaseClient";
+import { supabase, getAvatarUsername } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
 
 export const AuthContext = createContext({} as Auth.AuthContextType);
@@ -10,6 +10,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<AuthSession | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [name, setName] = useState<string | null>(null);
 
   useEffect(() => {
     const session = supabase.auth.session();
@@ -17,9 +18,10 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
     setUser(session?.user ?? null);
     (async (session) => {
       if (session) {
-        const { url, error } = await getAvatarUrl(session);
-        if (url) {
+        const { url, username, error } = await getAvatarUsername(session);
+        if (url && username) {
           setAvatarUrl(url);
+          setName(username)
         }
       }
     })(session);
@@ -29,9 +31,10 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
         setSession(session);
         setUser(session?.user ?? null);
         if (session) {
-          const { url, error } = await getAvatarUrl(session);
-          if (url) {
+          const { url, username, error } = await getAvatarUsername(session);
+          if (url && username) {
             setAvatarUrl(url);
+            setName(username)
           }
         }
       }
@@ -46,6 +49,8 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
     () => ({
       session,
       user,
+      name,
+      setName,
       avatarUrl,
       setAvatarUrl,
       signIn: (options: UserCredentials) => supabase.auth.signIn(options),
@@ -55,7 +60,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
         return supabase.auth.signOut();
       },
     }),
-    [user, session, avatarUrl]
+    [user, name, session, avatarUrl]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

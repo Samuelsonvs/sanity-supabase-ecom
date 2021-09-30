@@ -1,4 +1,5 @@
 import { Auth } from "./auth";
+import { Dispatch, SetStateAction } from "react";
 
 export namespace App {
 
@@ -7,9 +8,10 @@ export namespace App {
     }  
 
     interface AvatarTypes {
-        url: string | null;
+        tempAvatarSetter: Dispatch<SetStateAction<string | null>>;
+        avatarPathSetter: Dispatch<SetStateAction<string | null>>;
+        tempAvatar: string | null;
         size: number;
-        onUpload: (filePath: string) => void;
     }
 
     interface FormSigninValues {

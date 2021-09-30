@@ -16,10 +16,12 @@ interface FormSettingValues {
 }
 
 export const Account: NextPage = () => {
-  const { session, avatarUrl, setAvatarUrl } = useUser();
+  const { session, user, setAvatarUrl, name, setName } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const [tempAvatarUrl, setTempAvatarUrl] = useState<string| null>(null);
+  const [avatarPath, setAvatarPath] = useState<string| null>(null);
   const {
     register,
     handleSubmit,
@@ -31,12 +33,26 @@ export const Account: NextPage = () => {
     try {
       setLoading(true);
 
-      const updates = {
-        id: session?.user!.id,
-        username,
-        avatar_url: avatarUrl,
-        updated_at: new Date(),
-      };
+      let updates;
+
+      if (avatarPath) {
+        updates = {
+          id: session?.user!.id,
+          username: username ?? name,
+          avatar_url: avatarPath,
+          updated_at: new Date(),
+        };
+      } else {
+        updates = {
+          id: session?.user!.id,
+          username: username ?? name,
+          updated_at: new Date(),
+        };
+      }
+
+      if (tempAvatarUrl) {
+        setAvatarUrl(tempAvatarUrl)
+      }
 
       let { error } = await supabase.from("profiles").upsert(updates, {
         returning: "minimal", // Don't return the value after inserting
@@ -44,6 +60,8 @@ export const Account: NextPage = () => {
 
       if (error) {
         throw error;
+      } else {
+        setName(username)
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -53,7 +71,6 @@ export const Account: NextPage = () => {
       setLoading(false);
     }
   };
-
   return (
     <>
       {session && (
@@ -63,12 +80,10 @@ export const Account: NextPage = () => {
             <div className="py-5 mt-5 flex flex-col md:flex-row-reverse justify-center shadow-2xl">
               <div className="card-body">
                 <Avatar
-                  url={avatarUrl}
                   size={150}
-                  onUpload={(url: string) => {
-                    setAvatarUrl(url);
-                    handleSubmit(handleUpdate);
-                  }}
+                  tempAvatarSetter={setTempAvatarUrl}
+                  avatarPathSetter={setAvatarPath}
+                  tempAvatar={tempAvatarUrl}
                 />
               </div>
               <div>
@@ -84,7 +99,7 @@ export const Account: NextPage = () => {
                       className="input input-bordered"
                       type="text"
                       placeholder="Your name"
-                      defaultValue={username as string}
+                      defaultValue={name ?? ''}
                       {...register("username", {
                         required: true,
                       })}
@@ -120,7 +135,7 @@ export const Account: NextPage = () => {
                       className="input input-bordered"
                       type="email"
                       placeholder="Your email"
-                      defaultValue={email as string}
+                      defaultValue={user?.email}
                       disabled
                       {...register("email")}
                     />
@@ -148,14 +163,14 @@ export const Account: NextPage = () => {
                   <div className="form-control flex-row justify-evenly mt-6">
                     <input
                       disabled={loading}
-                      className="btn btn-primary w-20 bg-yellow-600 hover:bg-yellow-600"
+                      className="btn w-20 bg-yellow-600 hover:bg-yellow-600 border-none"
                       type="submit"
                       value="save"
                     />
                     <button
                       onClick={() => router.reload()}
                       disabled={loading}
-                      className="btn btn-primary bg-yellow-600 hover:bg-yellow-600"
+                      className="btn bg-yellow-600 hover:bg-yellow-600"
                     >
                       Cancel
                     </button>

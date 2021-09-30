@@ -15,6 +15,8 @@ namespace Auth {
     interface AuthContextType {
         session?: AuthSession | null;
         user: User | null;
+        name: string | null;
+        setName: Dispatch<SetStateAction<string | null>>;
         avatarUrl: string | null;
         setAvatarUrl: Dispatch<SetStateAction<string | null>>;
         signIn: (options: UserCredentials) => Promise<{
