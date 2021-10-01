@@ -16,7 +16,7 @@ interface FormSettingValues {
 }
 
 export const Account: NextPage = () => {
-  const { session, user, setAvatarUrl, name, setName } = useUser();
+  const { session, user, setAvatarUrl, defaultName, setDefaultName } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
@@ -61,7 +61,7 @@ export const Account: NextPage = () => {
       if (error) {
         throw error;
       } else {
-        setName(username)
+        setDefaultName(username)
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -99,7 +99,7 @@ export const Account: NextPage = () => {
                       className="input input-bordered"
                       type="text"
                       placeholder="Your name"
-                      defaultValue={name ?? ''}
+                      defaultValue={defaultName ?? ''}
                       {...register("username", {
                         required: true,
                       })}

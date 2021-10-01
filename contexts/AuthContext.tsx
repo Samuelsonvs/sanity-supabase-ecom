@@ -10,7 +10,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<AuthSession | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [name, setName] = useState<string | null>(null);
+  const [defaultName, setDefaultName] = useState<string | null>(null);
 
   useEffect(() => {
     const session = supabase.auth.session();
@@ -21,7 +21,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
         const { url, username, error } = await getAvatarUsername(session);
         if (url && username) {
           setAvatarUrl(url);
-          setName(username)
+          setDefaultName(username)
         }
       }
     })(session);
@@ -34,7 +34,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
           const { url, username, error } = await getAvatarUsername(session);
           if (url && username) {
             setAvatarUrl(url);
-            setName(username)
+            setDefaultName(username)
           }
         }
       }
@@ -49,8 +49,8 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
     () => ({
       session,
       user,
-      name,
-      setName,
+      defaultName,
+      setDefaultName,
       avatarUrl,
       setAvatarUrl,
       signIn: (options: UserCredentials) => supabase.auth.signIn(options),
@@ -60,7 +60,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
         return supabase.auth.signOut();
       },
     }),
-    [user, name, session, avatarUrl]
+    [user, defaultName, session, avatarUrl]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
