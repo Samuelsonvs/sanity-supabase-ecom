@@ -6,45 +6,32 @@ import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { useUser } from "@/contexts/AuthContext";
-import { insertUserInProfiles, isUserInDB } from "@/utils/supabaseClient";
+import { setUserProfiles } from "@/utils/supabaseClient";
 import Container from "@/container/Container";
 import { App } from "@/interfaces/app";
 
 export const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [registerName, setRegisterName] = useState<string | null>(null);
   const [email, setEmail] = useState<string>("");
-  const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { session, signUp } = useUser();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<App.FormSignupValues>();
-  const { session, signUp } = useUser();
   const router = useRouter();
 
   const handleRegister: SubmitHandler<App.FormSignupValues> = async () => {
-    const { data } = await isUserInDB(name);
-    if (data) {
-      return alert("Pls chance username!");
-    } else {
-      try {
-        setLoading(true);
-        const { user, error } = await signUp({ email, password });
-        if (error) {
-          throw error;
-        } else {
-          if (user) {
-            await insertUserInProfiles(user, name);
-          } else {
-            console.log("error name");
-          }
+    if (registerName) {
+      const { error, user } = await signUp({ email, password });
+      if (error) {
+        return alert(error.message);
+      } else {
+        if (user) {
+          const { error } = await setUserProfiles(user, {username: registerName})
         }
-        alert("Check your email for the login link!");
-      } catch (error: any) {
-        alert(error.error_description || error.message);
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -85,7 +72,7 @@ export const Signup: NextPage = () => {
                         required: true,
                         maxLength: 80,
                       })}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => setRegisterName(e.target.value)}
                     />
                   </div>
                   <div className="form-control">

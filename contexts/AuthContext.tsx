@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { User, AuthSession, UserCredentials } from "@supabase/supabase-js";
 
-import { supabase, getAvatarUsername } from "@/utils/supabaseClient";
+import { supabase, getUserDetails } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
 
 export const AuthContext = createContext({} as Auth.AuthContextType);
@@ -16,27 +16,10 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
     const session = supabase.auth.session();
     setSession(session);
     setUser(session?.user ?? null);
-    (async (session) => {
-      if (session) {
-        const { url, username, error } = await getAvatarUsername(session);
-        if (url && username) {
-          setAvatarUrl(url);
-          setDefaultName(username)
-        }
-      }
-    })(session);
-
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        if (session) {
-          const { url, username, error } = await getAvatarUsername(session);
-          if (url && username) {
-            setAvatarUrl(url);
-            setDefaultName(username)
-          }
-        }
       }
     );
 
@@ -45,6 +28,17 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
     };
   }, []);
 
+
+  useEffect(() => {
+    if (user) {
+      Promise.resolve(getUserDetails(user).then((results) => {
+        const { url, username } = results
+        setAvatarUrl(url ?? null)
+        setDefaultName(username)
+      }))
+    }
+  }, [user])
+  
   const value = useMemo(
     () => ({
       session,

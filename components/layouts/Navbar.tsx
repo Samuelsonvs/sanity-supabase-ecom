@@ -163,7 +163,7 @@ export const Navbar = () => {
                             <Image
                               layout="fill"
                               alt="profilpic"
-                              src="https://i.pravatar.cc/500?img=32"
+                              src="/static/images/navbar/mockprofile.png"
                             />
                           )}
                         </div>

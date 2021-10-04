@@ -3,17 +3,11 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { supabase } from "@/utils/supabaseClient";
+import { setUserProfiles, setAvatarData } from "@/utils/supabaseClient";
 import Avatar from "@/components/Avatar";
 import { useUser } from "@/contexts/AuthContext";
 import Container from "@/container/Container";
-
-interface FormSettingValues {
-  username: string | null;
-  avatar_url: string | null;
-  email: string | null;
-  password: string;
-}
+import { App } from "@/interfaces/app"
 
 export const Account: NextPage = () => {
   const { session, user, setAvatarUrl, defaultName, setDefaultName } = useUser();
@@ -21,47 +15,46 @@ export const Account: NextPage = () => {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [tempAvatarUrl, setTempAvatarUrl] = useState<string| null>(null);
-  const [avatarPath, setAvatarPath] = useState<string| null>(null);
+  const [avatarPath, setAvatarPath] = useState<App.Path | null>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormSettingValues>();
+  } = useForm<App.FormSettingValues>();
   const router = useRouter();
 
-  const handleUpdate: SubmitHandler<FormSettingValues> = async () => {
+  const handleUpdate: SubmitHandler<App.FormSettingValues> = async () => {
     try {
       setLoading(true);
 
       let updates;
 
       if (avatarPath) {
-        updates = {
-          id: session?.user!.id,
-          username: username ?? name,
-          avatar_url: avatarPath,
-          updated_at: new Date(),
-        };
-      } else {
-        updates = {
-          id: session?.user!.id,
-          username: username ?? name,
-          updated_at: new Date(),
-        };
-      }
+        const { filePath, file } = avatarPath
+        const { error } = await setAvatarData(filePath, file)
 
-      if (tempAvatarUrl) {
+        if (error) throw error
+
+        updates = {
+          username: username ?? defaultName,
+          avatar_url: filePath,
+        };
+
         setAvatarUrl(tempAvatarUrl)
+        
+      } else {
+        updates = {
+          username: username ?? defaultName,
+        };
       }
 
-      let { error } = await supabase.from("profiles").upsert(updates, {
-        returning: "minimal", // Don't return the value after inserting
-      });
-
-      if (error) {
-        throw error;
-      } else {
-        setDefaultName(username)
+      if ( user ) {
+        const { error } = await setUserProfiles(user, updates) 
+        if (error) {
+          throw error;
+        } else {
+          setDefaultName(username)
+        }      
       }
     } catch (error) {
       if (error instanceof Error) {
