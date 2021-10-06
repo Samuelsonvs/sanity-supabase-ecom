@@ -4,16 +4,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { App } from "@/interfaces/app";
+import Input from "@/components/Input";
+import useFormRef from "@/hooks/FormRefs";
 
 export const Footer = () => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string | null>(null);
+  const { emailRef } = useFormRef();
   const {
-    register,
     handleSubmit,
     formState: { errors },
-  } = useForm<App.FormSigninValues>();
+  } = useForm<App.FormValues>();
 
-  const handleLogin: SubmitHandler<App.FormSigninValues> = async () => {
+  const handleLogin: SubmitHandler<App.FormValues> = async () => {
     // try {
     //   setLoading(true);
     //   const { error } = await signIn({ email, password });
@@ -36,16 +38,15 @@ export const Footer = () => {
                   <span className="text-lg text-tertiary">Subscribe to our newsletter</span>
                 </label> 
                 <div className="relative w-60 md:w-72 lg:w-80">
-                  <input
-                    className="w-full input input-bordered rounded-full text-tertiary bg-input"
-                    type="email"
-                    placeholder="Enter Your E-mail Adress"
-                    {...register("email", {
-                      required: true,
-                      pattern: /^\S+@\S+$/i,
-                    })}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+                  <Input 
+                      type={"email"}
+                      className={"w-full rounded-full text-tertiary bg-input"}
+                      ref={emailRef.ref}
+                      placeholder={"Enter Your E-mail Adress"}
+                      onChange={setEmail}
+                      onBlur={emailRef.onBlur}
+                      name={emailRef.name}
+                    />
                   <button className="absolute top-0 right-0 rounded-l-none rounded-r-full btn bg-gray-600">send</button>
                 </div>
               </div>

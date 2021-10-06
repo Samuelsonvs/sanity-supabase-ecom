@@ -23,19 +23,10 @@ export namespace App {
         username: string | null;
         avatar_url?: string;
     }
-
-    interface FormSigninValues {
-        email: string;
-        password: string;
-      }
-      
-    interface FormSignupValues extends FormSigninValues {
-        username: string;
-    }
-    interface FormSettingValues {
-        username: string | null;
-        avatar_url: string | null;
-        email: string | null;
-        password: string;
+    interface FormValues {
+        username?: string | null;
+        avatar_url?: string | null;
+        email?: string | null;
+        password?: string;
     }
 }

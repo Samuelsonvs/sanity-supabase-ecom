@@ -8,24 +8,28 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useUser } from "@/contexts/AuthContext";
 import Container from "@/container/Container";
 import { App } from "@/interfaces/app";
+import Input from "@/components/Input";
+import useFormRef from "@/hooks/FormRefs";
 
 export const Signin: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+  const { passwordRef, emailRef } = useFormRef();
   const {
-    register,
     handleSubmit,
     formState: { errors },
-  } = useForm<App.FormSigninValues>();
+  } = useForm<App.FormValues>();
   const { session, signIn } = useUser();
   const router = useRouter();
 
-  const handleLogin: SubmitHandler<App.FormSigninValues> = async () => {
+  const handleLogin: SubmitHandler<App.FormValues> = async () => {
     try {
       setLoading(true);
-      const { error } = await signIn({ email, password });
-      if (error) throw error;
+      if ( email && password ) {
+        const { error } = await signIn({ email, password });
+        if (error) throw error;
+      }
     } catch (error: any) {
       alert(error.error_description || error.message);
     } finally {
@@ -62,30 +66,26 @@ export const Signin: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
-                    <input
-                      className="input input-bordered"
-                      type="email"
-                      placeholder="Your email"
-                      {...register("email", {
-                        required: true,
-                        pattern: /^\S+@\S+$/i,
-                      })}
-                      onChange={(e) => setEmail(e.target.value)}
+                    <Input 
+                      type={"email"}
+                      ref={emailRef.ref}
+                      placeholder={"Your email"}
+                      onChange={setEmail}
+                      onBlur={emailRef.onBlur}
+                      name={emailRef.name}
                     />
                   </div>
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text">Password</span>
                     </label>
-                    <input
-                      className="input input-bordered"
-                      type="password"
-                      placeholder="Your password"
-                      {...register("password", {
-                        required: true,
-                        minLength: 6,
-                      })}
-                      onChange={(e) => setPassword(e.target.value)}
+                    <Input 
+                      type={"password"}
+                      ref={passwordRef.ref}
+                      placeholder={"Your password"}
+                      onChange={setPassword}
+                      onBlur={passwordRef.onBlur}
+                      name={passwordRef.name}
                     />
                     {errors.password && (
                       <div className="alert alert-warning mt-2">

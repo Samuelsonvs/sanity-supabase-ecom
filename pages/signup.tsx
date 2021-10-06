@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -8,23 +8,25 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useUser } from "@/contexts/AuthContext";
 import { setUserProfiles } from "@/utils/supabaseClient";
 import Container from "@/container/Container";
+import Input from "@/components/Input";
 import { App } from "@/interfaces/app";
+import useFormRef from "@/hooks/FormRefs";
 
 export const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [registerName, setRegisterName] = useState<string | null>(null);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
   const { session, signUp } = useUser();
+  const { passwordRef, usernameRef, emailRef } = useFormRef();
   const {
-    register,
     handleSubmit,
     formState: { errors },
-  } = useForm<App.FormSignupValues>();
+  } = useForm<App.FormValues>();
   const router = useRouter();
 
-  const handleRegister: SubmitHandler<App.FormSignupValues> = async () => {
-    if (registerName) {
+  const handleRegister: SubmitHandler<App.FormValues> = async () => {
+    if (registerName && email && password) {
       const { error, user } = await signUp({ email, password });
       if (error) {
         return alert(error.message);
@@ -64,45 +66,39 @@ export const Signup: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Username</span>
                     </label>
-                    <input
-                      className="input input-bordered"
-                      type="text"
-                      placeholder="Your username"
-                      {...register("username", {
-                        required: true,
-                        maxLength: 80,
-                      })}
-                      onChange={(e) => setRegisterName(e.target.value)}
+                    <Input 
+                      type={"text"}
+                      ref={usernameRef.ref}
+                      placeholder={"Your username"}   
+                      onChange={setRegisterName}
+                      onBlur={usernameRef.onBlur}
+                      name={usernameRef.name}
                     />
                   </div>
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
-                    <input
-                      className="input input-bordered"
-                      type="email"
-                      placeholder="Your email"
-                      {...register("email", {
-                        required: true,
-                        pattern: /^\S+@\S+$/i,
-                      })}
-                      onChange={(e) => setEmail(e.target.value)}
+                    <Input 
+                      type={"email"}
+                      ref={emailRef.ref}
+                      placeholder={"Your email"}
+                      onChange={setEmail}
+                      onBlur={emailRef.onBlur}
+                      name={emailRef.name}
                     />
                   </div>
                   <div className="form-control">
                     <label className="label">
                       <span className="label-text">Password</span>
                     </label>
-                    <input
-                      className="input input-bordered"
-                      type="password"
-                      placeholder="Your password"
-                      {...register("password", {
-                        required: true,
-                        minLength: 6,
-                      })}
-                      onChange={(e) => setPassword(e.target.value)}
+                    <Input 
+                      type={"password"}
+                      ref={passwordRef.ref}
+                      placeholder={"Your password"}
+                      onChange={setPassword}
+                      onBlur={passwordRef.onBlur}
+                      name={passwordRef.name}
                     />
                     {errors.password && (
                       <div className="alert alert-warning mt-2">
