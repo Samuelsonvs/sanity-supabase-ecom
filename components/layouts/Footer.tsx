@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { App } from "@/interfaces/app";
 import Input from "@/components/Input";
-import useFormRef from "@/hooks/FormRefs";
+import useFormRef from "@/hooks/useFormRefs";
 
 export const Footer = () => {
   const [email, setEmail] = useState<string | null>(null);

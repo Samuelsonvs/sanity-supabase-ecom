@@ -9,7 +9,7 @@ import { useUser } from "@/contexts/AuthContext";
 import Container from "@/container/Container";
 import { App } from "@/interfaces/app"
 import Input from "@/components/Input";
-import useFormRef from "@/hooks/FormRefs";
+import useFormRef from "@/hooks/useFormRefs";
 
 export const Account: NextPage = () => {
   const { session, user, setAvatarUrl, defaultName, setDefaultName } = useUser();

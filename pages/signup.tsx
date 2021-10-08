@@ -10,7 +10,7 @@ import { setUserProfiles } from "@/utils/supabaseClient";
 import Container from "@/container/Container";
 import Input from "@/components/Input";
 import { App } from "@/interfaces/app";
-import useFormRef from "@/hooks/FormRefs";
+import useFormRef from "@/hooks/useFormRefs";
 
 export const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);

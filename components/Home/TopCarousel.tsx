@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
+
+import { useSlider } from "@/hooks/useSlider";
 
 
 const images = [
@@ -10,43 +12,47 @@ const images = [
 ]
 
 export const TopCarousel = () => {
-  const [current, setCurrent] = useState<number>(0)
-  const len = images.length
+  const [opacities, setOpacities] = useState<number[]>([])
+  const sliderContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const handlerPrev = () =>  {
-    if (current - 1 === -1) {
-      setCurrent(len - 1)
-    } else {
-      setCurrent(current - 1)
+  const { mounted, active, sliderRef } = useSlider(
+    sliderContainerRef,
+    {
+      slides: images.length,
+      loop: true,
+      duration: 3000,
+      move(s) {
+        const new_opacities = s.details().positions.map((slide) => slide.portion)
+        setOpacities(new_opacities)
+      },
     }
-  }
-
-  const handlerNext = () => {
-    if (current + 1 === len) {
-      setCurrent(0)
-    } else {
-      setCurrent(current + 1)
-    }
-  }
+  )
 
   return (
-      <section className="relative w-full carousel max-w-screen-3xl mx-auto">
-        {images.map((image, idx) => {
-          return (
-            <div key={idx} className={`relative w-full h-96 sm:h-full carousel-item transition transform duration-200 ease-in-out ${idx === current ? "" : "hidden"}`}>
-              <Image
-              src={image}
-              alt="crsl"
-              objectFit="cover"
-              width="1920"
-              height="1070"
-                />
-            </div>
-          )
-        })}
+      <section className="relative w-full max-w-screen-3xl mx-auto">
+        <div ref={sliderContainerRef} className="relative h-96 sm:h-120 overflow-hidden">
+          {images.map((image, idx) => {
+            return (
+              <div key={idx} style={{ opacity: opacities[idx] }} className="w-full h-full absolute">
+                <Image
+                src={image}
+                priority
+                alt="crsl"
+                objectFit="cover"
+                layout="fill"
+                  />
+              </div>
+            )
+          })}
+        </div>
         <div className="absolute z-20 flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-          <button onClick={() => handlerPrev()} className="btn btn-circle bg-opacity-70">❮</button> 
-          <button onClick={() => handlerNext()} className="btn btn-circle bg-opacity-70">❯</button>
+          {sliderRef && mounted &&  (
+            <>
+              <button onClick={() => sliderRef.current?.next()} className="btn btn-circle bg-opacity-70">❮</button> 
+              <button onClick={() => sliderRef.current?.prev()} className="btn btn-circle bg-opacity-70">❯</button>
+            </>
+          )
+          }
         </div>
         <div className="hidden md:block prose-sm lg:prose-lg absolute z-10 w-full top-20 lg:top-14 text-center text-primary">
           <hgroup>
