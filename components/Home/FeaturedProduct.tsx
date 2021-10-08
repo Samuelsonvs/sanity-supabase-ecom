@@ -15,7 +15,7 @@ export const FeaturedProduct = ({ products }: GroqData.Products) => {
       <div className="px-2 py-10 grid grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.isArray(products) &&
           products.slice(0, sliceNumber).map((product: any, idx: number) => {
-            const { images, slug, price, title } = productSolver(product) 
+            const { images, slug, price, title } = productSolver(product);
             const image = images[0];
             return (
               <div

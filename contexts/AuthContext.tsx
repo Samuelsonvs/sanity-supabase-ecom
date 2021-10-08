@@ -28,17 +28,18 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
     };
   }, []);
 
-
   useEffect(() => {
     if (user) {
-      Promise.resolve(getUserDetails(user).then((results) => {
-        const { url, username } = results
-        setAvatarUrl(url ?? null)
-        setDefaultName(username)
-      }))
+      Promise.resolve(
+        getUserDetails(user).then((results) => {
+          const { url, username } = results;
+          setAvatarUrl(url ?? null);
+          setDefaultName(username);
+        })
+      );
     }
-  }, [user])
-  
+  }, [user]);
+
   const value = useMemo(
     () => ({
       session,

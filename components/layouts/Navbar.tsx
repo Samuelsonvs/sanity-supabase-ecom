@@ -6,11 +6,7 @@ import { Popover, Transition } from "@headlessui/react";
 
 import { useUser } from "@/contexts/AuthContext";
 
-const navItems = [
-  {home:"/"},
-  {signin:"/signin"},
-  {signup:"/signup"}
-]
+const navItems = [{ home: "/" }, { signin: "/signin" }, { signup: "/signup" }];
 
 export const Navbar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,54 +34,60 @@ export const Navbar = () => {
                 d="M4 6h16M4 12h16M4 18h16"
               ></path>
             </svg>
-          </label> 
-          <input ref={inputRef} type="checkbox" defaultChecked={false} id="my-modal-2" className="modal-toggle" /> 
+          </label>
+          <input
+            ref={inputRef}
+            type="checkbox"
+            defaultChecked={false}
+            id="my-modal-2"
+            className="modal-toggle"
+          />
           <div className="modal">
-            <div className="modal-box bg-black h-full w-full max-w-full rounded-none absolute flex flex-col justify-center items-center">       
+            <div className="modal-box bg-black h-full w-full max-w-full rounded-none absolute flex flex-col justify-center items-center">
               <button
-                    className="absolute top-14 right-0 sm:right-2"
-                    onClick={() => inputRef.current?.click()}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-10 w-10"
-                      viewBox="0 0 20 20"
-                      fill="#fff"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                </button>
-                <div className="modal-action flex-col justify-center items-center">
-                  <ul>
-                    {navItems.map((item,idx) => {
-                      const [navHref, ...__] = Object.values(item)
-                      const [navName, ..._] = Object.keys(item)
-                      if (navName !== "signin" && navName !== "signup") {
+                className="absolute top-14 right-0 sm:right-2"
+                onClick={() => inputRef.current?.click()}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-10 w-10"
+                  viewBox="0 0 20 20"
+                  fill="#fff"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+              <div className="modal-action flex-col justify-center items-center">
+                <ul>
+                  {navItems.map((item, idx) => {
+                    const [navHref, ...__] = Object.values(item);
+                    const [navName, ..._] = Object.keys(item);
+                    if (navName !== "signin" && navName !== "signup") {
+                      return (
+                        <li key={idx}>
+                          <Link href={navHref}>
+                            <a className="block p-4 text-4xl">{navName}</a>
+                          </Link>
+                        </li>
+                      );
+                    } else {
+                      if (!session) {
                         return (
                           <li key={idx}>
                             <Link href={navHref}>
                               <a className="block p-4 text-4xl">{navName}</a>
                             </Link>
                           </li>
-                        )
-                      } else {
-                        if (!session) {
-                          return (
-                            <li key={idx}>
-                              <Link href={navHref}>
-                                <a className="block p-4 text-4xl">{navName}</a>
-                              </Link>
-                            </li>
-                          )
-                        }
+                        );
                       }
-                    })}
-                  </ul>
-                </div>
+                    }
+                  })}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

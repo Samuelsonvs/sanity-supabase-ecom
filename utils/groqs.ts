@@ -1,7 +1,6 @@
 import { groq } from "next-sanity";
 
 export const productsGroq = () => {
-
   return {
     productsQuery: groq`{
       "products":  *[_type == "product"] {
@@ -21,14 +20,13 @@ export const productsGroq = () => {
         variants,
         title
       },
-    }`
-  }
-}
+    }`,
+  };
+};
 
 export const productGroq = (slug: string | undefined) => {
-
-    return {
-        productQuery: groq`{
+  return {
+    productQuery: groq`{
             "product":  *[_type == "product" && slug.current == "${slug}"]{
               blurb {
                 en
@@ -48,14 +46,14 @@ export const productGroq = (slug: string | undefined) => {
                 current
               }
             }
-        }`
-    }
-}
+        }`,
+  };
+};
 
 export const productSlugsGroq = () => {
-    return {
-        slugsQuery: groq`{
+  return {
+    slugsQuery: groq`{
             "products":  *[_type == "product"]
-        }`        
-    }
-}
+        }`,
+  };
+};

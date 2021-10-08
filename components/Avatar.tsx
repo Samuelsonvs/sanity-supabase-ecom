@@ -4,7 +4,12 @@ import Image from "next/image";
 import { App } from "@/interfaces/app";
 import { useUser } from "@/contexts/AuthContext";
 
-export const Avatar = ({size, avatarPathSetter, tempAvatarSetter, tempAvatar }: App.AvatarTypes) => {
+export const Avatar = ({
+  size,
+  avatarPathSetter,
+  tempAvatarSetter,
+  tempAvatar,
+}: App.AvatarTypes) => {
   const { session, avatarUrl } = useUser();
   const [uploading, setUploading] = useState<boolean>(false);
 
@@ -22,9 +27,8 @@ export const Avatar = ({size, avatarPathSetter, tempAvatarSetter, tempAvatar }: 
       const filePath = `${fileName}`;
 
       const blob = URL.createObjectURL(file);
-      tempAvatarSetter(blob)
-      avatarPathSetter({filePath, file})
- 
+      tempAvatarSetter(blob);
+      avatarPathSetter({ filePath, file });
     } catch (error) {
       if (error instanceof Error) {
         alert(error.message);
@@ -36,17 +40,19 @@ export const Avatar = ({size, avatarPathSetter, tempAvatarSetter, tempAvatar }: 
 
   return (
     <div>
-        <div className="p-2 flex justify-center">
-          <div className="mb-8 rounded-box w-24 h-24 ring ring-yellow-600 ring-offset-base-100 ring-offset-2">
-            <Image
-              src={tempAvatar ?? (avatarUrl ?? "/static/images/navbar/mockprofile.png")}
-              alt="Avatar"
-              className="rounded-box"
-              width={size}
-              height={size}
-            />
-          </div>  
+      <div className="p-2 flex justify-center">
+        <div className="mb-8 rounded-box w-24 h-24 ring ring-yellow-600 ring-offset-base-100 ring-offset-2">
+          <Image
+            src={
+              tempAvatar ?? avatarUrl ?? "/static/images/navbar/mockprofile.png"
+            }
+            alt="Avatar"
+            className="rounded-box"
+            width={size}
+            height={size}
+          />
         </div>
+      </div>
       <div className="flex justify-center">
         <label
           className={`btn btn-primary bg-yellow-600 hover:bg-yellow-700 border-none ${

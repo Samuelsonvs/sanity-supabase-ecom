@@ -26,7 +26,7 @@ a {
   min-height: 100vh;
 }
 
-.carousel-manuel { 
+.carousel-manuel {
   display: flex;
   overflow-x: scroll;
   -ms-scroll-snap-type: x mandatory;
@@ -37,24 +37,23 @@ a {
 
 /* custom carousel scrollbar */
 .carousel-manuel::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 7px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 7px;
   background-color: rgb(201, 198, 192);
 }
 
 .carousel-manuel::-webkit-scrollbar {
   border-radius: 7px;
-	width: 7px;
+  width: 7px;
   height: 7px;
   background-color: rgb(150, 148, 144);
 }
 
 .carousel-manuel::-webkit-scrollbar-thumb {
-	border-radius: 7px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  border-radius: 7px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: rgb(63, 61, 61);
 }
-
 
 @media (max-width: 640px) {
   .carousel-manuel::-webkit-scrollbar {
@@ -64,7 +63,7 @@ a {
 
 /* firefox scrollbar */
 .carousel-manuel {
-  scrollbar-color: rgb(63, 61, 61) rgb(201, 198, 192)!important;
+  scrollbar-color: rgb(63, 61, 61) rgb(201, 198, 192) !important;
   scrollbar-width: thin;
 }
 /* firefox scrollbar */
@@ -86,31 +85,30 @@ a {
 /* button border bottom hover effect */
 
 .btn-border {
-  display:inline-block; 
-  margin:0; 
+  display: inline-block;
+  margin: 0;
 }
 .btn-border:after {
-  display:block;
-  content: '';
+  display: block;
+  content: "";
   border-bottom: solid 3px #ffb338;
-  transform: scaleX(0);  
+  transform: scaleX(0);
   transition: transform 250ms ease-in-out;
 }
-.btn-border:hover:after { 
-  transform: scaleX(1); 
+.btn-border:hover:after {
+  transform: scaleX(1);
 }
 
-
 .btn-border-constant {
-  display:inline-block; 
-  margin:0; 
+  display: inline-block;
+  margin: 0;
 }
 
 .btn-border-constant:after {
-  display:block;
-  content: '';
+  display: block;
+  content: "";
   border-bottom: solid 3px #ffb338;
-  transform: scaleX(0);  
+  transform: scaleX(0);
   transition: transform 250ms ease-in-out;
 }
 

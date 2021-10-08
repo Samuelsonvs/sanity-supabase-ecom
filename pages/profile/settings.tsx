@@ -7,16 +7,17 @@ import { setUserProfiles, setAvatarData } from "@/utils/supabaseClient";
 import Avatar from "@/components/Avatar";
 import { useUser } from "@/contexts/AuthContext";
 import Container from "@/container/Container";
-import { App } from "@/interfaces/app"
+import { App } from "@/interfaces/app";
 import Input from "@/components/Input";
 import useFormRef from "@/hooks/useFormRefs";
 
 export const Account: NextPage = () => {
-  const { session, user, setAvatarUrl, defaultName, setDefaultName } = useUser();
+  const { session, user, setAvatarUrl, defaultName, setDefaultName } =
+    useUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
-  const [tempAvatarUrl, setTempAvatarUrl] = useState<string| null>(null);
+  const [tempAvatarUrl, setTempAvatarUrl] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<App.Path | null>(null);
   const { passwordRef, emailRef, usernameRef } = useFormRef();
   const {
@@ -32,31 +33,30 @@ export const Account: NextPage = () => {
       let updates;
 
       if (avatarPath) {
-        const { filePath, file } = avatarPath
-        const { error } = await setAvatarData(filePath, file)
+        const { filePath, file } = avatarPath;
+        const { error } = await setAvatarData(filePath, file);
 
-        if (error) throw error
+        if (error) throw error;
 
         updates = {
           username: username ?? defaultName,
           avatar_url: filePath,
         };
 
-        setAvatarUrl(tempAvatarUrl)
-        
+        setAvatarUrl(tempAvatarUrl);
       } else {
         updates = {
           username: username ?? defaultName,
         };
       }
 
-      if ( user ) {
-        const { error } = await setUserProfiles(user, updates) 
+      if (user) {
+        const { error } = await setUserProfiles(user, updates);
         if (error) {
           throw error;
         } else {
-          setDefaultName(username)
-        }      
+          setDefaultName(username);
+        }
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -90,11 +90,11 @@ export const Account: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Username</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"text"}
                       ref={usernameRef.ref}
                       placeholder={"Your username"}
-                      defaultValue={defaultName ?? ''}  
+                      defaultValue={defaultName ?? ""}
                       onChange={setUsername}
                       onBlur={usernameRef.onBlur}
                       name={usernameRef.name}
@@ -104,7 +104,7 @@ export const Account: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Password</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"password"}
                       ref={passwordRef.ref}
                       placeholder={"Your password"}
@@ -126,7 +126,7 @@ export const Account: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"email"}
                       ref={emailRef.ref}
                       placeholder={"Your email"}

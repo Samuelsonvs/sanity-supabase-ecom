@@ -26,7 +26,7 @@ export const Signin: NextPage = () => {
   const handleLogin: SubmitHandler<App.FormValues> = async () => {
     try {
       setLoading(true);
-      if ( email && password ) {
+      if (email && password) {
         const { error } = await signIn({ email, password });
         if (error) throw error;
       }
@@ -66,7 +66,7 @@ export const Signin: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"email"}
                       ref={emailRef.ref}
                       placeholder={"Your email"}
@@ -79,7 +79,7 @@ export const Signin: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Password</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"password"}
                       ref={passwordRef.ref}
                       placeholder={"Your password"}

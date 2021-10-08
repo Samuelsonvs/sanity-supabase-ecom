@@ -8,21 +8,21 @@ module.exports = {
       primary: "#181813",
       secondary: "#ffb338",
       tertiary: "#f2f2f2",
-      input: "#292929"
+      input: "#292929",
     }),
-    textColor: (theme) =>  ({
+    textColor: (theme) => ({
       ...theme("colors"),
-      'primary': "#181813",
-      'secondary': "#ffb338",
-      'tertiary': "#f2f2f2",
+      primary: "#181813",
+      secondary: "#ffb338",
+      tertiary: "#f2f2f2",
     }),
     extend: {
       screens: {
-        '3xl': '1920px',
+        "3xl": "1920px",
       },
       height: {
         ...defaultTheme.height,
-        "120": "1070px"
+        120: "1070px",
       },
     },
   },

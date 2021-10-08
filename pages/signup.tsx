@@ -32,7 +32,9 @@ export const Signup: NextPage = () => {
         return alert(error.message);
       } else {
         if (user) {
-          const { error } = await setUserProfiles(user, {username: registerName})
+          const { error } = await setUserProfiles(user, {
+            username: registerName,
+          });
         }
       }
     }
@@ -66,10 +68,10 @@ export const Signup: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Username</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"text"}
                       ref={usernameRef.ref}
-                      placeholder={"Your username"}   
+                      placeholder={"Your username"}
                       onChange={setRegisterName}
                       onBlur={usernameRef.onBlur}
                       name={usernameRef.name}
@@ -79,7 +81,7 @@ export const Signup: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"email"}
                       ref={emailRef.ref}
                       placeholder={"Your email"}
@@ -92,7 +94,7 @@ export const Signup: NextPage = () => {
                     <label className="label">
                       <span className="label-text">Password</span>
                     </label>
-                    <Input 
+                    <Input
                       type={"password"}
                       ref={passwordRef.ref}
                       placeholder={"Your password"}

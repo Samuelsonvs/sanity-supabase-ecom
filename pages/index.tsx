@@ -4,11 +4,10 @@ import { GetStaticProps, GetStaticPropsContext } from "next";
 
 import TopCarousel from "@/components/Home/TopCarousel";
 import FeaturedProduct from "@/components/Home/FeaturedProduct";
-import BambooProducts from "@/components/Home/BambooProducts"
+import BambooProducts from "@/components/Home/BambooProducts";
 import { GroqData } from "@/interfaces/groqData";
 import Container from "@/container/Container";
 import { productsGroq } from "@/utils/groqs";
-
 
 const Home: NextPage<GroqData.Products> = ({ products }: GroqData.Products) => {
   return (
