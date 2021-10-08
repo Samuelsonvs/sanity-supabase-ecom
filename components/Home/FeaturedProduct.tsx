@@ -4,8 +4,9 @@ import Link from "next/link";
 import { GroqData } from "@/interfaces/groqData";
 import { urlFor } from "@/utils/sanity";
 import { useState } from "react";
+import { productSolver } from "@/utils/groqResolver";
 
-export const FeaturedProduct = ({ products }: GroqData.SanityProduct) => {
+export const FeaturedProduct = ({ products }: GroqData.Products) => {
   const [sliceNumber, setSliceNumber] = useState<number>(9);
   const productsLength = products.length;
   return (
@@ -14,7 +15,8 @@ export const FeaturedProduct = ({ products }: GroqData.SanityProduct) => {
       <div className="px-2 py-10 grid grid-cols-1 justify-items-center sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {Array.isArray(products) &&
           products.slice(0, sliceNumber).map((product: any, idx: number) => {
-            const image = product.defaultProductVariant.images[0];
+            const { images, slug, price, title } = productSolver(product) 
+            const image = images[0];
             return (
               <div
                 key={image._key}
@@ -28,7 +30,7 @@ export const FeaturedProduct = ({ products }: GroqData.SanityProduct) => {
                     : "lg:mt-0 lg:mb-0"
                 }`}
               >
-                <Link passHref href={`/product/${product.slug.current}`}>
+                <Link passHref href={`/product/${slug}`}>
                   <a className="flex w-full h-full cursor-pointer">
                     <Image
                       alt="ss"
@@ -44,7 +46,7 @@ export const FeaturedProduct = ({ products }: GroqData.SanityProduct) => {
                 <div className="absolute w-full h-1/3 text-center text-white bg-black bg-opacity-50 rounded-b-2xl transition transform -translate-y-14 ease-in-out duration-150 hover:-translate-y-28">
                   <div className="flex justify-evenly mt-3">
                     <div></div>
-                    <div>{product.defaultProductVariant.price}$</div>
+                    <div>{price}$</div>
                     <div className="-my-2">
                       <button className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full">
                         <svg
@@ -64,7 +66,7 @@ export const FeaturedProduct = ({ products }: GroqData.SanityProduct) => {
                       </button>
                     </div>
                   </div>
-                  <div className="py-3">{product.title}</div>
+                  <div className="py-3">{title}</div>
                 </div>
               </div>
             );

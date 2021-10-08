@@ -4,6 +4,7 @@ import Link from "next/link"
 
 import { GroqData } from "@/interfaces/groqData";
 import { urlFor } from "@/utils/sanity";
+import { productSolver } from "@/utils/groqResolver";
 
 const menuNames = [
     "Chair",
@@ -12,7 +13,7 @@ const menuNames = [
     "TV Stands"
 ]
 
-export const BambooProducts = ({ products }: GroqData.SanityProduct) => {
+export const BambooProducts = ({ products }: GroqData.Products) => {
     const [selectedMenu, setSelectedMenu] = useState<number>(0)
     return (
         <section className="px-3 py-28 prose max-w-6xl mx-auto">
@@ -35,10 +36,11 @@ export const BambooProducts = ({ products }: GroqData.SanityProduct) => {
             <div className="carousel-manuel gap-3 py-10">
                 {Array.isArray(products) && 
                 products.map((product:any, idx:number) => {
-                    if (product.category === menuNames[selectedMenu]) {
-                        const image = product.defaultProductVariant.images[0];
+                    const { images, slug, category } = productSolver(product)
+                    if (category === menuNames[selectedMenu]) {
+                        const image = images[0];
                         return (
-                            <Link key={idx} passHref href={`/product/${product.slug.current}`}>
+                            <Link key={idx} passHref href={`/product/${slug}`}>
                                 <a className="carousel-item">                              
                                     <Image
                                     alt="ss"

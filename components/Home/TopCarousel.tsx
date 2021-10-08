@@ -33,7 +33,7 @@ export const TopCarousel = () => {
         <div ref={sliderContainerRef} className="relative h-96 sm:h-120 overflow-hidden">
           {images.map((image, idx) => {
             return (
-              <div key={idx} style={{ opacity: opacities[idx] }} className="w-full h-full absolute">
+              <div key={idx} style={{ opacity: opacities[idx] }} className="w-full h-full relative">  {/* prod absolute */}
                 <Image
                 src={image}
                 priority

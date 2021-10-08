@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import configuredSanityClient from "@/utils/sanity";
-import { groq } from "next-sanity";
 import { GetStaticProps, GetStaticPropsContext } from "next";
 
 import TopCarousel from "@/components/Home/TopCarousel";
@@ -8,9 +7,10 @@ import FeaturedProduct from "@/components/Home/FeaturedProduct";
 import BambooProducts from "@/components/Home/BambooProducts"
 import { GroqData } from "@/interfaces/groqData";
 import Container from "@/container/Container";
+import { productsGroq } from "@/utils/groqs";
 
 
-const Home = ({ products }: GroqData.SanityProduct) => {
+const Home: NextPage<GroqData.Products> = ({ products }: GroqData.Products) => {
   return (
     <Container>
       <>
@@ -22,29 +22,10 @@ const Home = ({ products }: GroqData.SanityProduct) => {
   );
 };
 
-const productsQuery = groq`{
-  "products":  *[_type == "product"] {
-    blurb {
-      en
-    },
-    body {
-      en
-    },
-    categories,
-    defaultProductVariant,
-    slug {
-      current
-    },
-    tags,
-    category,
-    variants,
-    title
-  },
-}`;
-
 export const getStaticProps: GetStaticProps = async ({
   params,
 }: GetStaticPropsContext) => {
+  const { productsQuery } = productsGroq();
   const { products } = await configuredSanityClient.fetch(productsQuery);
   return {
     props: {

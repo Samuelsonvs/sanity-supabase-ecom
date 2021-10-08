@@ -34,7 +34,7 @@ export namespace GroqData {
         };
     }
     
-    interface SanityProduct {
+    interface Products {
         products: {
         [key: number]: {
             blurb: {
@@ -52,5 +52,21 @@ export namespace GroqData {
         };
         length: number;
         };
+    }
+
+    interface Product {
+        product: {
+            [key: number]: {
+                blurb: {
+                    en: string | null;
+                }; 
+                body: Body;
+                category: string | null;
+                defaultProductVariant: Variant;
+                slug: {
+                    current: string;
+                };
+            }
+        }
     }
 }
