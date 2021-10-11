@@ -22,10 +22,18 @@ export namespace App {
     username: string | null;
     avatar_url?: string;
   }
+  
   interface FormValues {
     username?: string | null;
     avatar_url?: string | null;
     email?: string | null;
     password?: string;
+  }
+
+  interface SliderData {
+    mounted: boolean;
+    active: number;
+    next: () => void;
+    prev: () => void;
   }
 }

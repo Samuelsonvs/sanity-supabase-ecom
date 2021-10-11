@@ -14,7 +14,7 @@ export const TopCarousel = () => {
   const [opacities, setOpacities] = useState<number[]>([]);
   const sliderContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const { mounted, active, sliderRef } = useSlider(sliderContainerRef, {
+  const { mounted, active, next, prev } = useSlider(sliderContainerRef, {
     slides: images.length,
     loop: true,
     duration: 3000,
@@ -51,16 +51,16 @@ export const TopCarousel = () => {
         })}
       </div>
       <div className="absolute z-20 flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        {sliderRef && mounted && (
+        {mounted && (
           <>
             <button
-              onClick={() => sliderRef.current?.next()}
+              onClick={next}
               className="btn btn-circle bg-opacity-70"
             >
               ❮
             </button>
             <button
-              onClick={() => sliderRef.current?.prev()}
+              onClick={prev}
               className="btn btn-circle bg-opacity-70"
             >
               ❯

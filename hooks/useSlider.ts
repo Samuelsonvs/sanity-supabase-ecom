@@ -1,16 +1,11 @@
 import { useState, useEffect, useRef, MutableRefObject } from "react";
 import KeenSlider, { TOptionsEvents } from "keen-slider";
-
-interface SliderData {
-  mounted: boolean;
-  active: number;
-  sliderRef: MutableRefObject<KeenSlider | null>;
-}
+import { App } from "@/interfaces/app";
 
 export function useSlider(
   ref: MutableRefObject<HTMLDivElement | null>,
   options?: TOptionsEvents
-): SliderData {
+): App.SliderData {
   const sliderRef = useRef<KeenSlider | null>(null);
   const timer = useRef<any>();
   const [mounted, setMounted] = useState<boolean>(false);
@@ -25,6 +20,8 @@ export function useSlider(
     sliderRef.current = new KeenSlider(ref.current, {
       ...options,
       mounted: () => setMounted(true),
+      rubberband: false,
+      slidesPerView:1,
       slideChanged: (s) => {
         setActive(s.details().relativeSlide);
       },
@@ -63,6 +60,7 @@ export function useSlider(
   return {
     mounted,
     active,
-    sliderRef,
+    next: () => sliderRef.current?.next(),
+    prev: () => sliderRef.current?.prev(),
   };
 }
