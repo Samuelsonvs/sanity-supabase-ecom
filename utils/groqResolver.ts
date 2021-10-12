@@ -17,3 +17,11 @@ export const productSolver = (product: any) => {
     slug: slug.current,
   };
 };
+
+export const bodySolver = (content: any) => {
+  const { text } = content.children[0]
+
+  return {
+    text
+  }
+}

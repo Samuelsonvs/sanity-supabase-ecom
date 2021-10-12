@@ -1,18 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { ChangeEvent, forwardRef, ForwardedRef } from "react";
-import { Dispatch, SetStateAction } from "react";
-import { ChangeHandler } from "react-hook-form";
-
-interface InputTypes {
-  type: string;
-  placeholder: string;
-  name: string;
-  defaultValue?: string;
-  className?: string;
-  disabled?: boolean;
-  onChange?: Dispatch<SetStateAction<string | null>>;
-  onBlur: ChangeHandler;
-}
+import { App } from "@/interfaces/app"
 
 export const Input = forwardRef(
   (
@@ -25,7 +13,7 @@ export const Input = forwardRef(
       onChange,
       onBlur,
       name,
-    }: InputTypes,
+    }: App.InputTypes,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {

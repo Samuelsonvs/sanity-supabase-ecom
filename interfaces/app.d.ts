@@ -1,5 +1,6 @@
 import { Auth } from "./auth";
 import { Dispatch, SetStateAction } from "react";
+import { ChangeHandler } from "react-hook-form";
 
 export namespace App {
   interface ContainerProps extends Auth.AuthChildren {
@@ -35,5 +36,16 @@ export namespace App {
     active: number;
     next: () => void;
     prev: () => void;
+  }
+
+  interface InputTypes {
+    type: string;
+    placeholder: string;
+    name: string;
+    defaultValue?: string;
+    className?: string;
+    disabled?: boolean;
+    onChange?: Dispatch<SetStateAction<string | null>>;
+    onBlur: ChangeHandler;
   }
 }

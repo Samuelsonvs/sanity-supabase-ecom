@@ -69,9 +69,13 @@ a {
 /* firefox scrollbar */
 
 /* custom carousel scrollbar */
+.prose ul {
+  list-style-type: none;
+}
 
 .prose ul > li::before {
-  background-color: #fff;
+  content: "";
+  background-color: transparent;
 }
 
 .prose ul > li {
@@ -151,3 +155,25 @@ a {
 }
 
 /* keen-slider */
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number]
+{
+  -moz-appearance: textfield;
+}
+
+input[type=number] {
+  text-align: center;
+
+}
+
+input[type=number]:focus-visible {
+  outline: none;
+}
