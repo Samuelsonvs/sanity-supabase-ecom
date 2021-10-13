@@ -122,17 +122,16 @@ a {
 
 /* button border bottom hover effect */
 
-
-/* keen-slider */ 
+/* keen-slider */
 
 .keen-slider {
   display: flex;
   overflow: hidden;
   position: relative;
   -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   -webkit-touch-callout: none;
   -khtml-user-select: none;
   touch-action: pan-y;
@@ -156,24 +155,23 @@ a {
 
 /* keen-slider */
 
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button
-{
+/* product qty input */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type=number]
-{
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
-input[type=number] {
+input[type="number"] {
   text-align: center;
-
 }
 
-input[type=number]:focus-visible {
+input[type="number"]:focus-visible {
   outline: none;
 }
+
+/* product qty input */

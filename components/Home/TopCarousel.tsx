@@ -53,16 +53,10 @@ export const TopCarousel = () => {
       <div className="absolute z-20 flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
         {mounted && (
           <>
-            <button
-              onClick={next}
-              className="btn btn-circle bg-opacity-70"
-            >
+            <button onClick={next} className="btn btn-circle bg-opacity-70">
               ❮
             </button>
-            <button
-              onClick={prev}
-              className="btn btn-circle bg-opacity-70"
-            >
+            <button onClick={prev} className="btn btn-circle bg-opacity-70">
               ❯
             </button>
           </>

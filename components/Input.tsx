@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import React, { ChangeEvent, forwardRef, ForwardedRef } from "react";
-import { App } from "@/interfaces/app"
+import { App } from "@/interfaces/app";
 
 export const Input = forwardRef(
   (

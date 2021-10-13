@@ -23,7 +23,7 @@ export namespace App {
     username: string | null;
     avatar_url?: string;
   }
-  
+
   interface FormValues {
     username?: string | null;
     avatar_url?: string | null;
@@ -47,5 +47,16 @@ export namespace App {
     disabled?: boolean;
     onChange?: Dispatch<SetStateAction<string | null>>;
     onBlur: ChangeHandler;
+  }
+
+  interface ImageProduct {
+    slug: string;
+    image: any;
+    price: string;
+    title: string;
+    width: number;
+    height: number;
+    containerCss: string;
+    hoverCss: string;
   }
 }

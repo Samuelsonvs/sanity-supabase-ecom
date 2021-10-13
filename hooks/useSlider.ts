@@ -21,7 +21,7 @@ export function useSlider(
       ...options,
       mounted: () => setMounted(true),
       rubberband: false,
-      slidesPerView:1,
+      slidesPerView: 1,
       slideChanged: (s) => {
         setActive(s.details().relativeSlide);
       },

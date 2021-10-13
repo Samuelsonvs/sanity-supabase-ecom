@@ -19,9 +19,9 @@ export const productSolver = (product: any) => {
 };
 
 export const bodySolver = (content: any) => {
-  const { text } = content.children[0]
+  const { text } = content.children[0];
 
   return {
-    text
-  }
-}
+    text,
+  };
+};

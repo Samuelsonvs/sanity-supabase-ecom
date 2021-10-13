@@ -54,7 +54,7 @@ export namespace GroqData {
   }
 
   interface Product {
-    product: {
+    [key: string]: {
       [key: number]: {
         blurb: {
           en: string | null;

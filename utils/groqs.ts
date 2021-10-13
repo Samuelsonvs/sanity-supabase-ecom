@@ -57,3 +57,14 @@ export const productSlugsGroq = () => {
         }`,
   };
 };
+
+export const relatedProductGroq = (
+  category: string | undefined,
+  slug: string | undefined
+) => {
+  return {
+    relatedQuery: groq`{
+            "relatedProducts": *[_type == "product" && category == "${category}" && slug.current != "${slug}"]
+    }`,
+  };
+};
