@@ -7,7 +7,7 @@ import { urlFor } from "@/utils/sanity";
 import configuredSanityClient from "@/utils/sanity";
 import Container from "@/container/Container";
 import { GroqData } from "@/interfaces/groqData";
-import { productSolver, bodySolver } from "@/utils/groqResolver";
+import { productSolver, bodySolver, variantSolver } from "@/utils/groqResolver";
 import {
   productGroq,
   productSlugsGroq,
@@ -17,41 +17,78 @@ import RelatedProduct from "@/components/ProductDetail/RelatedProduct";
 
 export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentItems, setCurrentItems] = useState<GroqData.VariantItems>({
+    body:null,
+    Color:null,
+    images:null,
+    price:null,
+    qty:null,
+    title:null,
+  })
+  console.log(currentItems)
   const [inputQty, setInputQty] = useState<number>(1);
-  const { blurb, body, category, colors, images, price, qty, title, slug } =
+  const { blurb, body, category, Color, colors, images, price, qty, title, variants, slug } =
     productSolver(product);
   const len = images.length - 1;
 
+  console.log(variants)
   const { text } = bodySolver(body[0]);
 
-  const nextIndex = () => {
-    const index = currentIndex === len ? 0 : currentIndex + 1;
-    setCurrentIndex(index);
-  };
-
-  const prevIndex = () => {
-    const index = currentIndex === 0 ? len : currentIndex - 1;
-    setCurrentIndex(index);
-  };
+  const handleArrows = (event: string) => {
+    if (event === "right") {
+      const index = currentIndex === len ? 0 : currentIndex + 1;
+      setCurrentIndex(index);
+    } else {
+      if (event === "left") {
+        const index = currentIndex === 0 ? len : currentIndex - 1;
+        setCurrentIndex(index);
+      } else {
+        console.log("Undefined event.")
+      }
+    }
+  }
 
   const tumbHandle = (index: number) => {
     setCurrentIndex(index);
   };
 
-  const increaseQtyNumber = () => {
-    const number = inputQty === qty ? inputQty : inputQty + 1;
-    setInputQty(number);
-  };
-
-  const decreaseQtyNumber = () => {
-    const number = inputQty === 1 ? inputQty : inputQty - 1;
-    setInputQty(number);
-  };
+  const handleQtyNumber = (operator: string) => {
+    if (operator === "+") {
+      const number = inputQty === qty ? inputQty : inputQty + 1;
+      setInputQty(number);
+    } else {
+      if (operator === "-") {
+        const number = inputQty === 1 ? inputQty : inputQty - 1;
+        setInputQty(number);
+      } else {
+        console.log("Undefined operator.")
+      }
+    }
+  }
 
   const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => {
     const number = e.target.value > qty ? qty : Number(e.target.value);
     setInputQty(number);
   };
+
+  const variantHandler = (index: number) => {
+    const { Color, images, qty, price, title } = variantSolver(variants[index])
+    setCurrentItems({
+      ...currentItems,Color:Color.hex,images,qty,price,title
+    })
+  }
+
+  const variantReset = () => {
+    setCurrentItems({
+      ...currentItems,    
+      body:null,
+      Color:null,
+      images:null,
+      price:null,
+      qty:null,
+      title:null,
+    })
+  }
 
   return (
     <Container>
@@ -60,7 +97,7 @@ export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
           <div className="flex flex-col md:flex-row space-x-10">
             <div className="flex flex-col">
               <div className="relative p-4 w-80 mx-auto md:mx-0 sm:w-96">
-                {images.map((image: any, index: number) => {
+                {(currentItems.images ?? images).map((image: any, index: number) => {
                   return (
                     <div
                       key={index}
@@ -87,13 +124,13 @@ export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
                 })}
                 <div className="absolute z-20 flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
                   <button
-                    onClick={prevIndex}
+                    onClick={() => handleArrows("left")}
                     className="btn btn-circle bg-opacity-70"
                   >
                     ❮
                   </button>
                   <button
-                    onClick={nextIndex}
+                    onClick={() => handleArrows("right")}
                     className="btn btn-circle bg-opacity-70"
                   >
                     ❯
@@ -101,7 +138,7 @@ export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
                 </div>
               </div>
               <div className="flex w-80 sm:w-96 space-x-2 mx-auto sm:mx-0 justify-center">
-                {images.map((image: any, index: number) => {
+                {(currentItems.images ?? images).map((image: any, index: number) => {
                   return (
                     <a
                       key={index}
@@ -129,24 +166,30 @@ export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
               </div>
             </div>
             <div className="p-4 prose-sm">
-              <h2>{title}</h2>
+              <h2>{currentItems.title ?? title}</h2>
               <div>
-                <h3>${price}</h3>
+                <h3>${currentItems.price ?? price}</h3>
                 <p>
                   <span>Available :</span>
-                  <span>{qty > 0 ? " In Stock" : "Not Avaliable"}</span>
+                  <span>{(currentItems.qty ?? qty) > 0 ? " In Stock" : "Not Avaliable"}</span>
                 </p>
                 <p>{text}</p>
                 <h3>Color</h3>
-                <ul>
-                  {colors.map((color: string, idx: number) => {
+                <ul className="flex space-x-2">
+                  <li
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: `${Color.hex}` }}
+                  >
+                    <button onClick={variantReset} className="flex pr-0 rounded-full"></button>
+                  </li>
+                  {variants && variants.map((variant:any, index:number) => {
                     return (
-                      <li
-                        key={idx}
-                        className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: `${color}` }}
-                      ></li>
-                    );
+                      <li key={index}
+                      className="w-4 h-4 rounded-full"
+                      style={{ backgroundColor: `${variant.Color.hex}` }}
+                      ><button onClick={() => variantHandler(index)} className="flex pr-0 rounded-full"></button>
+                      </li>
+                    )
                   })}
                 </ul>
                 <div className="flex space-x-5 lg:space-x-20">
@@ -155,18 +198,18 @@ export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
                       QTY
                     </label>
                     <div className="inline ml-3 py-2 border rounded-3xl">
-                      <button onClick={decreaseQtyNumber}>-</button>
+                      <button onClick={() => handleQtyNumber("-")}>-</button>
                       <input
                         id="qty"
                         type="number"
                         onChange={(e) => handleQtyInput(e)}
                         value={inputQty}
                         min="1"
-                        max={qty}
+                        max={currentItems.qty ?? qty}
                         step="1"
                         className="w-5"
                       />
-                      <button onClick={increaseQtyNumber}>+</button>
+                      <button onClick={() => handleQtyNumber("+")}>+</button>
                     </div>
                   </div>
                   <button className="btn btn-primary rounded-3xl px-2 sm:px-5 lg:px-10 bg-yellow-600 hover:bg-yellow-700">

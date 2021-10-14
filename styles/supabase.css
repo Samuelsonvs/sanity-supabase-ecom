@@ -207,7 +207,6 @@ button,
   color: var(--custom-color);
   border: var(--custom-border);
   background-color: var(--custom-bg-color);
-  display: inline-block;
   text-align: center;
   border-radius: var(--custom-border-radius);
   padding: 0.5rem 1rem;

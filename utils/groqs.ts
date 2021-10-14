@@ -37,6 +37,9 @@ export const productGroq = (slug: string | undefined) => {
               category,
               defaultProductVariant {
                 colors,
+                Color {
+                  hex
+                },
                 images,
                 price,
                 qty,
@@ -44,7 +47,8 @@ export const productGroq = (slug: string | undefined) => {
               },
               slug {
                 current
-              }
+              },
+              variants
             }
         }`,
   };

@@ -5,7 +5,6 @@ import { productSolver } from "@/utils/groqResolver";
 import { ProductImage } from "../ProductImage";
 
 const RelatedProduct = ({ relatedProducts }: GroqData.Product) => {
-  console.log(relatedProducts);
   return (
     <>
       <div className="prose py-10 text-center mx-auto">

@@ -33,6 +33,11 @@ export default {
       },
     },
     {
+      name: 'Color',
+      title: 'Favorite color',
+      type: 'color'
+    },
+    {
       title: "Sizes",
       name: "sizes",
       type: "array",

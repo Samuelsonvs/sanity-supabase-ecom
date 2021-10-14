@@ -1,6 +1,9 @@
 export namespace GroqData {
   interface Variant {
     colors: [[string]];
+    Color: {
+      hex: string
+    };
     images: {
       [key: string]: {
         asset: {
@@ -11,6 +14,7 @@ export namespace GroqData {
     };
     price: number;
     qty: number;
+    title: string;
     sizes: [[string]];
   }
 
@@ -65,7 +69,24 @@ export namespace GroqData {
         slug: {
           current: string;
         };
+        variants?: Variant;
       };
     };
+  }
+
+  interface VariantItems {
+    body: Body | null,
+    Color: string | null,
+    images: {
+      [key: string]: {
+        asset: {
+          _ref: string;
+        };
+        _key: string;
+      };
+    } | null,
+    price: number | null,
+    qty: number | null,
+    title: string | null
   }
 }
