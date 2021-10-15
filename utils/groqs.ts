@@ -72,3 +72,36 @@ export const relatedProductGroq = (
     }`,
   };
 };
+
+
+export const productsTopCategory = () => {
+  return {
+    topCategoryQuery: groq`{
+      "categories":   *[_type == 'category' && parents == null]{
+          _id,
+          title,
+          slug
+      }
+    }`
+  }
+}
+
+export const productsSubCategory = () => {
+  return {
+    subCategoryQuery: groq`{
+      "categories":   *[_type == 'category' && parents == null]{
+          _id,
+          title,
+          slug
+      },
+      "subCategories": *[_type == 'category' && parents != null ]{
+          title,
+          parents,
+          slug {
+              current
+          },
+          _id
+      }
+    }`
+  }
+}

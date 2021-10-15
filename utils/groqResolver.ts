@@ -41,3 +41,22 @@ export const variantSolver = (variant: any) => {
     title
   }
 }
+
+export const topCategorySolver = (category: any) => {
+  const { title, slug } = category
+
+  return {
+    title,
+    slug: slug.current
+  }
+}
+
+export const subCategorySolver = (category: any) => {
+  const { title, slug, parents } = category
+
+  return {
+    _ref: parents[0]._ref,
+    title,
+    slug: slug.current
+  }
+}

@@ -89,4 +89,14 @@ export namespace GroqData {
     qty: number | null,
     title: string | null
   }
+
+  interface TopCategory {
+    [key: string]: {
+      _id: string;
+      slug: {
+        current: string
+      };
+      title: string
+    }
+  }
 }

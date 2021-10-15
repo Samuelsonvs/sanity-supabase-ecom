@@ -129,7 +129,8 @@ export const Navbar = () => {
             </svg>
           </button>
         </div>
-        <div className="flex-none">
+        <div className="flex-none indicator">
+        <div className="indicator-item indicator-bottom indicator-center badge badge-sm badge-secondary">1</div> 
           <button className="btn btn-square btn-ghost">
             <svg
               viewBox="0 0 32 32"
