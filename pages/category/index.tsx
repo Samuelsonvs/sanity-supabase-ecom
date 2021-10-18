@@ -25,7 +25,7 @@ export const index = ({ categories }: GroqData.TopCategory) => {
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
         <h1>Furniture</h1>
-          <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-5">
+          <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-4 sm:py-8 sm:overflow-visible">
             {Array.isArray(categories) && categories.map((category: any, idx: number) => {
               const { title, slug } = topCategorySolver(category)
               return (

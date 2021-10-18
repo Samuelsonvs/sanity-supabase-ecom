@@ -42,12 +42,10 @@ export const Index = ({ subCategories, categories }: any) => {
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
       <h1>Furniture -2 </h1>
-      <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-5">
+      <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-4 sm:py-8 sm:overflow-visible">
         {subCategories.map((category: any, idx: number) => {
           const { _ref, title, slug } = subCategorySolver(category)
           if (categoryId === _ref) {
-            let imageIndex = -1
-            imageIndex += 1
             return (
               <li key={idx} className="cursor-pointer w-72 carousel-item rounded-md shadow-xl hover:shadow-2xl">
               <Link passHref href={`${router.asPath}/${slug}`}>

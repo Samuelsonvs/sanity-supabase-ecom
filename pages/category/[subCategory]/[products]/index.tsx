@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import configuredSanityClient from "@/utils/sanity";
+import Container from "@/container/Container";
 
 export const Slug = ({ subCategories, products }: any) => {
   const router = useRouter();
@@ -14,7 +15,8 @@ export const Slug = ({ subCategories, products }: any) => {
   )[0]?._id;
   console.log(3);
   return (
-    <div>
+    <Container>
+    <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
       {products.map((product: any, idx: number) => {
         if (categoryId === product.categories[0]._ref) {
           return (
@@ -25,6 +27,7 @@ export const Slug = ({ subCategories, products }: any) => {
         }
       })}
     </div>
+    </Container>
   );
 };
 

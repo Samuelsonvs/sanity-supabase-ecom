@@ -6,7 +6,7 @@ import { Popover, Transition } from "@headlessui/react";
 
 import { useUser } from "@/contexts/AuthContext";
 
-const navItems = [{ home: "/" }, { signin: "/signin" }, { signup: "/signup" }];
+const navItems = [{ home: "/" }, { category: "/category" }, { signin: "/signin" }, { signup: "/signup" }];
 
 export const Navbar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
