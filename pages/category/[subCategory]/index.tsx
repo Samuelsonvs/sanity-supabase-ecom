@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
-import { GetServerSideProps, GetStaticPropsContext } from "next";
+import { GetServerSideProps, GetStaticPropsContext, GetStaticProps, GetStaticPaths } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
 import configuredSanityClient from "@/utils/sanity";
-import { productsSubCategory } from "@/utils/groqs";
+import { productsSubCategory, productsTopCategory, productsTopCategoryId } from "@/utils/groqs";
 import { subCategorySolver } from "@/utils/groqResolver";
 import Container from "@/container/Container";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -28,17 +28,8 @@ const defImage = [
   "/static/images/categories/sub/Bedroom/Bedroom_sets.jpg"
 ]
 
-export const Index = ({ subCategories, categories }: any) => {
+export const Index = ({ subCategories }: any) => {
   const router = useRouter();
-  const routerQueryName = router.query.subCategory;
-  const categoryId = categories.filter(
-    (category: any) => category.slug.current === routerQueryName
-  )[0]?._id;
-  useEffect(() => {
-    if (!categoryId) {
-      router.replace("/");
-    }
-  }, []);
   return (
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
@@ -46,8 +37,7 @@ export const Index = ({ subCategories, categories }: any) => {
       <h1>Furniture -2 </h1>
       <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-4 sm:py-8 sm:overflow-visible">
         {subCategories.map((category: any, idx: number) => {
-          const { _ref, title, slug } = subCategorySolver(category)
-          if (categoryId === _ref) {
+          const { title, slug } = subCategorySolver(category)
             return (
               <li key={idx} className="cursor-pointer w-72 carousel-item rounded-md shadow-xl hover:shadow-2xl">
               <Link passHref href={`${router.asPath}/${slug}`}>
@@ -63,7 +53,6 @@ export const Index = ({ subCategories, categories }: any) => {
               </Link>
             </li>
             );
-          }
         })}
         </ul>
       </div>
@@ -71,19 +60,32 @@ export const Index = ({ subCategories, categories }: any) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-}: GetStaticPropsContext) => {
-  const { subCategoryQuery } = productsSubCategory()
-  const { subCategories, categories } = await configuredSanityClient.fetch(
-    subCategoryQuery
-  );
-  return {
-    props: {
-      subCategories,
-      categories,
-    },
-  };
+export const getStaticPaths: GetStaticPaths = async () => {
+    const { topCategoryQuery } = productsTopCategory()
+    const { categories } = await configuredSanityClient.fetch(topCategoryQuery);
+    return {
+      paths: categories.map((category: any) => ({
+        params: {
+            subCategory: category.slug.current
+        },
+      })),
+      fallback: false,
+    };
 };
+
+export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
+    const slug = params?.subCategory;
+    const { topCategoryIdQuery } = productsTopCategoryId(slug?.toString() ?? '')
+    const { categories } = await configuredSanityClient.fetch(topCategoryIdQuery);
+    const { subCategoryQuery } = productsSubCategory(categories[0]._id)
+    const { subCategories } = await configuredSanityClient.fetch(
+      subCategoryQuery
+  );
+    return {
+        props: {
+          subCategories
+        },
+    }
+}
 
 export default Index;

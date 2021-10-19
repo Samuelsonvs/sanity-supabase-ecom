@@ -14,7 +14,6 @@ export const Slug = ({ subCategories, products }: any) => {
   const categoryId = subCategories.filter(
     (category: any) => category.slug.current === routerName
   )[0]?._id;
-  console.log(3);
   return (
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">

@@ -78,23 +78,28 @@ export const productsTopCategory = () => {
   return {
     topCategoryQuery: groq`{
       "categories":   *[_type == 'category' && parents == null]{
-          _id,
-          title,
-          slug
+        _id,
+        title,
+        slug
+    }
+    }`
+  }
+}
+
+export const productsTopCategoryId = (slug: string) => {
+  return {
+    topCategoryIdQuery: groq`{
+      "categories":   *[_type == 'category' && slug.current == "${slug}"] {
+        _id
       }
     }`
   }
 }
 
-export const productsSubCategory = () => {
+export const productsSubCategory = (key: string) => {
   return {
     subCategoryQuery: groq`{
-      "categories":   *[_type == 'category' && parents == null]{
-          _id,
-          title,
-          slug
-      },
-      "subCategories": *[_type == 'category' && parents != null ]{
+      "subCategories": *[_type == 'category' && parents[0]._ref == "${key}" ]{
           title,
           parents,
           slug {
