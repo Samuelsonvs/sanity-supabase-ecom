@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 
 import configuredSanityClient from "@/utils/sanity";
 import Container from "@/container/Container";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const Slug = ({ subCategories, products }: any) => {
   const router = useRouter();
@@ -16,17 +17,20 @@ export const Slug = ({ subCategories, products }: any) => {
   console.log(3);
   return (
     <Container>
-    <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
-      {products.map((product: any, idx: number) => {
-        if (categoryId === product.categories[0]._ref) {
-          return (
-            <Link key={idx} passHref href={`/product/${product.slug.current}`}>
-              <a className="block">{product.title}</a>
-            </Link>
-          );
-        }
-      })}
-    </div>
+      <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
+        <Breadcrumb asPath={router.asPath} />
+        <div>
+          {products.map((product: any, idx: number) => {
+            if (categoryId === product.categories[0]._ref) {
+              return (
+                <Link key={idx} passHref href={`/product/${product.slug.current}`}>
+                  <a className="block">{product.title}</a>
+                </Link>
+              );
+            }
+          })}
+        </div>
+      </div>
     </Container>
   );
 };

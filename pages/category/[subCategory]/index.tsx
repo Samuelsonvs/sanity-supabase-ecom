@@ -9,6 +9,7 @@ import configuredSanityClient from "@/utils/sanity";
 import { productsSubCategory } from "@/utils/groqs";
 import { subCategorySolver } from "@/utils/groqResolver";
 import Container from "@/container/Container";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const subCategoryImages = {
   "Bedroom Sets":"/static/images/categories/sub/Bedroom/Bedroom_sets.jpg",
@@ -41,6 +42,7 @@ export const Index = ({ subCategories, categories }: any) => {
   return (
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
+        <Breadcrumb asPath={router.asPath} />
       <h1>Furniture -2 </h1>
       <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-4 sm:py-8 sm:overflow-visible">
         {subCategories.map((category: any, idx: number) => {
