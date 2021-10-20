@@ -53,25 +53,4 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//     const { categories } = await configuredSanityClient.fetch(productsCategory);
-//     return {
-//       paths: categories.map((category: any) => ({
-//         params: {
-//             slug: category.slug.current
-//         },
-//       })),
-//       fallback: false,
-//     };
-// };
-
-// export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
-//     const slug = params?.slug;
-//     return {
-//         props: {
-//             slug
-//         },
-//     }
-// }
-
 export default Slug;
