@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import configuredSanityClient from "@/utils/sanity";
-import { productsSubCategory, productsTopCategory, productsTopCategoryId } from "@/utils/groqs";
+import { productsSubCategoryFromKey, productsTopCategory, productsTopCategoryId } from "@/utils/groqs";
 import { subCategorySolver } from "@/utils/groqResolver";
 import Container from "@/container/Container";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -77,7 +77,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
     const slug = params?.subCategory;
     const { topCategoryIdQuery } = productsTopCategoryId(slug?.toString() ?? '')
     const { categories } = await configuredSanityClient.fetch(topCategoryIdQuery);
-    const { subCategoryQuery } = productsSubCategory(categories[0]._id)
+    const { subCategoryQuery } = productsSubCategoryFromKey(categories[0]._id)
     const { subCategories } = await configuredSanityClient.fetch(
       subCategoryQuery
   );

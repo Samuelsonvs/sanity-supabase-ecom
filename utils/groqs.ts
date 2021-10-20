@@ -96,7 +96,7 @@ export const productsTopCategoryId = (slug: string) => {
   }
 }
 
-export const productsSubCategory = (key: string) => {
+export const productsSubCategoryFromKey = (key: string) => {
   return {
     subCategoryQuery: groq`{
       "subCategories": *[_type == 'category' && parents[0]._ref == "${key}" ]{
