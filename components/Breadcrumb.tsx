@@ -7,6 +7,7 @@ interface Props {
 
 export const Breadcrumb = ({ asPath }: Props) => {
     const pathArray = asPath.split('/')
+    const pathRefactor = pathArray.map((path) => path.replace(/-/g, ' '))
     const pathLength = pathArray.length - 1
     return (
         <div className="text-base breadcrumbs">
@@ -18,7 +19,7 @@ export const Breadcrumb = ({ asPath }: Props) => {
                         return (
                             <li key={idx}>
                                 <Link href={`/${newPath.join('/')}`}> 
-                                    <a>{path}</a>
+                                    <a className="capitalize">{pathRefactor[idx]}</a>
                                 </Link>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -27,7 +28,7 @@ export const Breadcrumb = ({ asPath }: Props) => {
                         )
                     } else {
                         return (
-                            <li key={idx}>{path}</li>
+                            <li key={idx} className="capitalize">{pathRefactor[idx]}</li>
                         )
                     }
                 }

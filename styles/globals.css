@@ -73,32 +73,8 @@ footer {
 /* firefox scrollbar */
 
 /* custom carousel scrollbar */
-.prose ul {
-  list-style-type: none;
-}
 
-/* prose custom */
-.prose ul > li::before {
-  content: "";
-  background-color: transparent;
-}
 
-.prose ul > li {
-  padding-left: 0;
-}
-
-.prose-lg ul > li {
-  padding-left: 0;
-}
-
-.prose figure {
-  margin-bottom: 0;
-}
-
-.prose h2 {
-  margin-top: 0;
-}
-/* prose custom */
 /* button border bottom hover effect */
 
 .btn-border {
@@ -215,4 +191,8 @@ input[type="number"]:focus-visible {
   border-color: #ef0404;
   --tw-text-opacity: 1;
   color: #fff;
+}
+
+.card-body {
+  @apply p-0;
 }

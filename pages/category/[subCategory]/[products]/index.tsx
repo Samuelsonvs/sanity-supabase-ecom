@@ -19,7 +19,12 @@ export const Slug = ({ products }: any) => {
               const { blurb, body, category, Color, colors, images, price, qty, title, variants, slug } =
               productSolver(product);
               return (
-                <ProductCard key={idx} image={images[0].asset._ref} href={`/product/${slug}`} />
+                <ProductCard 
+                key={idx}
+                image={images[0].asset._ref} 
+                href={`/product/${slug}`} 
+                title={title}
+                />
               );
             
           })}
