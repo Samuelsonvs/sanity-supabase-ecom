@@ -1,32 +1,27 @@
-import React from "react";
-import { GetServerSideProps, GetStaticPropsContext } from "next";
-import { groq } from "next-sanity";
-import Link from "next/link";
+import { GetStaticPropsContext, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 
 import configuredSanityClient from "@/utils/sanity";
 import Container from "@/container/Container";
 import Breadcrumb from "@/components/Breadcrumb";
+import ProductCard from "@/components/ProductCard";
+import { productSolver } from "@/utils/groqResolver";
+import { productsFromKey, productsSubCategory, productsSubCategoryId, productsTopCategory } from "@/utils/groqs";
 
-export const Slug = ({ subCategories, products }: any) => {
+export const Slug = ({ products }: any) => {
   const router = useRouter();
-  const routerName = router.query.products;
-  const categoryId = subCategories.filter(
-    (category: any) => category.slug.current === routerName
-  )[0]?._id;
   return (
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
         <Breadcrumb asPath={router.asPath} />
-        <div>
+        <div className="flex flex-wrap gap-10">
           {products.map((product: any, idx: number) => {
-            if (categoryId === product.categories[0]._ref) {
+              const { blurb, body, category, Color, colors, images, price, qty, title, variants, slug } =
+              productSolver(product);
               return (
-                <Link key={idx} passHref href={`/product/${product.slug.current}`}>
-                  <a className="block">{product.title}</a>
-                </Link>
+                <ProductCard key={idx} image={images[0].asset._ref} href={`/product/${slug}`} />
               );
-            }
+            
           })}
         </div>
       </div>
@@ -34,23 +29,36 @@ export const Slug = ({ subCategories, products }: any) => {
   );
 };
 
-const productsCategory = groq`{
-    "subCategories": *[_type == 'category' && parents != null ],
-    "products":  *[_type == "product"]
-}`;
-
-export const getServerSideProps: GetServerSideProps = async ({
-  params,
-}: GetStaticPropsContext) => {
-  const { subCategories, products } = await configuredSanityClient.fetch(
-    productsCategory
-  );
+export const getStaticPaths: GetStaticPaths = async () => {
+  const { subCategoryQuery } = productsSubCategory()
+  const { topCategoryQuery } = productsTopCategory()
+  const { subCategories } = await configuredSanityClient.fetch(subCategoryQuery);
+  const { categories } = await configuredSanityClient.fetch(topCategoryQuery);
+  const topCategoriesObject = categories.reduce((acc:any, cur:any) => ({ ...acc, [cur._id]: cur.slug.current}), {})
   return {
-    props: {
-      subCategories,
-      products,
-    },
+    paths: subCategories.map((category: any) => ({
+      params: {
+          subCategory: topCategoriesObject[category.parents[0]._ref],
+          products: category.slug.current
+      },
+    })),
+    fallback: false,
   };
 };
+
+export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsContext) => {
+  const slug = params?.products;
+  const { subCategoryIdQuery } = productsSubCategoryId(slug?.toString() ?? '')
+  const { categories } = await configuredSanityClient.fetch(subCategoryIdQuery);
+  const { productsQuery } = productsFromKey(categories[0]._id)
+  const { products } = await configuredSanityClient.fetch(
+    productsQuery
+);
+  return {
+      props: {
+        products
+      },
+  }
+}
 
 export default Slug;

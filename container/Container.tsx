@@ -40,7 +40,7 @@ export const Container = ({
       <Navbar />
 
       <main>{children}</main>
-      <footer className="mt-auto">
+      <footer>
         <Footer />
       </footer>
     </div>

@@ -26,6 +26,10 @@ a {
   min-height: 100vh;
 }
 
+footer {
+  @apply mt-auto;
+}
+
 .carousel-manuel {
   display: flex;
   overflow-x: scroll;
@@ -73,6 +77,7 @@ a {
   list-style-type: none;
 }
 
+/* prose custom */
 .prose ul > li::before {
   content: "";
   background-color: transparent;
@@ -86,6 +91,14 @@ a {
   padding-left: 0;
 }
 
+.prose figure {
+  margin-bottom: 0;
+}
+
+.prose h2 {
+  margin-top: 0;
+}
+/* prose custom */
 /* button border bottom hover effect */
 
 .btn-border {

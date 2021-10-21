@@ -96,10 +96,20 @@ export const productsTopCategoryId = (slug: string) => {
   }
 }
 
+export const productsSubCategoryId = (slug: string) => {
+  return {
+    subCategoryIdQuery: groq`{
+      "categories":   *[_type == 'category' && slug.current == "${slug}"] {
+        _id
+      }
+    }`
+  }
+}
+
 export const productsSubCategoryFromKey = (key: string) => {
   return {
     subCategoryQuery: groq`{
-      "subCategories": *[_type == 'category' && parents[0]._ref == "${key}" ]{
+      "subCategories": *[_type == 'category' && parents[0]._ref == "${key}"]{
           title,
           parents,
           slug {
@@ -107,6 +117,29 @@ export const productsSubCategoryFromKey = (key: string) => {
           },
           _id
       }
+    }`
+  }
+}
+
+
+export const productsFromKey = (key: string) => {
+  return {
+    productsQuery: groq`{
+      "products": *[_type == 'product' && categories[0]._ref == "${key}"]
+    }`
+  }
+}
+
+
+export const productsSubCategory = () => {
+  return {
+    subCategoryQuery: groq`{
+      "subCategories":   *[_type == 'category' && parents != null]{
+        _id,
+        title,
+        slug,
+        parents
+    }
     }`
   }
 }

@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import { GetServerSideProps, GetStaticPropsContext, GetStaticProps, GetStaticPaths } from "next";
+import { GetStaticPropsContext, GetStaticProps, GetStaticPaths } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
