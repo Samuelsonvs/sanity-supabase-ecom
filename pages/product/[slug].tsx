@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import type { NextPage } from "next";
 
 import { urlFor } from "@/utils/sanity";
 import configuredSanityClient from "@/utils/sanity";
@@ -16,7 +16,7 @@ import {
 import RelatedProduct from "@/components/ProductDetail/RelatedProduct";
 import Description from "@/components/ProductDetail/Description";
 
-export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
+export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentItems, setCurrentItems] = useState<GroqData.VariantItems>({
     body:null,

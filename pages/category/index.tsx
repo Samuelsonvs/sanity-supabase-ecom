@@ -1,4 +1,5 @@
 import React from "react";
+import type { NextPage } from "next";
 import { GetStaticProps, GetStaticPropsContext } from "next";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,19 +9,9 @@ import Container from "@/container/Container";
 import { productsTopCategory } from "@/utils/groqs";
 import { topCategorySolver } from "@/utils/groqResolver";
 import { GroqData } from "@/interfaces/groqData";
+import { categoryImages, defImage } from "@/constants/staticImages";
 
-const categoryImages = {
-  "Bedroom Furniture":"/static/images/categories/top/bedroom.jpg",
-  "Chairs & Seating":"/static/images/categories/top/chairs.jpg",
-  "Dining Tables & Seating":"/static/images/categories/top/dining.jpg",
-  "TV Stands & Media Storage Furniture":"/static/images/categories/top/tv_stand.jpg"
-}
-
-const defImage = [
-  "/static/images/categories/sub/Bedroom/Bedroom_sets.jpg"
-]
-
-export const index = ({ categories }: GroqData.TopCategory) => {
+export const Index: NextPage<GroqData.TopCategory> = ({ categories }) => {
   return (
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
@@ -63,4 +54,4 @@ export const getStaticProps: GetStaticProps = async ({
   };
 };
 
-export default index;
+export default Index;

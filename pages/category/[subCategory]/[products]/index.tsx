@@ -1,5 +1,6 @@
 import { GetStaticPropsContext, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
+import type { NextPage } from "next";
 
 import configuredSanityClient from "@/utils/sanity";
 import Container from "@/container/Container";
@@ -8,7 +9,7 @@ import ProductCard from "@/components/ProductCard";
 import { productSolver } from "@/utils/groqResolver";
 import { productsFromKey, productsSubCategory, productsSubCategoryId, productsTopCategory } from "@/utils/groqs";
 
-export const Slug = ({ products }: any) => {
+export const Index: NextPage<any> = ({ products }) => {
   const router = useRouter();
   return (
     <Container>
@@ -66,4 +67,4 @@ export const getStaticProps: GetStaticProps = async ({ params }: GetStaticPropsC
   }
 }
 
-export default Slug;
+export default Index;

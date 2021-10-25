@@ -2,20 +2,14 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 
 import { useSlider } from "@/hooks/useSlider";
-
-const images = [
-  "/static/images/carousel/carousel1.jpg",
-  "/static/images/carousel/carousel2.jpg",
-  "/static/images/carousel/carousel3.jpg",
-  "/static/images/carousel/carousel4.jpg",
-];
+import { topCarouselImages } from "@/constants/staticImages";
 
 export const TopCarousel = () => {
   const [opacities, setOpacities] = useState<number[]>([]);
   const sliderContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { mounted, active, next, prev } = useSlider(sliderContainerRef, {
-    slides: images.length,
+    slides: topCarouselImages.length,
     loop: true,
     duration: 3000,
     move(s) {
@@ -30,7 +24,7 @@ export const TopCarousel = () => {
         ref={sliderContainerRef}
         className="relative h-96 sm:h-120 overflow-hidden"
       >
-        {images.map((image, idx) => {
+        {topCarouselImages.map((image, idx) => {
           return (
             <div
               key={idx}

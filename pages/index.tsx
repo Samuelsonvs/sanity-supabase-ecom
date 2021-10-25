@@ -9,7 +9,7 @@ import { GroqData } from "@/interfaces/groqData";
 import Container from "@/container/Container";
 import { productsGroq } from "@/utils/groqs";
 
-const Home: NextPage<GroqData.Products> = ({ products }: GroqData.Products) => {
+const Home: NextPage<GroqData.Products> = ({ products }) => {
   return (
     <Container>
       <>

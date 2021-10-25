@@ -26,7 +26,8 @@
       "@/public/*": ["public/*"],
       "@/hooks/*": ["hooks/*"],
       "@/utils/*": ["utils/*"],
-      "@/contexts/*": ["contexts/*"]
+      "@/contexts/*": ["contexts/*"],
+      "@/constants/*": ["constants/*"]
     }
   },
   "include": [

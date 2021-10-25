@@ -186,7 +186,7 @@ export const Navbar = () => {
                           <div className="relative grid gap-8 text-sm font-medium text-gray-600 bg-white p-5  text-center">
                             <a
                               href="#"
-                              className="flex p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                              className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                             >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
