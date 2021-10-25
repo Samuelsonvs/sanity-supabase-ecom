@@ -73,7 +73,7 @@ export const Account: NextPage = () => {
           <div className="mt-20 p-10 max-w-3xl mx-auto">
             <h1 className="text-4xl font-semibold"> Account Settings </h1>
             <div className="py-5 mt-5 flex flex-col md:flex-row-reverse justify-center shadow-2xl">
-              <div className="card-body">
+              <div className="custom-card">
                 <Avatar
                   size={150}
                   tempAvatarSetter={setTempAvatarUrl}
@@ -84,7 +84,7 @@ export const Account: NextPage = () => {
               <div>
                 <form
                   onSubmit={handleSubmit(handleUpdate)}
-                  className="card-body"
+                  className="custom-card"
                 >
                   <div className="form-control sm:w-96">
                     <label className="label">

@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import "../styles/supabase.css";
 import type { AppProps } from "next/app";
 import { AuthProvider } from "@/contexts/AuthContext";
 

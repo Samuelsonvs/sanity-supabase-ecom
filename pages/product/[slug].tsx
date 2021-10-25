@@ -14,6 +14,7 @@ import {
   relatedProductGroq,
 } from "@/utils/groqs";
 import RelatedProduct from "@/components/ProductDetail/RelatedProduct";
+import Description from "@/components/ProductDetail/Description";
 
 export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -25,13 +26,11 @@ export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
     qty:null,
     title:null,
   })
-  console.log(currentItems)
   const [inputQty, setInputQty] = useState<number>(1);
   const { blurb, body, category, Color, colors, images, price, qty, title, variants, slug } =
     productSolver(product);
   const len = images.length - 1;
 
-  console.log(variants)
   const { text } = bodySolver(body[0]);
 
   const handleArrows = (event: string) => {
@@ -233,6 +232,9 @@ export const Slug = ({ product, relatedProducts }: GroqData.Product) => {
               </div>
             </div>
           </div>
+        </section>
+        <section>
+          <Description body={currentItems.body ?? body}/>
         </section>
         <section>
           <RelatedProduct relatedProducts={relatedProducts} />

@@ -74,6 +74,20 @@ footer {
 
 /* custom carousel scrollbar */
 
+/* prose custom */
+
+.prose-sm ul > li {
+  padding-left: 0;
+}
+
+.prose-sm ul > li::before {
+  background-color: transparent;
+  height: 0;
+  width: 0;
+  top: 0;
+  left: 0;
+}
+/* prose custom */
 
 /* button border bottom hover effect */
 
@@ -195,4 +209,27 @@ input[type="number"]:focus-visible {
 
 .card-body {
   @apply p-0;
+}
+
+.breadcrumbs > ul > li+:before {
+  background-color: transparent;
+  opacity: 0;
+}
+
+button,
+.button {
+  color: var(--custom-color);
+  border: var(--custom-border);
+  background-color: var(--custom-bg-color);
+  text-align: center;
+  border-radius: var(--custom-border-radius);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-align: center;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.custom-card {
+  @apply flex flex-col flex-1 p-8
 }

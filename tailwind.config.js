@@ -55,23 +55,6 @@ module.exports = {
               }
             },
           }
-        },
-        'lg': {
-          css: {
-            ul: {
-              listStyleType: 'none',
-              li: {
-                paddingLeft: 0,
-                '&:before': {
-                  backgroundColor: 'transparent',
-                  width: 0,
-                  heigh: 0,
-                  top: 0,
-                  left: 0
-                }
-              }
-            },
-          }
         }
       }
     },

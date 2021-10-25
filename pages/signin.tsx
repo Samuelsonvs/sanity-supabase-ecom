@@ -60,7 +60,7 @@ export const Signin: NextPage = () => {
               <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                 <form
                   onSubmit={handleSubmit(handleLogin)}
-                  className="card-body"
+                  className="custom-card"
                 >
                   <div className="form-control">
                     <label className="label">
