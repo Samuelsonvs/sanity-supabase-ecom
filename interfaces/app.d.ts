@@ -54,6 +54,7 @@ export namespace App {
     image: any;
     price: string;
     title: string;
+    _id: string;
     width: number;
     height: number;
     containerCss: string;

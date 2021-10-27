@@ -1,7 +1,7 @@
 import { GroqData } from "@/interfaces/groqData";
 
 export const productSolver = (product: any) => {
-  const { blurb, body, category, defaultProductVariant, variants, slug } = Array.isArray(
+  const { blurb, body, category, defaultProductVariant, variants, slug, _id } = Array.isArray(
     product
   )
     ? product[0]
@@ -18,6 +18,7 @@ export const productSolver = (product: any) => {
     qty,
     title,
     variants,
+    _id,
     slug: slug.current,
   };
 };
@@ -31,14 +32,15 @@ export const bodySolver = (content: any) => {
 };
 
 export const variantSolver = (variant: any) => {
-  const { Color, images, qty, price, title} = variant
+  const { Color, images, qty, price, title, _key} = variant
 
   return {
     Color,
     images,
     qty,
     price,
-    title
+    title,
+    _key
   }
 }
 

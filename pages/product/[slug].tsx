@@ -25,9 +25,10 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
     price:null,
     qty:null,
     title:null,
+    _key:null
   })
   const [inputQty, setInputQty] = useState<number>(1);
-  const { blurb, body, category, Color, colors, images, price, qty, title, variants, slug } =
+  const { blurb, body, category, Color, colors, images, price, qty, title, variants, slug, _id } =
     productSolver(product);
   const len = images.length - 1;
 
@@ -45,6 +46,11 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
         console.log("Undefined event.")
       }
     }
+  }
+
+  const sendToBasket = () => {
+    const isVariant = currentItems._key
+    console.log({_id, isVariant, count: inputQty})
   }
 
   const tumbHandle = (index: number) => {
@@ -71,9 +77,9 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
   };
 
   const variantHandler = (index: number) => {
-    const { Color, images, qty, price, title } = variantSolver(variants[index])
+    const { Color, images, qty, price, title, _key } = variantSolver(variants[index])
     setCurrentItems({
-      ...currentItems,Color:Color.hex,images,qty,price,title
+      ...currentItems, Color:Color.hex, images, qty, price, title, _key
     })
   }
 
@@ -86,6 +92,7 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
       price:null,
       qty:null,
       title:null,
+      _key: null
     })
   }
 
@@ -211,7 +218,7 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
                       <button onClick={() => handleQtyNumber("+")}>+</button>
                     </div>
                   </div>
-                  <button className="btn btn-primary rounded-3xl px-2 sm:px-5 lg:px-10 bg-yellow-600 hover:bg-yellow-700">
+                  <button onClick={sendToBasket} className="btn btn-primary rounded-3xl px-2 sm:px-5 lg:px-10 bg-yellow-600 hover:bg-yellow-700">
                     <svg
                       viewBox="0 0 32 32"
                       fill="none"

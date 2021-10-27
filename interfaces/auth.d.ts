@@ -11,6 +11,12 @@ namespace Auth {
     children: JSX.Element;
   }
 
+  interface Basket {
+      _id: string,
+      isVariant: string | null,
+      count: number 
+  }
+
   interface AuthContextType {
     session?: AuthSession | null;
     user: User | null;
@@ -18,6 +24,8 @@ namespace Auth {
     setDefaultName: Dispatch<SetStateAction<string | null>>;
     avatarUrl: string | null;
     setAvatarUrl: Dispatch<SetStateAction<string | null>>;
+    basket: Basket[] | null;
+    setBasket: Dispatch<SetStateAction<Basket[] | null>>;
     signIn: (options: UserCredentials) => Promise<{
       session: AuthSession | null;
       user: User | null;

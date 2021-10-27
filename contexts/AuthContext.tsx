@@ -11,6 +11,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [defaultName, setDefaultName] = useState<string | null>(null);
+  const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
 
   useEffect(() => {
     const session = supabase.auth.session();
@@ -32,9 +33,10 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
     if (user) {
       Promise.resolve(
         getUserDetails(user).then((results) => {
-          const { url, username } = results;
+          const { url, username, basket } = results;
           setAvatarUrl(url ?? null);
           setDefaultName(username);
+          setBasket(basket)
         })
       );
     }
@@ -48,6 +50,8 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
       setDefaultName,
       avatarUrl,
       setAvatarUrl,
+      basket,
+      setBasket,
       signIn: (options: UserCredentials) => supabase.auth.signIn(options),
       signUp: (options: UserCredentials) => supabase.auth.signUp(options),
       signOut: () => {
@@ -55,7 +59,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
         return supabase.auth.signOut();
       },
     }),
-    [user, defaultName, session, avatarUrl]
+    [user, defaultName, session, avatarUrl, basket]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

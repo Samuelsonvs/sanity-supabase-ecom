@@ -52,6 +52,7 @@ export namespace GroqData {
         tags: [[string]] | null;
         category: string | null;
         variants: Variant | null;
+        _id: string | null;
       };
       length: number;
     };
@@ -70,6 +71,7 @@ export namespace GroqData {
           current: string;
         };
         variants?: Variant;
+        _id: string | null
       };
     };
   }
@@ -87,7 +89,8 @@ export namespace GroqData {
     } | null,
     price: number | null,
     qty: number | null,
-    title: string | null
+    title: string | null,
+    _key: string | null
   }
 
   interface TopCategory {

@@ -13,11 +13,12 @@ const RelatedProduct = ({ relatedProducts }: GroqData.Product) => {
       <div className="carousel-manuel gap-3 py-10 mb-10 prose max-w-6xl mx-auto">
         {Array.isArray(relatedProducts) &&
           relatedProducts.slice(0, 5).map((product: any, idx: number) => {
-            const { images, slug, price, title } = productSolver(product);
+            const { images, slug, price, title, _id } = productSolver(product);
             const image = images[0];
             return (
               <ProductImage
                 key={idx}
+                _id={_id}
                 slug={slug}
                 image={image}
                 price={price}

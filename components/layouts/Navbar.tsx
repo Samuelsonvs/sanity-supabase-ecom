@@ -10,7 +10,7 @@ const navItems = [{ home: "/" }, { category: "/category" }, { signin: "/signin" 
 
 export const Navbar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const { session, signOut, avatarUrl } = useUser();
+  const { session, signOut, avatarUrl, basket } = useUser();
   const logOut = async () => {
     await signOut();
     console.log("log out");
@@ -130,7 +130,7 @@ export const Navbar = () => {
           </button>
         </div>
         <div className="flex-none indicator">
-        <div className="indicator-custom badge badge-sm badge-custom-color">1</div> 
+          <div className={`${basket ? "inline-flex" : "hidden"} indicator-custom badge badge-sm badge-custom-color`}>{basket?.length}</div> 
           <button className="btn btn-square btn-ghost">
             <svg
               viewBox="0 0 32 32"

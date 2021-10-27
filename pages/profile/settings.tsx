@@ -25,7 +25,6 @@ export const Account: NextPage = () => {
     formState: { errors },
   } = useForm<App.FormValues>();
   const router = useRouter();
-
   const handleUpdate: SubmitHandler<App.FormValues> = async () => {
     try {
       setLoading(true);

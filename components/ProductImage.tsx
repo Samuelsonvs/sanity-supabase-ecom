@@ -4,17 +4,28 @@ import Image from "next/image";
 
 import { urlFor } from "@/utils/sanity";
 import { App } from "@/interfaces/app";
+import { useUser } from "@/contexts/AuthContext";
+import UseBasket from "@/utils/basket";
 
 export const ProductImage = ({
   slug,
   image,
   price,
   title,
+  _id,
   width,
   height,
   containerCss,
   hoverCss,
 }: App.ImageProduct) => {
+  const { user, basket, setBasket } = useUser();
+  const sendToBasket = async () => {
+    if (user) {
+      const { result } = await UseBasket({ _id, isVariant: null, count: 1 }, {user, basket, setBasket})
+    }
+
+    console.log({_id, isVariant: null, count: 1})
+  }
   return (
     <div
       className={`relative rounded-3xl overflow-hidden border-4 border-transparent bg-origin-border hover:border-yellow-600 ${containerCss}`}
@@ -39,7 +50,7 @@ export const ProductImage = ({
           <div></div>
           <div>{price}$</div>
           <div className="-my-2">
-            <button className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full">
+            <button onClick={sendToBasket} className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full">
               <svg
                 viewBox="0 0 32 32"
                 fill="none"

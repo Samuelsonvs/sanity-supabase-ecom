@@ -1,5 +1,6 @@
 import { AuthSession, createClient, User } from "@supabase/supabase-js";
 import { App } from "@/interfaces/app";
+import { Auth } from "@/interfaces/auth";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "url";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "key";
@@ -16,10 +17,20 @@ export const setUserProfiles = async (user: User, features: App.Updates) => {
   return { error };
 };
 
+export const setUserBasket = async (user: User, basket: Auth.Basket[]) => {
+  const { error } = await supabase
+    .from("users")
+    .update({
+      basket
+    })
+    .eq("id", user!.id);
+  return { error };
+};
+
 export const searchUser = async (user: User | null) => {
   const { data, error, status } = await supabase
     .from("users")
-    .select(`username, avatar_url`)
+    .select(`username, avatar_url, basket`)
     .eq("id", user!.id)
     .single();
   return { data, error, status };
@@ -37,17 +48,17 @@ export const setAvatarData = async (path: string, file: File) => {
 
 export const getUserDetails = async (user: User | null) => {
   const { data, error, status } = await searchUser(user);
-  const { avatar_url, username } = data;
+  const { avatar_url, username, basket } = data;
   if (avatar_url) {
     const { data, error } = await getAvatarData(avatar_url);
     const url = URL.createObjectURL(data);
     if (url && username) {
-      return { url, username };
+      return { url, username, basket };
     }
     return { error };
   }
   if (username) {
-    return { username };
+    return { username, basket };
   }
 
   return { error };

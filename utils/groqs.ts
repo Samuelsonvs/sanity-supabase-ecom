@@ -3,7 +3,7 @@ import { groq } from "next-sanity";
 export const productsGroq = () => {
   return {
     productsQuery: groq`{
-      "products":  *[_type == "product"] {
+      "products":  *[_type == "product"]{
         blurb {
           en
         },
@@ -18,7 +18,8 @@ export const productsGroq = () => {
         tags,
         category,
         variants,
-        title
+        title,
+        _id
       },
     }`,
   };
@@ -48,7 +49,8 @@ export const productGroq = (slug: string | undefined) => {
               slug {
                 current
               },
-              variants
+              variants,
+              _id
             }
         }`,
   };
