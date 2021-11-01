@@ -7,7 +7,7 @@ import {
 } from "@supabase/supabase-js";
 
 namespace Auth {
-  interface AuthChildren {
+  interface Children {
     children: JSX.Element;
   }
 
@@ -17,7 +17,13 @@ namespace Auth {
       count: number 
   }
 
-  interface AuthContextType {
+  interface UseBasket extends Basket {
+    user: User;
+    basket: Auth.Basket[] | null
+    setBasket: Dispatch<SetStateAction<Auth.Basket[] | null>>
+}
+
+  interface Context {
     session?: AuthSession | null;
     user: User | null;
     defaultName: string | null;

@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { ChangeHandler } from "react-hook-form";
 
 export namespace App {
-  interface ContainerProps extends Auth.AuthChildren {
+  interface ContainerProps extends Auth.Children {
     customTitle?: string;
   }
 

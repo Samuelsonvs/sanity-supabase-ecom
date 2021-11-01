@@ -15,8 +15,11 @@ import {
 } from "@/utils/groqs";
 import RelatedProduct from "@/components/ProductDetail/RelatedProduct";
 import Description from "@/components/ProductDetail/Description";
+import UseBasket from "@/utils/basket";
+import { useUser } from "@/contexts/AuthContext";
 
 export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) => {
+  const { user, basket, setBasket } = useUser();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentItems, setCurrentItems] = useState<GroqData.VariantItems>({
     body:null,
@@ -48,9 +51,14 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
     }
   }
 
-  const sendToBasket = () => {
+  const sendToBasket = async () => {
     const isVariant = currentItems._key
-    console.log({_id, isVariant, count: inputQty})
+    if (user) {
+      const { result } = await UseBasket({ _id, isVariant, count: inputQty, user, basket, setBasket})
+      if (result) {
+        console.log(result)
+      }
+    }
   }
 
   const tumbHandle = (index: number) => {

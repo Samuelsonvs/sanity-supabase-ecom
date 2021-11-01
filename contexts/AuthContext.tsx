@@ -4,9 +4,9 @@ import { User, AuthSession, UserCredentials } from "@supabase/supabase-js";
 import { supabase, getUserDetails } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
 
-export const AuthContext = createContext({} as Auth.AuthContextType);
+export const AuthContext = createContext({} as Auth.Context);
 
-export function AuthProvider({ children }: Auth.AuthChildren) {
+export function AuthProvider({ children }: Auth.Children) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<AuthSession | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: Auth.AuthChildren) {
 }
 
 export const useUser = () => {
-  const context = useContext<Auth.AuthContextType>(AuthContext);
+  const context = useContext<Auth.Context>(AuthContext);
   if (context === undefined) {
     throw new Error(`useUser must be used within a UserContextProvider.`);
   }

@@ -21,10 +21,11 @@ export const ProductImage = ({
   const { user, basket, setBasket } = useUser();
   const sendToBasket = async () => {
     if (user) {
-      const { result } = await UseBasket({ _id, isVariant: null, count: 1 }, {user, basket, setBasket})
+      const { result } = await UseBasket({ _id, isVariant: null, count: 1, user, basket, setBasket})
+      if (result) {
+        console.log(result)
+      }
     }
-
-    console.log({_id, isVariant: null, count: 1})
   }
   return (
     <div
