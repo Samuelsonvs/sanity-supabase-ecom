@@ -4,8 +4,8 @@ import React from 'react'
 export const Index = () => {
     return (
         <Container>
-            <div>
-                
+            <div className="mt-20">
+                payment
             </div>
         </Container>
     )

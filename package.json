@@ -29,7 +29,8 @@
     "react-popper": "^2.2.5",
     "react-transition-group": "1.x",
     "sanity-react-extra": "^0.2.4",
-    "sharp": "^0.29.1"
+    "sharp": "^0.29.1",
+    "swr": "^1.0.1"
   },
   "devDependencies": {
     "@types/react": "17.0.20",

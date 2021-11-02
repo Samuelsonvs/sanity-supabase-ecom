@@ -149,7 +149,7 @@ export const productsSubCategory = () => {
 export const basketGroq = (basket: string[]) => {
   return {
     basketQuery: groq`{
-            "products":  *[_type == "product" && _id in ${[...basket]}]
+            "products":  *[_type == "product" && _id in [${basket}]]
         }`,
   };
 };
