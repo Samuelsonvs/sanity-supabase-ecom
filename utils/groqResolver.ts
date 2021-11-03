@@ -1,11 +1,8 @@
 import { GroqData } from "@/interfaces/groqData";
 
 export const productSolver = (product: any) => {
-  const { blurb, body, category, defaultProductVariant, variants, slug, _id } = Array.isArray(
-    product
-  )
-    ? product[0]
-    : product;
+  const { blurb, body, category, defaultProductVariant, variants, slug, _id } =
+    Array.isArray(product) ? product[0] : product;
   const { colors, Color, images, price, qty, title } = defaultProductVariant;
   return {
     blurb: blurb?.en,
@@ -32,7 +29,7 @@ export const bodySolver = (content: any) => {
 };
 
 export const variantSolver = (variant: any) => {
-  const { Color, images, qty, price, title, _key} = variant
+  const { Color, images, qty, price, title, _key } = variant;
 
   return {
     Color,
@@ -40,25 +37,25 @@ export const variantSolver = (variant: any) => {
     qty,
     price,
     title,
-    _key
-  }
-}
+    _key,
+  };
+};
 
 export const topCategorySolver = (category: any) => {
-  const { title, slug } = category
+  const { title, slug } = category;
 
   return {
     title,
-    slug: slug.current
-  }
-}
+    slug: slug.current,
+  };
+};
 
 export const subCategorySolver = (category: any) => {
-  const { title, slug, parents } = category
+  const { title, slug, parents } = category;
 
   return {
     _ref: parents[0]._ref,
     title,
-    slug: slug.current
-  }
-}
+    slug: slug.current,
+  };
+};

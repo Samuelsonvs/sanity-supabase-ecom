@@ -191,7 +191,9 @@ input[type="number"]:focus-visible {
   --tw-skew-y: 0;
   --tw-scale-x: 1;
   --tw-scale-y: 1;
-  transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y))
+    rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+    scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   top: 13px;
   right: 6px;
   bottom: auto;
@@ -211,7 +213,7 @@ input[type="number"]:focus-visible {
   @apply p-0;
 }
 
-.breadcrumbs > ul > li+:before {
+.breadcrumbs > ul > li + :before {
   background-color: transparent;
   opacity: 0;
 }
@@ -231,5 +233,5 @@ button,
 }
 
 .custom-card {
-  @apply flex flex-col flex-1 p-8
+  @apply flex flex-col flex-1 p-8;
 }

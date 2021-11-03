@@ -21,7 +21,7 @@ export const setUserBasket = async (user: User, basket: Auth.Basket[]) => {
   const { error } = await supabase
     .from("users")
     .update({
-      basket
+      basket,
     })
     .eq("id", user!.id);
   return { error };

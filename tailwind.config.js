@@ -29,34 +29,34 @@ module.exports = {
           css: {
             h2: {
               marginBottom: 0,
-              marginTop: 0
+              marginTop: 0,
             },
             h3: {
               marginBottom: 0,
-              marginTop: 0
+              marginTop: 0,
             },
             a: {
-              textDecoration: 'none'
+              textDecoration: "none",
             },
             figure: {
-              marginBottom: 0
+              marginBottom: 0,
             },
             ul: {
-              listStyleType: 'none',
+              listStyleType: "none",
               li: {
                 paddingLeft: 0,
-                '&:before': {
-                  backgroundColor: 'transparent',
+                "&:before": {
+                  backgroundColor: "transparent",
                   width: 0,
                   heigh: 0,
                   top: 0,
-                  left: 0
-                }
-              }
+                  left: 0,
+                },
+              },
             },
-          }
-        }
-      }
+          },
+        },
+      },
     },
   },
   variants: {

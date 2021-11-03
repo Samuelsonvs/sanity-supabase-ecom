@@ -18,21 +18,36 @@ import Description from "@/components/ProductDetail/Description";
 import UseBasket from "@/utils/basket";
 import { useUser } from "@/contexts/AuthContext";
 
-export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) => {
+export const Slug: NextPage<GroqData.Product> = ({
+  product,
+  relatedProducts,
+}) => {
   const { user, basket, setBasket } = useUser();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentItems, setCurrentItems] = useState<GroqData.VariantItems>({
-    body:null,
-    Color:null,
-    images:null,
-    price:null,
-    qty:null,
-    title:null,
-    _key:null
-  })
+    body: null,
+    Color: null,
+    images: null,
+    price: null,
+    qty: null,
+    title: null,
+    _key: null,
+  });
   const [inputQty, setInputQty] = useState<number>(1);
-  const { blurb, body, category, Color, colors, images, price, qty, title, variants, slug, _id } =
-    productSolver(product);
+  const {
+    blurb,
+    body,
+    category,
+    Color,
+    colors,
+    images,
+    price,
+    qty,
+    title,
+    variants,
+    slug,
+    _id,
+  } = productSolver(product);
   const len = images.length - 1;
 
   const { text } = bodySolver(body[0]);
@@ -46,20 +61,27 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
         const index = currentIndex === 0 ? len : currentIndex - 1;
         setCurrentIndex(index);
       } else {
-        console.log("Undefined event.")
+        console.log("Undefined event.");
       }
     }
-  }
+  };
 
   const sendToBasket = async () => {
-    const isVariant = currentItems._key
+    const isVariant = currentItems._key;
     if (user) {
-      const { result } = await UseBasket({ _id, isVariant, count: inputQty, user, basket, setBasket})
+      const { result } = await UseBasket({
+        _id,
+        isVariant,
+        count: inputQty,
+        user,
+        basket,
+        setBasket,
+      });
       if (result) {
-        console.log(result)
+        console.log(result);
       }
     }
-  }
+  };
 
   const tumbHandle = (index: number) => {
     setCurrentIndex(index);
@@ -74,10 +96,10 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
         const number = inputQty === 1 ? inputQty : inputQty - 1;
         setInputQty(number);
       } else {
-        console.log("Undefined operator.")
+        console.log("Undefined operator.");
       }
     }
-  }
+  };
 
   const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => {
     const number = e.target.value > qty ? qty : Number(e.target.value);
@@ -85,24 +107,32 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
   };
 
   const variantHandler = (index: number) => {
-    const { Color, images, qty, price, title, _key } = variantSolver(variants[index])
+    const { Color, images, qty, price, title, _key } = variantSolver(
+      variants[index]
+    );
     setCurrentItems({
-      ...currentItems, Color:Color.hex, images, qty, price, title, _key
-    })
-  }
+      ...currentItems,
+      Color: Color.hex,
+      images,
+      qty,
+      price,
+      title,
+      _key,
+    });
+  };
 
   const variantReset = () => {
     setCurrentItems({
-      ...currentItems,    
-      body:null,
-      Color:null,
-      images:null,
-      price:null,
-      qty:null,
-      title:null,
-      _key: null
-    })
-  }
+      ...currentItems,
+      body: null,
+      Color: null,
+      images: null,
+      price: null,
+      qty: null,
+      title: null,
+      _key: null,
+    });
+  };
 
   return (
     <Container>
@@ -111,31 +141,33 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
           <div className="flex flex-col md:flex-row space-x-10">
             <div className="flex flex-col">
               <div className="relative p-4 w-80 mx-auto md:mx-0 sm:w-96">
-                {(currentItems.images ?? images).map((image: any, index: number) => {
-                  return (
-                    <div
-                      key={index}
-                      className={`${
-                        index === currentIndex ? "block" : "hidden"
-                      }`}
-                    >
-                      <Image
-                        alt="ss"
-                        src={
-                          urlFor(image.asset._ref)
-                            .width(400)
-                            .height(500)
-                            .url() || ""
-                        }
-                        loading="lazy"
-                        title={"ss"}
-                        className="rounded-xl"
-                        height={500}
-                        width={400}
-                      />
-                    </div>
-                  );
-                })}
+                {(currentItems.images ?? images).map(
+                  (image: any, index: number) => {
+                    return (
+                      <div
+                        key={index}
+                        className={`${
+                          index === currentIndex ? "block" : "hidden"
+                        }`}
+                      >
+                        <Image
+                          alt="ss"
+                          src={
+                            urlFor(image.asset._ref)
+                              .width(400)
+                              .height(500)
+                              .url() || ""
+                          }
+                          loading="lazy"
+                          title={"ss"}
+                          className="rounded-xl"
+                          height={500}
+                          width={400}
+                        />
+                      </div>
+                    );
+                  }
+                )}
                 <div className="absolute z-20 flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
                   <button
                     onClick={() => handleArrows("left")}
@@ -152,31 +184,33 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
                 </div>
               </div>
               <div className="flex w-80 sm:w-96 space-x-2 mx-auto sm:mx-0 justify-center">
-                {(currentItems.images ?? images).map((image: any, index: number) => {
-                  return (
-                    <a
-                      key={index}
-                      onClick={() => tumbHandle(index)}
-                      className={`flex rounded-2xl overflow-hidden cursor-pointer border-4 border-transparent ${
-                        currentIndex === index ? "border-yellow-600" : ""
-                      }`}
-                    >
-                      <Image
-                        alt="ss"
-                        src={
-                          urlFor(image.asset._ref)
-                            .width(100)
-                            .height(100)
-                            .url() || ""
-                        }
-                        title={"ss"}
-                        className="rounded-xl"
-                        height={100}
-                        width={100}
-                      />
-                    </a>
-                  );
-                })}
+                {(currentItems.images ?? images).map(
+                  (image: any, index: number) => {
+                    return (
+                      <a
+                        key={index}
+                        onClick={() => tumbHandle(index)}
+                        className={`flex rounded-2xl overflow-hidden cursor-pointer border-4 border-transparent ${
+                          currentIndex === index ? "border-yellow-600" : ""
+                        }`}
+                      >
+                        <Image
+                          alt="ss"
+                          src={
+                            urlFor(image.asset._ref)
+                              .width(100)
+                              .height(100)
+                              .url() || ""
+                          }
+                          title={"ss"}
+                          className="rounded-xl"
+                          height={100}
+                          width={100}
+                        />
+                      </a>
+                    );
+                  }
+                )}
               </div>
             </div>
             <div className="p-4 prose-sm">
@@ -185,7 +219,11 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
                 <h3>${currentItems.price ?? price}</h3>
                 <p>
                   <span>Available :</span>
-                  <span>{(currentItems.qty ?? qty) > 0 ? " In Stock" : "Not Avaliable"}</span>
+                  <span>
+                    {(currentItems.qty ?? qty) > 0
+                      ? " In Stock"
+                      : "Not Avaliable"}
+                  </span>
                 </p>
                 <p>{text}</p>
                 <h3>Color</h3>
@@ -194,17 +232,26 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
                     className="w-4 h-4 rounded-full"
                     style={{ backgroundColor: `${Color.hex}` }}
                   >
-                    <button onClick={variantReset} className="flex pr-0 rounded-full"></button>
+                    <button
+                      onClick={variantReset}
+                      className="flex pr-0 rounded-full"
+                    ></button>
                   </li>
-                  {variants && variants.map((variant:any, index:number) => {
-                    return (
-                      <li key={index}
-                      className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: `${variant.Color.hex}` }}
-                      ><button onClick={() => variantHandler(index)} className="flex pr-0 rounded-full"></button>
-                      </li>
-                    )
-                  })}
+                  {variants &&
+                    variants.map((variant: any, index: number) => {
+                      return (
+                        <li
+                          key={index}
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: `${variant.Color.hex}` }}
+                        >
+                          <button
+                            onClick={() => variantHandler(index)}
+                            className="flex pr-0 rounded-full"
+                          ></button>
+                        </li>
+                      );
+                    })}
                 </ul>
                 <div className="flex space-x-5 lg:space-x-20">
                   <div>
@@ -226,7 +273,10 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
                       <button onClick={() => handleQtyNumber("+")}>+</button>
                     </div>
                   </div>
-                  <button onClick={sendToBasket} className="btn btn-primary rounded-3xl px-2 sm:px-5 lg:px-10 bg-yellow-600 hover:bg-yellow-700">
+                  <button
+                    onClick={sendToBasket}
+                    className="btn btn-primary rounded-3xl px-2 sm:px-5 lg:px-10 bg-yellow-600 hover:bg-yellow-700"
+                  >
                     <svg
                       viewBox="0 0 32 32"
                       fill="none"
@@ -249,7 +299,7 @@ export const Slug: NextPage<GroqData.Product> = ({ product, relatedProducts }) =
           </div>
         </section>
         <section>
-          <Description body={currentItems.body ?? body}/>
+          <Description body={currentItems.body ?? body} />
         </section>
         <section>
           <RelatedProduct relatedProducts={relatedProducts} />

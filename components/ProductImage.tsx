@@ -21,12 +21,19 @@ export const ProductImage = ({
   const { user, basket, setBasket } = useUser();
   const sendToBasket = async () => {
     if (user) {
-      const { result } = await UseBasket({ _id, isVariant: null, count: 1, user, basket, setBasket})
+      const { result } = await UseBasket({
+        _id,
+        isVariant: null,
+        count: 1,
+        user,
+        basket,
+        setBasket,
+      });
       if (result) {
-        console.log(result)
+        console.log(result);
       }
     }
-  }
+  };
   return (
     <div
       className={`relative rounded-3xl overflow-hidden border-4 border-transparent bg-origin-border hover:border-yellow-600 ${containerCss}`}
@@ -51,7 +58,10 @@ export const ProductImage = ({
           <div></div>
           <div>{price}$</div>
           <div className="-my-2">
-            <button onClick={sendToBasket} className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full">
+            <button
+              onClick={sendToBasket}
+              className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full"
+            >
               <svg
                 viewBox="0 0 32 32"
                 fill="none"

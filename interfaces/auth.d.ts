@@ -12,16 +12,16 @@ namespace Auth {
   }
 
   interface Basket {
-      _id: string,
-      isVariant: string | null,
-      count: number 
+    _id: string;
+    isVariant: string | null;
+    count: number;
   }
 
   interface UseBasket extends Basket {
     user: User;
-    basket: Auth.Basket[] | null
-    setBasket: Dispatch<SetStateAction<Auth.Basket[] | null>>
-}
+    basket: Auth.Basket[] | null;
+    setBasket: Dispatch<SetStateAction<Auth.Basket[] | null>>;
+  }
 
   interface Context {
     session?: AuthSession | null;

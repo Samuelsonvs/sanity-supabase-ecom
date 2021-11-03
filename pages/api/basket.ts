@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
   products?: any;
-  status?: string
+  status?: string;
 };
 
 export default async function handler(
@@ -14,12 +14,12 @@ export default async function handler(
 ) {
   const method = req.method;
   if (method === "POST") {
-    const { body } = req.body
-    const basket = body.map((product: any) => `"${product._id}"`)
+    const { body } = req.body;
+    const basket = body.map((product: any) => `"${product._id}"`);
     const { basketQuery } = basketGroq(basket);
     const { products } = await configuredSanityClient.fetch(basketQuery);
     res.status(200).json({ products });
   } else {
-    res.status(200).json({ status: 'Method error.' });
+    res.status(200).json({ status: "Method error." });
   }
 }

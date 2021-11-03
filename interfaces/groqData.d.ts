@@ -2,7 +2,7 @@ export namespace GroqData {
   interface Variant {
     colors: [[string]];
     Color: {
-      hex: string
+      hex: string;
     };
     images: {
       [key: string]: {
@@ -71,14 +71,14 @@ export namespace GroqData {
           current: string;
         };
         variants?: Variant;
-        _id: string | null
+        _id: string | null;
       };
     };
   }
 
   interface VariantItems {
-    body: Body | null,
-    Color: string | null,
+    body: Body | null;
+    Color: string | null;
     images: {
       [key: string]: {
         asset: {
@@ -86,20 +86,20 @@ export namespace GroqData {
         };
         _key: string;
       };
-    } | null,
-    price: number | null,
-    qty: number | null,
-    title: string | null,
-    _key: string | null
+    } | null;
+    price: number | null;
+    qty: number | null;
+    title: string | null;
+    _key: string | null;
   }
 
   interface TopCategory {
     [key: string]: {
       _id: string;
       slug: {
-        current: string
+        current: string;
       };
-      title: string
-    }
+      title: string;
+    };
   }
 }

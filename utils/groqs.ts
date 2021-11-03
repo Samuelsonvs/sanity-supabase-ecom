@@ -75,7 +75,6 @@ export const relatedProductGroq = (
   };
 };
 
-
 export const productsTopCategory = () => {
   return {
     topCategoryQuery: groq`{
@@ -84,9 +83,9 @@ export const productsTopCategory = () => {
         title,
         slug
     }
-    }`
-  }
-}
+    }`,
+  };
+};
 
 export const productsTopCategoryId = (slug: string) => {
   return {
@@ -94,9 +93,9 @@ export const productsTopCategoryId = (slug: string) => {
       "categories":   *[_type == 'category' && slug.current == "${slug}"] {
         _id
       }
-    }`
-  }
-}
+    }`,
+  };
+};
 
 export const productsSubCategoryId = (slug: string) => {
   return {
@@ -104,9 +103,9 @@ export const productsSubCategoryId = (slug: string) => {
       "categories":   *[_type == 'category' && slug.current == "${slug}"] {
         _id
       }
-    }`
-  }
-}
+    }`,
+  };
+};
 
 export const productsSubCategoryFromKey = (key: string) => {
   return {
@@ -119,19 +118,17 @@ export const productsSubCategoryFromKey = (key: string) => {
           },
           _id
       }
-    }`
-  }
-}
-
+    }`,
+  };
+};
 
 export const productsFromKey = (key: string) => {
   return {
     productsQuery: groq`{
       "products": *[_type == 'product' && categories[0]._ref == "${key}"]
-    }`
-  }
-}
-
+    }`,
+  };
+};
 
 export const productsSubCategory = () => {
   return {
@@ -142,9 +139,9 @@ export const productsSubCategory = () => {
         slug,
         parents
     }
-    }`
-  }
-}
+    }`,
+  };
+};
 
 export const basketGroq = (basket: string[]) => {
   return {

@@ -13,7 +13,7 @@ export function AuthProvider({ children }: Auth.Children) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     setLoading(true);
@@ -39,7 +39,7 @@ export function AuthProvider({ children }: Auth.Children) {
           const { url, username, basket } = results;
           setAvatarUrl(url ?? null);
           setDefaultName(username);
-          setBasket(basket)
+          setBasket(basket);
         })
       );
       setLoading(false);

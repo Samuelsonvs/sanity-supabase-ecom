@@ -16,26 +16,34 @@ export const Index: NextPage<GroqData.TopCategory> = ({ categories }) => {
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
         <h1>Furniture</h1>
-          <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-4 sm:py-8 sm:overflow-visible">
-            {Array.isArray(categories) && categories.map((category: any, idx: number) => {
-              const { title, slug } = topCategorySolver(category)
+        <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-4 sm:py-8 sm:overflow-visible">
+          {Array.isArray(categories) &&
+            categories.map((category: any, idx: number) => {
+              const { title, slug } = topCategorySolver(category);
               return (
-                <li key={idx} className="cursor-pointer w-72 carousel-item rounded-md shadow-xl hover:shadow-2xl">
+                <li
+                  key={idx}
+                  className="cursor-pointer w-72 carousel-item rounded-md shadow-xl hover:shadow-2xl"
+                >
                   <Link passHref href={`/category/${slug}`}>
-                  <a className="flex px-1 space-x-5 items-center">
-                    <Image
-                     src={categoryImages[title as keyof typeof categoryImages] ?? defImage[0]}
-                     alt={"chairs"}
-                     width={65}
-                     height={65}
-                     />
-                     <div>{title}</div>
-                  </a>
+                    <a className="flex px-1 space-x-5 items-center">
+                      <Image
+                        src={
+                          categoryImages[
+                            title as keyof typeof categoryImages
+                          ] ?? defImage[0]
+                        }
+                        alt={"chairs"}
+                        width={65}
+                        height={65}
+                      />
+                      <div>{title}</div>
+                    </a>
                   </Link>
                 </li>
               );
             })}
-          </ul>
+        </ul>
       </div>
     </Container>
   );
@@ -44,7 +52,7 @@ export const Index: NextPage<GroqData.TopCategory> = ({ categories }) => {
 export const getStaticProps: GetStaticProps = async ({
   params,
 }: GetStaticPropsContext) => {
-  const { topCategoryQuery } = productsTopCategory()
+  const { topCategoryQuery } = productsTopCategory();
   const { categories } = await configuredSanityClient.fetch(topCategoryQuery);
   return {
     props: {
