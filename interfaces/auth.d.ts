@@ -32,6 +32,7 @@ namespace Auth {
     setAvatarUrl: Dispatch<SetStateAction<string | null>>;
     basket: Basket[] | null;
     setBasket: Dispatch<SetStateAction<Basket[] | null>>;
+    loading: boolean;
     signIn: (options: UserCredentials) => Promise<{
       session: AuthSession | null;
       user: User | null;

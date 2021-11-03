@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { User, AuthSession, UserCredentials } from "@supabase/supabase-js";
 
@@ -12,8 +13,10 @@ export function AuthProvider({ children }: Auth.Children) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
+    setLoading(true);
     const session = supabase.auth.session();
     setSession(session);
     setUser(session?.user ?? null);
@@ -39,6 +42,7 @@ export function AuthProvider({ children }: Auth.Children) {
           setBasket(basket)
         })
       );
+      setLoading(false);
     }
   }, [user]);
 
@@ -52,6 +56,7 @@ export function AuthProvider({ children }: Auth.Children) {
       setAvatarUrl,
       basket,
       setBasket,
+      loading,
       signIn: (options: UserCredentials) => supabase.auth.signIn(options),
       signUp: (options: UserCredentials) => supabase.auth.signUp(options),
       signOut: () => {

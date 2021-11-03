@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import useSWR from 'swr'
 
 import Container from '@/container/Container'
 import { useUser } from '@/contexts/AuthContext';
-import { basketGroq } from '@/utils/groqs';
-import configuredSanityClient from '@/utils/sanity';
-import fetcher  from "@/utils/fetcher"
-import { Auth } from "@/interfaces/auth"
-import  useSwr  from "@/hooks/useSwr"
+import { GroqData } from "@/interfaces/groqData"
 
 export const Index = () => {
-    const { user, basket, setBasket } = useUser();
-    const [data, setData] = useState<Response | null>(null)
-    console.log(data)
+    const { session, basket, setBasket, loading } = useUser();
+    const [data, setData] = useState<GroqData.Products | null>(null)
 
-
+    if (data) {
+        console.log(data)
+    }
     useEffect(() => {
-        if (user && basket) {
+        if (session && basket) {
             (async() => {
                 const response = await fetch("/api/basket", {
                     body: JSON.stringify({
@@ -27,38 +23,30 @@ export const Index = () => {
                     },
                     method: "POST",
                 });
-                setData(response)
-            })()
+                const json = await response.json()
+                setData(json.products)
+            })();
         }
-    }, [basket])
+    }, [session,basket])
     
-
   
     return (
         <Container>
-            <div className="mt-20">
-                {basket?.map((product, idx) => {
-                    return (
-                        <div key={idx}>
-                            {product._id}
-                        </div>
-                    )
-                })}
-            </div>
+            {!loading ? (
+                basket ? (
+                    <div className="mt-20">
+                        {data && Array.isArray(data) &&  data.map((product: any) => product._id)}
+                    </div>
+                ) : (
+                    <div className="mt-20">There are no products in your cart.</div>
+                )
+            )
+            : 
+             (
+                <div className="mt-20">Pls wait...</div>
+             )}
         </Container>
     )
 }
-
-// export const getServerSideProps: GetServerSideProps = async (
-//     context: GetServerSidePropsContext
-//   ) => {
-//     const { basketQuery } = basketGroq(['"0727f5c6-cae2-40f6-9d81-707b333b8e4e"', '"022e317e-c093-49a1-93ee-b357b502217f"']);
-//     const { products } = await configuredSanityClient.fetch(basketQuery);
-//     return {
-//       props: {
-//         products,
-//       },
-//     };
-//   };
 
 export default Index
