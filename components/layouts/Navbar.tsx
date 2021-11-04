@@ -142,7 +142,7 @@ export const Navbar = () => {
           >
             {basket?.length}
           </div>
-          <Link passHref href="/basket">
+          <Link passHref href={`${session ? "/basket" : "/signin"}`}>
             <a className="btn btn-square btn-ghost">
               <svg
                 viewBox="0 0 32 32"
