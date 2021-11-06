@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { Steps } from "@/components/Steps";
 import { productSolver } from "@/utils/groqResolver";
 import { App } from "@/interfaces/app";
+import QtyHandler from "@/components/QtyHandler";
+import UseBasket from "@/utils/basket";
 
 interface Prop {
   qty : number
@@ -16,22 +18,53 @@ interface Prop {
 
 export const Index = () => {
   const router = useRouter();
-  const { session, basket, setBasket, loading } = useUser();
+  const { session, user, basket, setBasket, loading } = useUser();
   const [data, setData] = useState<GroqData.Products | null>(null);
   const [submitLoading, setSubmitLoading] = useState<boolean>(true);
-  const [customQty, setCustomQty] = useState<number | null>(null);
+  const [basketIdCountObj] = useState(basket?.reduce((list, product) => ({ ...list, [product._id]: [product.count, product.isVariant]}), {}))
 
-  const handleQty = async (e: any) => {
-    e.preventDefault()
+  console.log(basket)
+  const handleQty = async (qtyParam: number, _id?: string, isVariant?: string | null) => {
     try {
       setSubmitLoading(true);
-      console.log(e)
+      if (user && _id) {
+        const { result } = await UseBasket({
+          _id,
+          isVariant: isVariant ?? null,
+          count: qtyParam,
+          method: 'ADD',
+          user,
+          basket,
+          setBasket,
+        });
+        if (result) {
+          console.log(result);
+        }
+        console.log(qtyParam)
+      }
     } catch (error: any) {
       alert(error.error_description || error.message);
     } finally {
       setSubmitLoading(false);
     }
   };
+
+  const removeHandler = async (_id: string, count: number, isVariant: string | null) => {
+    if (user) {
+      const { result } = await UseBasket({
+        _id,
+        count,
+        isVariant,
+        method: 'REMOVE',
+        user,
+        basket,
+        setBasket,
+      });
+      if (result) {
+        console.log(result);
+      }
+    }
+  }
   
   useEffect(() => {
     if (session && basket) {
@@ -86,27 +119,23 @@ export const Index = () => {
                   slug,
                   _id,
                 } = productSolver(product);
+                const currenBasketItems = basketIdCountObj && basketIdCountObj[_id as keyof typeof basketIdCountObj]
                 return (
                   <Fragment key={idx}>
-                    <div>{product._id}</div>
-                    <form
-                    onSubmit={(e) => handleQty(e)}
-                    className="custom-card"
-                    >
-                      <div className="inline py-2 border">
-                        <input type="submit" className="cursor-pointer p-1" value="-" />
-                        <input
-                          className="w-7"
-                          type={"number"}
-                          min="1"
-                          max="999"
-                          step="1"
-                          defaultValue={basket[idx].count}
-                          disabled
-                        />
-                        <input type="submit" className="cursor-pointer p-1" value="+" />
-                      </div>
-                  </form>
+                    <div>{_id}</div>
+                    <QtyHandler
+                      setter={handleQty}
+                      inputQty={Number(currenBasketItems && currenBasketItems[0])}
+                      qty={qty}
+                      min={1}
+                      _id={_id}
+                      isVariant={currenBasketItems && currenBasketItems[1]}
+                      max={qty}
+                      step={1}
+                      css={"w-5"}
+                      containerCss={"inline ml-3 py-2 border rounded-3xl"}
+                    />
+                    <button onClick={() => removeHandler(_id, 1, null )}>Delete</button>
                 </Fragment>
                 )
               })}

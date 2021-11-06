@@ -1,19 +1,7 @@
 import React, { ChangeEvent } from 'react';
-import { Dispatch, SetStateAction } from "react";
+import { App } from "@/interfaces/app"
 
-interface Params {
-    setter: Dispatch<SetStateAction<number | null>> | (() => number);
-    inputQty: number;
-    qty: number;
-    min: number;
-    max: number;
-    step: number;
-    css: string;
-    containerCss: string;
-}
-
-const QtyHandler = ({setter, inputQty, qty, min, max, step, css, containerCss}:Params) => {
-
+const QtyHandler = ({setter, inputQty, qty, min, max, step, css, containerCss, _id, isVariant}: App.QtyHandler) => {
     const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => {
         const number = Number(e.target.value) > qty ? qty : Number(e.target.value);
         setter(number);
@@ -22,11 +10,21 @@ const QtyHandler = ({setter, inputQty, qty, min, max, step, css, containerCss}:P
     const handleQtyNumber = (operator: string) => {
         if (operator === "+") {
           const number = inputQty === qty ? inputQty : inputQty + 1;
-          setter(number);
+          console.log(number)
+          if(_id) {
+            setter(number, _id, isVariant)
+          } else {
+              setter(number);
+          };
         } else {
           if (operator === "-") {
             const number = inputQty === 1 ? inputQty : inputQty - 1;
-            setter(number);
+            console.log(number)
+            if(_id) {
+                setter(number, _id, isVariant)
+            } else {
+                setter(number);
+            };
           } else {
             console.log("Undefined operator.");
           }

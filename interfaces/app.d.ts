@@ -60,4 +60,18 @@ export namespace App {
     containerCss: string;
     hoverCss: string;
   }
+
+  interface QtyHandler {
+    setter: Dispatch<SetStateAction<number>> | ((qtyParam: number, _id?: string, isVariant?: string | null) => any);
+    inputQty: number;
+    qty: number;
+    min: number;
+    max: number;
+    step: number;
+    css: string;
+    containerCss: string;
+    _id?: string;
+    isVariant?: string | null;
+  }
+
 }

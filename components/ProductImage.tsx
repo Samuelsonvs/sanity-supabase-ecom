@@ -25,6 +25,7 @@ export const ProductImage = ({
         _id,
         isVariant: null,
         count: 1,
+        method: 'ADD',
         user,
         basket,
         setBasket,

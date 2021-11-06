@@ -20,6 +20,7 @@ namespace Auth {
   interface UseBasket extends Basket {
     user: User;
     basket: Auth.Basket[] | null;
+    method: string;
     setBasket: Dispatch<SetStateAction<Auth.Basket[] | null>>;
   }
 

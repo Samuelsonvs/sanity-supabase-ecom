@@ -17,6 +17,7 @@ import RelatedProduct from "@/components/ProductDetail/RelatedProduct";
 import Description from "@/components/ProductDetail/Description";
 import UseBasket from "@/utils/basket";
 import { useUser } from "@/contexts/AuthContext";
+import QtyHandler from "@/components/QtyHandler";
 
 export const Slug: NextPage<GroqData.Product> = ({
   product,
@@ -73,6 +74,7 @@ export const Slug: NextPage<GroqData.Product> = ({
         _id,
         isVariant,
         count: inputQty,
+        method: 'ADD',
         user,
         basket,
         setBasket,
@@ -85,25 +87,6 @@ export const Slug: NextPage<GroqData.Product> = ({
 
   const tumbHandle = (index: number) => {
     setCurrentIndex(index);
-  };
-
-  const handleQtyNumber = (operator: string) => {
-    if (operator === "+") {
-      const number = inputQty === qty ? inputQty : inputQty + 1;
-      setInputQty(number);
-    } else {
-      if (operator === "-") {
-        const number = inputQty === 1 ? inputQty : inputQty - 1;
-        setInputQty(number);
-      } else {
-        console.log("Undefined operator.");
-      }
-    }
-  };
-
-  const handleQtyInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const number = e.target.value > qty ? qty : Number(e.target.value);
-    setInputQty(number);
   };
 
   const variantHandler = (index: number) => {
@@ -258,20 +241,16 @@ export const Slug: NextPage<GroqData.Product> = ({
                     <label htmlFor="qty" className="font-bold">
                       QTY
                     </label>
-                    <div className="inline ml-3 py-2 border rounded-3xl">
-                      <button onClick={() => handleQtyNumber("-")}>-</button>
-                      <input
-                        id="qty"
-                        type="number"
-                        onChange={(e) => handleQtyInput(e)}
-                        value={inputQty}
-                        min="1"
-                        max={currentItems.qty ?? qty}
-                        step="1"
-                        className="w-5"
-                      />
-                      <button onClick={() => handleQtyNumber("+")}>+</button>
-                    </div>
+                    <QtyHandler
+                      setter={setInputQty}
+                      inputQty={inputQty}
+                      qty={qty}
+                      min={1}
+                      max={currentItems.qty ?? qty}
+                      step={1}
+                      css={"w-5"}
+                      containerCss={"inline ml-3 py-2 border rounded-3xl"}
+                    />
                   </div>
                   <button
                     onClick={sendToBasket}

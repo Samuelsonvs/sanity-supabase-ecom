@@ -5,6 +5,7 @@ export const UseBasket = async ({
   _id,
   isVariant,
   count,
+  method,
   user,
   basket,
   setBasket,
@@ -13,29 +14,45 @@ export const UseBasket = async ({
   if (basket) {
     let isProduct: Auth.Basket[] = [];
     let newBasket: Auth.Basket[] = [];
-    basket.forEach((product) => {
-      product._id === _id ? isProduct.push(product) : newBasket.push(product);
-    });
-    if (isProduct.length > 0) {
-      const totalCount = isProduct[0].count + count;
+    if (method === 'REMOVE') {
+      const filtered = basket.filter((product) => {
+        return (
+          product._id !== _id
+        )
+      });
       const { error } = await setUserBasket(user, [
-        ...newBasket,
-        { _id, isVariant, count: totalCount },
+        ...filtered,
       ]);
       if (!error) {
-        setBasket([...newBasket, { _id, isVariant, count: totalCount }]);
+        setBasket([...filtered]);
       } else {
         result = error;
       }
     } else {
-      const { error } = await setUserBasket(user, [
-        ...basket,
-        { _id, isVariant, count },
-      ]);
-      if (!error) {
-        setBasket([...basket, { _id, isVariant, count }]);
+      basket.forEach((product) => {
+        product._id === _id ? isProduct.push(product) : newBasket.push(product);
+      });
+      if (isProduct.length > 0) {
+        const totalCount = isProduct[0].count + count;
+        const { error } = await setUserBasket(user, [
+          ...newBasket,
+          { _id, isVariant, count: totalCount },
+        ]);
+        if (!error) {
+          setBasket([...newBasket, { _id, isVariant, count: totalCount }]);
+        } else {
+          result = error;
+        }
       } else {
-        result = error;
+        const { error } = await setUserBasket(user, [
+          ...basket,
+          { _id, isVariant, count },
+        ]);
+        if (!error) {
+          setBasket([...basket, { _id, isVariant, count }]);
+        } else {
+          result = error;
+        }
       }
     }
   } else {
