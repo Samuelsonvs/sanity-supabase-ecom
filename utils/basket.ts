@@ -33,7 +33,7 @@ export const UseBasket = async ({
         product._id === _id ? isProduct.push(product) : newBasket.push(product);
       });
       if (isProduct.length > 0) {
-        const totalCount = isProduct[0].count + count;
+        const totalCount = method === 'UPDATE' ? count : isProduct[0].count + count;
         const { error } = await setUserBasket(user, [
           ...newBasket,
           { _id, isVariant, count: totalCount },

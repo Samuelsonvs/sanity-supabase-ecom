@@ -12,18 +12,13 @@ import { App } from "@/interfaces/app";
 import QtyHandler from "@/components/QtyHandler";
 import UseBasket from "@/utils/basket";
 
-interface Prop {
-  qty : number
-}
-
 export const Index = () => {
   const router = useRouter();
   const { session, user, basket, setBasket, loading } = useUser();
   const [data, setData] = useState<GroqData.Products | null>(null);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(true);
-  const [basketIdCountObj] = useState(basket?.reduce((list, product) => ({ ...list, [product._id]: [product.count, product.isVariant]}), {}))
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+  const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null)
 
-  console.log(basket)
   const handleQty = async (qtyParam: number, _id?: string, isVariant?: string | null) => {
     try {
       setSubmitLoading(true);
@@ -32,7 +27,7 @@ export const Index = () => {
           _id,
           isVariant: isVariant ?? null,
           count: qtyParam,
-          method: 'ADD',
+          method: 'UPDATE',
           user,
           basket,
           setBasket,
@@ -81,6 +76,7 @@ export const Index = () => {
         const json = await response.json();
         setData(json.products);
       })();
+      setBasketCountObj(basket?.reduce((list, product) => ({ ...list, [product._id]: [product.count, product.isVariant]}), {}))
     }
   }, [session, basket]);
 
@@ -123,18 +119,20 @@ export const Index = () => {
                 return (
                   <Fragment key={idx}>
                     <div>{_id}</div>
-                    <QtyHandler
+                    {currenBasketItems &&
+                      <QtyHandler
                       setter={handleQty}
-                      inputQty={Number(currenBasketItems && currenBasketItems[0])}
+                      inputQty={Number(currenBasketItems[0])}
                       qty={qty}
                       min={1}
                       _id={_id}
-                      isVariant={currenBasketItems && currenBasketItems[1]}
+                      isVariant={currenBasketItems[1]}
                       max={qty}
                       step={1}
                       css={"w-5"}
                       containerCss={"inline ml-3 py-2 border rounded-3xl"}
                     />
+                    }
                     <button onClick={() => removeHandler(_id, 1, null )}>Delete</button>
                 </Fragment>
                 )
