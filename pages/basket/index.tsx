@@ -1,19 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { Fragment, MouseEvent, useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 import Container from "@/container/Container";
 import { useUser } from "@/contexts/AuthContext";
 import { GroqData } from "@/interfaces/groqData";
-import { useRouter } from "next/router";
 import { Steps } from "@/components/Steps";
 import { productSolver } from "@/utils/groqResolver";
 import QtyHandler from "@/components/QtyHandler";
 import UseBasket from "@/utils/basket";
+import { sanityImage } from "@/utils/sanity";
 
 export const Index = () => {
-  const router = useRouter();
   const { session, user, basket, setBasket, loading } = useUser();
   const [data, setData] = useState<GroqData.Products | null>(null);
+  const dataLen = Array.isArray(data) && data.length
   const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null);
 
   const handleQty = async (
@@ -121,8 +123,26 @@ export const Index = () => {
                   const currenBasketItems =
                     basketIdCountObj &&
                     basketIdCountObj[_id as keyof typeof basketIdCountObj];
+                  const exactSlug = `/product/${slug}`
                   return (
-                    <Fragment key={idx}>
+                    <div key={idx} className={`flex flex-col pl-1 sm:pl-36 md:pl-1 items-center sm:items-start space-y-3 md:space-y-0 md:flex-row md:items-center justify-between p-1 ${dataLen !==idx +1 && "border-b pb-5"} ${idx !== 0 && "pt-5"}`}>
+                      <div className="flex flex-col items-center sm:flex-row space-x-3 space-y-3 sm:space-y-0">
+                        <Link passHref href={exactSlug}>
+                          <Image
+                            alt="ss"
+                            src={sanityImage(images[0], 170, 120) || ""}
+                            loading="lazy"
+                            title={"ss"}
+                            className="rounded-xl cursor-pointer"
+                            height={120}
+                            width={170}
+                          />  
+                        </Link>
+                        <Link passHref href={exactSlug}>
+                          <a className="w-40 leading-5 text-sm hover:underline">{title}</a>
+                        </Link>
+                        <p className="my-auto w-4 h-4 rounded-full" style={{ backgroundColor: `${Color.hex}` }}></p>
+                      </div>
                       {currenBasketItems && (
                         <QtyHandler
                           setter={handleQty}
@@ -134,13 +154,17 @@ export const Index = () => {
                           max={qty}
                           step={1}
                           css={"w-8"}
-                          containerCss={"inline-block border-2"}
+                          containerCss={"mt-2 md:mt-0 border-2"}
                         />
                       )}
-                      <button onClick={(e) => removeHandler(e, _id, 1, null)}>
+                      <div>{currenBasketItems && Number(currenBasketItems[0] * Number(price))}$</div>
+                      <button onClick={(e) => removeHandler(e, _id, 1, null)} className="btn btn-sm leading-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-4 h-4 mr-2 stroke-current">   
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>                       
+                        </svg>
                         Delete
-                      </button>
-                    </Fragment>
+                      </button> 
+                    </div>
                   );
                 })}
             </div>
