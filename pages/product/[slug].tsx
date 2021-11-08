@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps, GetStaticPropsContext } from "next";
 import Image from "next/image";
 import type { NextPage } from "next";
 
-import { urlFor } from "@/utils/sanity";
+import { sanityImage } from "@/utils/sanity";
 import configuredSanityClient from "@/utils/sanity";
 import Container from "@/container/Container";
 import { GroqData } from "@/interfaces/groqData";
@@ -135,10 +135,7 @@ export const Slug: NextPage<GroqData.Product> = ({
                         <Image
                           alt="ss"
                           src={
-                            urlFor(image.asset._ref)
-                              .width(400)
-                              .height(500)
-                              .url() || ""
+                            sanityImage(image.asset._ref, 400, 500) || ""
                           }
                           loading="lazy"
                           title={"ss"}
@@ -179,10 +176,7 @@ export const Slug: NextPage<GroqData.Product> = ({
                         <Image
                           alt="ss"
                           src={
-                            urlFor(image.asset._ref)
-                              .width(100)
-                              .height(100)
-                              .url() || ""
+                            sanityImage(image.asset._ref, 100, 100) || ""
                           }
                           title={"ss"}
                           className="rounded-xl"

@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { urlFor } from "@/utils/sanity";
+import { sanityImage } from "@/utils/sanity";
 
 interface Prop {
   image: string;
@@ -16,7 +16,7 @@ export const ProductCard = ({ image, href, title }: Prop) => {
       <figure className="px-10">
         <Image
           alt="ss"
-          src={urlFor(image).width(200).height(300).url() || ""}
+          src={sanityImage(image, 200, 300)|| ""}
           loading="lazy"
           title={"ss"}
           className="rounded-xl"

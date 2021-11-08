@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { urlFor } from "@/utils/sanity";
+import { sanityImage } from "@/utils/sanity";
 
 interface Props {
   element: {
@@ -52,10 +52,8 @@ export const BodySolver = ({ element }: Props) => {
         <Image
           alt="ss"
           src={
-            urlFor(element.asset?._ref as string)
-              .width(width)
-              .height(height)
-              .url() || ""
+            sanityImage(element.asset?._ref as string, width, height)
+            || ""
           }
           loading="lazy"
           title={"ss"}

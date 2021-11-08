@@ -30,7 +30,7 @@ const QtyHandler = ({setter, inputQty, qty, min, max, step, css, containerCss, _
 
     return (
         <div className={containerCss}>
-            <button onClick={() => handleQtyNumber("-")}>-</button>
+            <button className="bg-gray-200 inline" onClick={() => handleQtyNumber("-")}>-</button>
             <input
             id="qty"
             type="number"
@@ -41,7 +41,7 @@ const QtyHandler = ({setter, inputQty, qty, min, max, step, css, containerCss, _
             step={step}
             className={css}
             />
-            <button onClick={() => handleQtyNumber("+")}>+</button>
+            <button className="bg-gray-200 inline" onClick={() => handleQtyNumber("+")}>+</button>
       </div>
     )
 }

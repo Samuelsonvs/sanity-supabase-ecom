@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import { urlFor } from "@/utils/sanity";
+import { sanityImage } from "@/utils/sanity";
 import { App } from "@/interfaces/app";
 import { useUser } from "@/contexts/AuthContext";
 import UseBasket from "@/utils/basket";
@@ -43,7 +43,7 @@ export const ProductImage = ({
         <a className="flex w-full h-full cursor-pointer">
           <Image
             alt="ss"
-            src={urlFor(image).width(width).height(height).url() || ""}
+            src={sanityImage(image, width, height) || ""}
             loading="lazy"
             title={"ss"}
             className="rounded-2xl"

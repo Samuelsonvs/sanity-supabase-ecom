@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { GroqData } from "@/interfaces/groqData";
-import { urlFor } from "@/utils/sanity";
+import { sanityImage } from "@/utils/sanity";
 import { productSolver } from "@/utils/groqResolver";
 
 const menuNames = ["Chair", "Bedroom", "Kitchen", "TV Stands"];
@@ -46,7 +46,7 @@ export const BambooProducts = ({ products }: GroqData.Products) => {
                   <a className="carousel-item">
                     <Image
                       alt="ss"
-                      src={urlFor(image).width(300).height(200).url() || ""}
+                      src={sanityImage(image, 300, 200) || ""}
                       loading="lazy"
                       title={"ss"}
                       className="rounded-2xl"

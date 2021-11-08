@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { ChangeEvent, Fragment, MouseEvent, useEffect, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { Fragment, MouseEvent, useEffect, useState } from "react";
 
 import Container from "@/container/Container";
 import { useUser } from "@/contexts/AuthContext";
@@ -8,7 +7,6 @@ import { GroqData } from "@/interfaces/groqData";
 import { useRouter } from "next/router";
 import { Steps } from "@/components/Steps";
 import { productSolver } from "@/utils/groqResolver";
-import { App } from "@/interfaces/app";
 import QtyHandler from "@/components/QtyHandler";
 import UseBasket from "@/utils/basket";
 
@@ -88,7 +86,7 @@ export const Index = () => {
         />
         </div>
         {basket ? (
-          <div className="mt-10 shadow-2xl">
+          <div className="mt-10 shadow-2xl py-2">
             {data &&
               Array.isArray(data) &&
               data.map((product: any, idx) => {
@@ -119,11 +117,11 @@ export const Index = () => {
                       isVariant={currenBasketItems[1]}
                       max={qty}
                       step={1}
-                      css={"w-5"}
-                      containerCss={"ml-3 py-2 border rounded-3xl"}
+                      css={"w-8"}
+                      containerCss={"inline-block border-2"}
                     />
                     }
-                    <button className="mt-10" onClick={(e) => removeHandler(e, _id, 1, null )}>Delete</button>
+                    <button onClick={(e) => removeHandler(e, _id, 1, null )}>Delete</button>
                 </Fragment>
                 )
               })}
