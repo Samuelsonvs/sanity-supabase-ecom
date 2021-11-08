@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { ChangeEvent, Fragment, useEffect, useState } from "react";
+import React, { ChangeEvent, Fragment, MouseEvent, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import Container from "@/container/Container";
@@ -16,12 +16,10 @@ export const Index = () => {
   const router = useRouter();
   const { session, user, basket, setBasket, loading } = useUser();
   const [data, setData] = useState<GroqData.Products | null>(null);
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null)
 
   const handleQty = async (qtyParam: number, _id?: string, isVariant?: string | null) => {
     try {
-      setSubmitLoading(true);
       if (user && _id) {
         const { result } = await UseBasket({
           _id,
@@ -35,16 +33,13 @@ export const Index = () => {
         if (result) {
           console.log(result);
         }
-        console.log(qtyParam)
       }
     } catch (error: any) {
       alert(error.error_description || error.message);
-    } finally {
-      setSubmitLoading(false);
     }
   };
 
-  const removeHandler = async (_id: string, count: number, isVariant: string | null) => {
+  const removeHandler = async (e: MouseEvent<HTMLButtonElement | MouseEvent> ,_id: string, count: number, isVariant: string | null) => {
     if (user) {
       const { result } = await UseBasket({
         _id,
@@ -57,6 +52,8 @@ export const Index = () => {
       });
       if (result) {
         console.log(result);
+      } else {
+        (e.target as HTMLButtonElement).classList.add("hidden")
       }
     }
   }
@@ -80,12 +77,6 @@ export const Index = () => {
     }
   }, [session, basket]);
 
-
-  useEffect(() => {
-    if (!session) {
-      router.replace("/");
-    }
-  }, [session]);
 
   return (
     <Container>
@@ -118,7 +109,6 @@ export const Index = () => {
                 const currenBasketItems = basketIdCountObj && basketIdCountObj[_id as keyof typeof basketIdCountObj]
                 return (
                   <Fragment key={idx}>
-                    <div>{_id}</div>
                     {currenBasketItems &&
                       <QtyHandler
                       setter={handleQty}
@@ -130,10 +120,10 @@ export const Index = () => {
                       max={qty}
                       step={1}
                       css={"w-5"}
-                      containerCss={"inline ml-3 py-2 border rounded-3xl"}
+                      containerCss={"ml-3 py-2 border rounded-3xl"}
                     />
                     }
-                    <button onClick={() => removeHandler(_id, 1, null )}>Delete</button>
+                    <button className="mt-10" onClick={(e) => removeHandler(e, _id, 1, null )}>Delete</button>
                 </Fragment>
                 )
               })}

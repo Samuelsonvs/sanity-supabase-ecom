@@ -17,7 +17,7 @@ export const setUserProfiles = async (user: User, features: App.Updates) => {
   return { error };
 };
 
-export const setUserBasket = async (user: User, basket: Auth.Basket[]) => {
+export const setUserBasket = async (user: User, basket: Auth.Basket[] | null) => {
   const { error } = await supabase
     .from("users")
     .update({

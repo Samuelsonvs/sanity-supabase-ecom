@@ -11,57 +11,41 @@ export const UseBasket = async ({
   setBasket,
 }: Auth.UseBasket) => {
   let result = null;
+  let isList = null;
+  let updateCount = null;
+  let updateBasket = null;
+  let basketFirstItem = null;
   if (basket) {
     let isProduct: Auth.Basket[] = [];
     let newBasket: Auth.Basket[] = [];
     if (method === 'REMOVE') {
-      const filtered = basket.filter((product) => {
-        return (
-          product._id !== _id
-        )
-      });
-      const { error } = await setUserBasket(user, [
-        ...filtered,
-      ]);
-      if (!error) {
-        setBasket([...filtered]);
-      } else {
-        result = error;
-      }
+      const filtered = basket.filter((product) => product._id !== _id);
+      isList = filtered.length > 0 ? [...filtered] : null
+      const { error } = await setUserBasket(user, isList);
+      result = error
     } else {
       basket.forEach((product) => {
         product._id === _id ? isProduct.push(product) : newBasket.push(product);
       });
       if (isProduct.length > 0) {
         const totalCount = method === 'UPDATE' ? count : isProduct[0].count + count;
-        const { error } = await setUserBasket(user, [
-          ...newBasket,
-          { _id, isVariant, count: totalCount },
-        ]);
-        if (!error) {
-          setBasket([...newBasket, { _id, isVariant, count: totalCount }]);
-        } else {
-          result = error;
-        }
+        updateCount = [...newBasket, { _id, isVariant, count: totalCount }];
+        const { error } = await setUserBasket(user, updateCount);
+        result = error
       } else {
-        const { error } = await setUserBasket(user, [
-          ...basket,
-          { _id, isVariant, count },
-        ]);
-        if (!error) {
-          setBasket([...basket, { _id, isVariant, count }]);
-        } else {
-          result = error;
-        }
+        updateBasket = [...basket, { _id, isVariant, count }]
+        const { error } = await setUserBasket(user, updateBasket);
+        result = error
       }
     }
   } else {
-    const { error } = await setUserBasket(user, [{ _id, isVariant, count }]);
-    if (!error) {
-      setBasket([{ _id, isVariant, count }]);
-    } else {
-      result = error;
-    }
+    basketFirstItem = [{ _id, isVariant, count }]
+    const { error } = await setUserBasket(user, basketFirstItem);
+    result = error
+  }
+
+  if (!result) {
+    setBasket(isList ?? updateCount ?? updateBasket ??  basketFirstItem);
   }
 
   return {

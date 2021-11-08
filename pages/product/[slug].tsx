@@ -53,17 +53,18 @@ export const Slug: NextPage<GroqData.Product> = ({
 
   const { text } = bodySolver(body[0]);
 
+  const directions = {
+    "right": [len, 0, "+"],
+    "left": [0, len, "-"]
+  }
+
   const handleArrows = (event: string) => {
-    if (event === "right") {
-      const index = currentIndex === len ? 0 : currentIndex + 1;
+    const currentDirection = directions[event as keyof typeof directions]
+    if (currentDirection !== undefined) {
+      const index = currentIndex === currentDirection[0] ? currentDirection[1] : eval(`${currentIndex} ${currentDirection[2]} 1 `);
       setCurrentIndex(index);
     } else {
-      if (event === "left") {
-        const index = currentIndex === 0 ? len : currentIndex - 1;
-        setCurrentIndex(index);
-      } else {
-        console.log("Undefined event.");
-      }
+      console.log("Undefined event.");
     }
   };
 
@@ -79,9 +80,7 @@ export const Slug: NextPage<GroqData.Product> = ({
         basket,
         setBasket,
       });
-      if (result) {
-        console.log(result);
-      }
+      result && console.log(result);
     }
   };
 
