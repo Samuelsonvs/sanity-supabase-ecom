@@ -54,14 +54,17 @@ export const Slug: NextPage<GroqData.Product> = ({
   const { text } = bodySolver(body[0]);
 
   const directions = {
-    "right": [len, 0, "+"],
-    "left": [0, len, "-"]
-  }
+    right: [len, 0, "+"],
+    left: [0, len, "-"],
+  };
 
   const handleArrows = (event: string) => {
-    const currentDirection = directions[event as keyof typeof directions]
+    const currentDirection = directions[event as keyof typeof directions];
     if (currentDirection !== undefined) {
-      const index = currentIndex === currentDirection[0] ? currentDirection[1] : eval(`${currentIndex} ${currentDirection[2]} 1 `);
+      const index =
+        currentIndex === currentDirection[0]
+          ? currentDirection[1]
+          : eval(`${currentIndex} ${currentDirection[2]} 1 `);
       setCurrentIndex(index);
     } else {
       console.log("Undefined event.");
@@ -75,7 +78,7 @@ export const Slug: NextPage<GroqData.Product> = ({
         _id,
         isVariant,
         count: inputQty,
-        method: 'ADD',
+        method: "ADD",
         user,
         basket,
         setBasket,
@@ -134,9 +137,7 @@ export const Slug: NextPage<GroqData.Product> = ({
                       >
                         <Image
                           alt="ss"
-                          src={
-                            sanityImage(image.asset._ref, 400, 500) || ""
-                          }
+                          src={sanityImage(image.asset._ref, 400, 500) || ""}
                           loading="lazy"
                           title={"ss"}
                           className="rounded-xl"
@@ -175,9 +176,7 @@ export const Slug: NextPage<GroqData.Product> = ({
                       >
                         <Image
                           alt="ss"
-                          src={
-                            sanityImage(image.asset._ref, 100, 100) || ""
-                          }
+                          src={sanityImage(image.asset._ref, 100, 100) || ""}
                           title={"ss"}
                           className="rounded-xl"
                           height={100}

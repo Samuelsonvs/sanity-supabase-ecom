@@ -62,7 +62,9 @@ export namespace App {
   }
 
   interface QtyHandler {
-    setter: Dispatch<SetStateAction<number>> | ((qtyParam: number, _id?: string, isVariant?: string | null) => any);
+    setter:
+      | Dispatch<SetStateAction<number>>
+      | ((qtyParam: number, _id?: string, isVariant?: string | null) => any);
     inputQty: number;
     qty: number;
     min: number;
@@ -73,5 +75,4 @@ export namespace App {
     _id?: string;
     isVariant?: string | null;
   }
-
 }

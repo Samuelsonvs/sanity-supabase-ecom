@@ -16,7 +16,7 @@ export const ProductCard = ({ image, href, title }: Prop) => {
       <figure className="px-10">
         <Image
           alt="ss"
-          src={sanityImage(image, 200, 300)|| ""}
+          src={sanityImage(image, 200, 300) || ""}
           loading="lazy"
           title={"ss"}
           className="rounded-xl"

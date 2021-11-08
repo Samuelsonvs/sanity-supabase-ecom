@@ -8,7 +8,15 @@ const configuredSanityClient = sanityClient({
   useCdn: true,
 });
 
-export const sanityImage = (source: String | Object, width: number, height: number) =>
-  imageUrlBuilder(configuredSanityClient).image(source).width(width).height(height).url();
+export const sanityImage = (
+  source: String | Object,
+  width: number,
+  height: number
+) =>
+  imageUrlBuilder(configuredSanityClient)
+    .image(source)
+    .width(width)
+    .height(height)
+    .url();
 
 export default configuredSanityClient;

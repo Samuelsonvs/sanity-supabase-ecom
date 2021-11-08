@@ -14,16 +14,20 @@ export const Index = () => {
   const router = useRouter();
   const { session, user, basket, setBasket, loading } = useUser();
   const [data, setData] = useState<GroqData.Products | null>(null);
-  const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null)
+  const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null);
 
-  const handleQty = async (qtyParam: number, _id?: string, isVariant?: string | null) => {
+  const handleQty = async (
+    qtyParam: number,
+    _id?: string,
+    isVariant?: string | null
+  ) => {
     try {
       if (user && _id) {
         const { result } = await UseBasket({
           _id,
           isVariant: isVariant ?? null,
           count: qtyParam,
-          method: 'UPDATE',
+          method: "UPDATE",
           user,
           basket,
           setBasket,
@@ -37,13 +41,18 @@ export const Index = () => {
     }
   };
 
-  const removeHandler = async (e: MouseEvent<HTMLButtonElement | MouseEvent> ,_id: string, count: number, isVariant: string | null) => {
+  const removeHandler = async (
+    e: MouseEvent<HTMLButtonElement | MouseEvent>,
+    _id: string,
+    count: number,
+    isVariant: string | null
+  ) => {
     if (user) {
       const { result } = await UseBasket({
         _id,
         count,
         isVariant,
-        method: 'REMOVE',
+        method: "REMOVE",
         user,
         basket,
         setBasket,
@@ -51,11 +60,11 @@ export const Index = () => {
       if (result) {
         console.log(result);
       } else {
-        (e.target as HTMLButtonElement).classList.add("hidden")
+        (e.target as HTMLButtonElement).classList.add("hidden");
       }
     }
-  }
-  
+  };
+
   useEffect(() => {
     if (session && basket) {
       (async () => {
@@ -71,64 +80,73 @@ export const Index = () => {
         const json = await response.json();
         setData(json.products);
       })();
-      setBasketCountObj(basket?.reduce((list, product) => ({ ...list, [product._id]: [product.count, product.isVariant]}), {}))
+      setBasketCountObj(
+        basket?.reduce(
+          (list, product) => ({
+            ...list,
+            [product._id]: [product.count, product.isVariant],
+          }),
+          {}
+        )
+      );
     }
   }, [session, basket]);
-
 
   return (
     <Container>
       {!loading ? (
         <div className="mt-20 p-10 max-w-4xl mx-auto">
-        <div>
-        <Steps
-          step={['Basket']}
-        />
-        </div>
-        {basket ? (
-          <div className="mt-10 shadow-2xl py-2">
-            {data &&
-              Array.isArray(data) &&
-              data.map((product: any, idx) => {
-                const {
-                  blurb,
-                  body,
-                  category,
-                  Color,
-                  colors,
-                  images,
-                  price,
-                  qty,
-                  title,
-                  variants,
-                  slug,
-                  _id,
-                } = productSolver(product);
-                const currenBasketItems = basketIdCountObj && basketIdCountObj[_id as keyof typeof basketIdCountObj]
-                return (
-                  <Fragment key={idx}>
-                    {currenBasketItems &&
-                      <QtyHandler
-                      setter={handleQty}
-                      inputQty={Number(currenBasketItems[0])}
-                      qty={qty}
-                      min={1}
-                      _id={_id}
-                      isVariant={currenBasketItems[1]}
-                      max={qty}
-                      step={1}
-                      css={"w-8"}
-                      containerCss={"inline-block border-2"}
-                    />
-                    }
-                    <button onClick={(e) => removeHandler(e, _id, 1, null )}>Delete</button>
-                </Fragment>
-                )
-              })}
+          <div>
+            <Steps step={["Basket"]} />
           </div>
-        ) : (
-          <div>There are no products in your cart.</div>
-        )}
+          {basket ? (
+            <div className="mt-10 shadow-2xl py-2">
+              {data &&
+                Array.isArray(data) &&
+                data.map((product: any, idx) => {
+                  const {
+                    blurb,
+                    body,
+                    category,
+                    Color,
+                    colors,
+                    images,
+                    price,
+                    qty,
+                    title,
+                    variants,
+                    slug,
+                    _id,
+                  } = productSolver(product);
+                  const currenBasketItems =
+                    basketIdCountObj &&
+                    basketIdCountObj[_id as keyof typeof basketIdCountObj];
+                  return (
+                    <Fragment key={idx}>
+                      {currenBasketItems && (
+                        <QtyHandler
+                          setter={handleQty}
+                          inputQty={Number(currenBasketItems[0])}
+                          qty={qty}
+                          min={1}
+                          _id={_id}
+                          isVariant={currenBasketItems[1]}
+                          max={qty}
+                          step={1}
+                          css={"w-8"}
+                          containerCss={"inline-block border-2"}
+                        />
+                      )}
+                      <button onClick={(e) => removeHandler(e, _id, 1, null)}>
+                        Delete
+                      </button>
+                    </Fragment>
+                  );
+                })}
+            </div>
+          ) : (
+            <div>There are no products in your cart.</div>
+          )}
         </div>
       ) : (
         <div className="mt-20">Pls wait...</div>

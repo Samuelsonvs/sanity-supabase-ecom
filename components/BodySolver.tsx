@@ -51,10 +51,7 @@ export const BodySolver = ({ element }: Props) => {
       {element._type === "image" ? (
         <Image
           alt="ss"
-          src={
-            sanityImage(element.asset?._ref as string, width, height)
-            || ""
-          }
+          src={sanityImage(element.asset?._ref as string, width, height) || ""}
           loading="lazy"
           title={"ss"}
           className="rounded-xl"

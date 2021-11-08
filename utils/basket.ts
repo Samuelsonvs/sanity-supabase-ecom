@@ -18,34 +18,35 @@ export const UseBasket = async ({
   if (basket) {
     let isProduct: Auth.Basket[] = [];
     let newBasket: Auth.Basket[] = [];
-    if (method === 'REMOVE') {
+    if (method === "REMOVE") {
       const filtered = basket.filter((product) => product._id !== _id);
-      isList = filtered.length > 0 ? [...filtered] : null
+      isList = filtered.length > 0 ? [...filtered] : null;
       const { error } = await setUserBasket(user, isList);
-      result = error
+      result = error;
     } else {
       basket.forEach((product) => {
         product._id === _id ? isProduct.push(product) : newBasket.push(product);
       });
       if (isProduct.length > 0) {
-        const totalCount = method === 'UPDATE' ? count : isProduct[0].count + count;
+        const totalCount =
+          method === "UPDATE" ? count : isProduct[0].count + count;
         updateCount = [...newBasket, { _id, isVariant, count: totalCount }];
         const { error } = await setUserBasket(user, updateCount);
-        result = error
+        result = error;
       } else {
-        updateBasket = [...basket, { _id, isVariant, count }]
+        updateBasket = [...basket, { _id, isVariant, count }];
         const { error } = await setUserBasket(user, updateBasket);
-        result = error
+        result = error;
       }
     }
   } else {
-    basketFirstItem = [{ _id, isVariant, count }]
+    basketFirstItem = [{ _id, isVariant, count }];
     const { error } = await setUserBasket(user, basketFirstItem);
-    result = error
+    result = error;
   }
 
   if (!result) {
-    setBasket(isList ?? updateCount ?? updateBasket ??  basketFirstItem);
+    setBasket(isList ?? updateCount ?? updateBasket ?? basketFirstItem);
   }
 
   return {
