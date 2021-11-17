@@ -187,9 +187,7 @@ export const Index = () => {
                           onClick={(e) => removeHandler(e, _id, 1, null)}
                           className="btn btn-sm leading-4"
                         >
-                          <XSVG
-                          customClass={"w-5 h-5 mr-2"}
-                          />
+                          <XSVG customClass={"w-5 h-5 mr-2"} />
                           Delete
                         </button>
                       </div>
@@ -198,10 +196,10 @@ export const Index = () => {
                 <div className="mt-10 flex justify-center items-center sm:justify-between">
                   <Link passHref href="/basket/payment">
                     <a className="flex space-x-1 btn btn-primary rounded-xl px-5 border-yellow-600 hover:border-yellow-700 bg-yellow-600 hover:bg-yellow-700">
-                    <BasketSVG
-                      customClass={"w-4 h-4"}
-                      fill={"white"}
-                      stroke={"0"}
+                      <BasketSVG
+                        customClass={"w-4 h-4"}
+                        fill={"white"}
+                        stroke={"0"}
                       />
                       <span>Checkout</span>
                     </a>

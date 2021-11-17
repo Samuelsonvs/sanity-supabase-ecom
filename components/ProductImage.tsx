@@ -64,11 +64,7 @@ export const ProductImage = ({
               onClick={sendToBasket}
               className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full"
             >
-              <BasketSVG
-              customClass={"w-4 h-4"}
-              fill={"white"}
-              stroke={"0"}
-              />
+              <BasketSVG customClass={"w-4 h-4"} fill={"white"} stroke={"0"} />
             </button>
           </div>
         </div>

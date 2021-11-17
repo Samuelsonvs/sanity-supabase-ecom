@@ -5,7 +5,15 @@ import Link from "next/link";
 import { Popover, Transition } from "@headlessui/react";
 
 import { useUser } from "@/contexts/AuthContext";
-import { BasketSVG, BurgerSVG, ProfileSVG, SearchSVG, SettingsSVG, SignoutSVG, XSVG } from "@/lib/svg";
+import {
+  BasketSVG,
+  BurgerSVG,
+  ProfileSVG,
+  SearchSVG,
+  SettingsSVG,
+  SignoutSVG,
+  XSVG,
+} from "@/lib/svg";
 
 const navItems = [
   { home: "/" },
@@ -42,9 +50,7 @@ export const Navbar = () => {
                 className="absolute top-14 right-0 sm:right-2"
                 onClick={() => inputRef.current?.click()}
               >
-                <XSVG
-                customClass={"w-12 h-12"}
-                />
+                <XSVG customClass={"w-12 h-12"} />
               </button>
               <div className="modal-action flex-col justify-center items-center">
                 <ul>
@@ -99,7 +105,7 @@ export const Navbar = () => {
         </div>
         <div className="flex-none">
           <button className="btn btn-square btn-ghost">
-          <SearchSVG />
+            <SearchSVG />
           </button>
         </div>
         <div className="flex-none indicator">
@@ -112,9 +118,7 @@ export const Navbar = () => {
           </div>
           <Link passHref href={`${session ? "/basket" : "/signin"}`}>
             <a className="btn btn-square btn-ghost">
-            <BasketSVG
-            customClass={"w-5 h-5 sm:w-6 sm:h-6"}
-             />
+              <BasketSVG customClass={"w-5 h-5 sm:w-6 sm:h-6"} />
             </a>
           </Link>
         </div>
@@ -164,7 +168,7 @@ export const Navbar = () => {
                             </a>
                             <Link passHref href="/profile/settings">
                               <a className="flex p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
-                              <SettingsSVG />
+                                <SettingsSVG />
                                 <span>Settings</span>
                               </a>
                             </Link>
@@ -173,7 +177,7 @@ export const Navbar = () => {
                                 onClick={() => logOut()}
                                 className="flex p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                               >
-                              <SignoutSVG />
+                                <SignoutSVG />
                                 <span>Sign out</span>
                               </a>
                             </Link>
