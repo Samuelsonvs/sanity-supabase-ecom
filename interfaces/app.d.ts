@@ -75,4 +75,10 @@ export namespace App {
     _id?: string;
     isVariant?: string | null;
   }
+
+  interface Svg {
+    customClass: string;
+    fill?: string;
+    stroke?: string;
+  }
 }

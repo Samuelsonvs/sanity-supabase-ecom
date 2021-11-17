@@ -24,6 +24,9 @@ export function AuthProvider({ children }: Auth.Children) {
       async (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
+        setDefaultName(null);
+        setBasket(null);
+        setAvatarUrl(null);
       }
     );
 
