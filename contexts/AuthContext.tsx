@@ -46,6 +46,8 @@ export function AuthProvider({ children }: Auth.Children) {
         })
       );
       setLoading(false);
+    } else {
+      setLoading(false);
     }
   }, [user]);
 

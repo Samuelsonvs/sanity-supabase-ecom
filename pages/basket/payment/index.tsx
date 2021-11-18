@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
 import Container from "@/container/Container";
@@ -6,6 +6,14 @@ import { months, years } from "@/constants/arrays";
 import { CreditCardSVG, LockSVG } from "@/lib/svg";
 
 export const Index = () => {
+  const [debitValue, setDebitValue] = useState<number>()
+
+  const debitChance = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length < 12)
+    setDebitValue(Number(e.target.value))
+  };
+
+  console.log(debitValue)
   return (
     <Container>
       <div className="min-w-screen min-h-screen bg-gray-200 flex items-center justify-center px-5 pb-10 pt-16">
@@ -79,6 +87,8 @@ export const Index = () => {
             <label className="font-bold text-sm mb-2 ml-1">Card number</label>
             <div>
               <input
+                onChange={(e) => debitChance(e)}
+                value={debitValue}
                 className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
                 placeholder="0000 0000 0000 0000"
                 type="text"
