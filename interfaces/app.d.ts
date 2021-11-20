@@ -29,6 +29,7 @@ export namespace App {
     avatar_url?: string | null;
     email?: string | null;
     password?: string;
+    cardnum?: string;
   }
 
   interface SliderData {

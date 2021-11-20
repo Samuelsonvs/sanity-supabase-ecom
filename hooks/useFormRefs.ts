@@ -19,10 +19,17 @@ export const useFormRef = () => {
     minLength: 6,
   });
 
+  const cardNumberRef = register("cardnum", {
+    required: true,
+    minLength: 16,
+    max: 16,
+  });
+
   return {
     usernameRef,
     emailRef,
     passwordRef,
+    cardNumberRef,
   };
 };
 
