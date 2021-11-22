@@ -1,6 +1,6 @@
 import { Auth } from "./auth";
 import { Dispatch, SetStateAction } from "react";
-import { ChangeHandler } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 
 export namespace App {
   interface ContainerProps extends Auth.Children {
@@ -30,6 +30,8 @@ export namespace App {
     email?: string | null;
     password?: string;
     cardnum?: string;
+    cardname?: string;
+    resolver: any;
   }
 
   interface SliderData {
@@ -42,12 +44,11 @@ export namespace App {
   interface InputTypes {
     type: string;
     placeholder: string;
-    name: string;
+    name: any;
     defaultValue?: string;
     className?: string;
     disabled?: boolean;
-    onChange?: Dispatch<SetStateAction<string | null>>;
-    onBlur: ChangeHandler;
+    registerRef: UseFormRegister<FormValues>;
   }
 
   interface ImageProduct {

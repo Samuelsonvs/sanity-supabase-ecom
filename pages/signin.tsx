@@ -3,28 +3,24 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 
 import { useUser } from "@/contexts/AuthContext";
 import Container from "@/container/Container";
 import { App } from "@/interfaces/app";
 import Input from "@/components/Input";
-import useFormRef from "@/hooks/useFormRefs";
 import { ErrorSVG } from "@/lib/svg";
+import { signInSchema } from "@/utils/formValidations";
+import useFormRef from "@/hooks/useFormRefs";
 
 export const Signin: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [email, setEmail] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
-  const { passwordRef, emailRef } = useFormRef();
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = useForm<App.FormValues>();
+  const { register, handleSubmit, errors } = useFormRef(signInSchema);
   const { session, signIn } = useUser();
   const router = useRouter();
 
-  const handleLogin: SubmitHandler<App.FormValues> = async () => {
+  const handleLogin: SubmitHandler<App.FormValues> = async (data) => {
+    const { email, password} = data
     try {
       setLoading(true);
       if (email && password) {
@@ -37,6 +33,7 @@ export const Signin: NextPage = () => {
       setLoading(false);
     }
   };
+  console.log(errors)
 
   useEffect(() => {
     if (session) {
@@ -60,7 +57,7 @@ export const Signin: NextPage = () => {
               </div>
               <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                 <form
-                  onSubmit={handleSubmit(handleLogin)}
+                  onSubmit={handleSubmit(data => handleLogin(data))}
                   className="custom-card"
                 >
                   <div className="form-control">
@@ -69,12 +66,10 @@ export const Signin: NextPage = () => {
                     </label>
                     <Input
                       type={"email"}
-                      ref={emailRef.ref}
-                      placeholder={"Your email"}
-                      onChange={setEmail}
-                      onBlur={emailRef.onBlur}
-                      name={emailRef.name}
-                    />
+                      placeholder={"email"}
+                      name={"email"}
+                      registerRef={register}
+                      />
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -82,12 +77,10 @@ export const Signin: NextPage = () => {
                     </label>
                     <Input
                       type={"password"}
-                      ref={passwordRef.ref}
-                      placeholder={"Your password"}
-                      onChange={setPassword}
-                      onBlur={passwordRef.onBlur}
-                      name={passwordRef.name}
-                    />
+                      placeholder={"password"}
+                      name={"password"}
+                      registerRef={register}
+                      />
                     {errors.password && (
                       <div className="alert alert-warning mt-2">
                         <div className="flex-1">

@@ -1,35 +1,19 @@
 import { useForm } from "react-hook-form";
 import { App } from "@/interfaces/app";
+import { yupResolver } from '@hookform/resolvers/yup';
 
-export const useFormRef = () => {
-  const { register } = useForm<App.FormValues>();
+export const useFormRef = (schema: any) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<App.FormValues>({ resolver: yupResolver(schema) });
 
-  const usernameRef = register("username", {
-    required: true,
-    maxLength: 80,
-  });
-
-  const emailRef = register("email", {
-    required: true,
-    pattern: /^\S+@\S+$/i,
-  });
-
-  const passwordRef = register("password", {
-    required: true,
-    minLength: 6,
-  });
-
-  const cardNumberRef = register("cardnum", {
-    required: true,
-    minLength: 16,
-    max: 16,
-  });
 
   return {
-    usernameRef,
-    emailRef,
-    passwordRef,
-    cardNumberRef,
+    register,
+    handleSubmit,
+    errors,
   };
 };
 

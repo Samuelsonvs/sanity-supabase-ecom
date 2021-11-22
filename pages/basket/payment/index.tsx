@@ -5,20 +5,18 @@ import Container from "@/container/Container";
 import { months, years } from "@/constants/arrays";
 import { CreditCardSVG, ErrorSVG, LockSVG } from "@/lib/svg";
 import { useUser } from "@/contexts/AuthContext";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 import { App } from "@/interfaces/app";
 import useFormRef from "@/hooks/useFormRefs";
 import Input from "@/components/Input";
+import { cardSchema } from "@/utils/formValidations";
+import ErrorMessages from "@/utils/formErrors";
 
 export const Index = () => {
   const { loading } = useUser()
   const [debitValue, setDebitValue] = useState<string | null>(null)
   const inputCard = useRef<HTMLInputElement | null>(null);
-  const { cardNumberRef } = useFormRef();
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = useForm<App.FormValues>();
+  const { register, handleSubmit, errors } = useFormRef(cardSchema);
 
   const debitChance = () => {
     if (inputCard.current) {
@@ -39,7 +37,9 @@ export const Index = () => {
 
   const submitHandler: SubmitHandler<App.FormValues> = () => {
     typeof debitValue === "string" && console.log(debitValue.length)
-  }
+  };
+
+  console.log(errors)
 
   return (
     <Container>
@@ -57,7 +57,7 @@ export const Index = () => {
               </h1>
             </div>
               <form
-                    onSubmit={handleSubmit(submitHandler)}
+                    onSubmit={handleSubmit(data => submitHandler(data))}
                     className="custom-card"
                   >
               <div className="mb-3 flex flex-col sm:flex-row space-y-5 sm:space-y-0 -mx-2">
@@ -108,31 +108,34 @@ export const Index = () => {
               <div className="mb-3">
                 <label className="font-bold text-sm mb-2 ml-1">Name on card</label>
                 <div>
-                  <input
-                    className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-                    placeholder="John Smith"
-                    type="text"
+                  <Input
+                    className={"w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"}
+                    placeholder={"John Smith"}
+                    type={"text"}
+                    name={"cardname"}
+                    registerRef={register}
                   />
+                  {errors.cardname && (
+                      <div className="alert alert-warning mt-2">
+                        <div className="flex-1">
+                          <ErrorSVG />
+                          <label>{ErrorMessages["cardname"][errors.cardname.type as keyof typeof ErrorMessages["cardname"]]}</label>
+                        </div>
+                      </div>
+                    )}
                 </div>
               </div>
               <div className="mb-3">
                 <label className="font-bold text-sm mb-2 ml-1">Card number</label>
                 <div>
-                <Input
-                    type={"text"}
-                    ref={cardNumberRef.ref}
-                    placeholder={"0000 0000 0000 0000"}
-                    onChange={setDebitValue}
-                    onBlur={cardNumberRef.onBlur}
-                    name={cardNumberRef.name}
-                  />
-                  {/* <input
+                  <input
+                    {...register("cardnum")}
                     ref={inputCard}
                     onChange={debitChance}
                     className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
                     placeholder="0000 0000 0000 0000"
                     type="text"
-                  /> */}
+                  />
                 </div>
                 {errors.password && (
                       <div className="alert alert-warning mt-2">

@@ -3,30 +3,26 @@ import type { NextPage } from "next";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 
 import { useUser } from "@/contexts/AuthContext";
 import { setUserProfiles } from "@/utils/supabaseClient";
 import Container from "@/container/Container";
 import Input from "@/components/Input";
 import { App } from "@/interfaces/app";
-import useFormRef from "@/hooks/useFormRefs";
 import { ErrorSVG } from "@/lib/svg";
+import { signUpSchema } from "@/utils/formValidations";
+import useFormRef from "@/hooks/useFormRefs";
 
 export const Signup: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [registerName, setRegisterName] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
   const { session, signUp } = useUser();
-  const { passwordRef, usernameRef, emailRef } = useFormRef();
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = useForm<App.FormValues>();
+  const { register, handleSubmit, errors } = useFormRef(signUpSchema);
   const router = useRouter();
 
-  const handleRegister: SubmitHandler<App.FormValues> = async () => {
+  const handleRegister: SubmitHandler<App.FormValues> = async (data) => {
+    const { email, password} = data
     if (registerName && email && password) {
       const { error, user } = await signUp({ email, password });
       if (error) {
@@ -62,7 +58,7 @@ export const Signup: NextPage = () => {
               </div>
               <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                 <form
-                  onSubmit={handleSubmit(handleRegister)}
+                  onSubmit={handleSubmit(data => handleRegister(data))}
                   className="custom-card"
                 >
                   <div className="form-control">
@@ -71,12 +67,10 @@ export const Signup: NextPage = () => {
                     </label>
                     <Input
                       type={"text"}
-                      ref={usernameRef.ref}
-                      placeholder={"Your username"}
-                      onChange={setRegisterName}
-                      onBlur={usernameRef.onBlur}
-                      name={usernameRef.name}
-                    />
+                      placeholder={"username"}
+                      name={"username"}
+                      registerRef={register}
+                      />
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -84,12 +78,10 @@ export const Signup: NextPage = () => {
                     </label>
                     <Input
                       type={"email"}
-                      ref={emailRef.ref}
-                      placeholder={"Your email"}
-                      onChange={setEmail}
-                      onBlur={emailRef.onBlur}
-                      name={emailRef.name}
-                    />
+                      placeholder={"email"}
+                      name={"email"}
+                      registerRef={register}
+                      />
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -97,12 +89,10 @@ export const Signup: NextPage = () => {
                     </label>
                     <Input
                       type={"password"}
-                      ref={passwordRef.ref}
-                      placeholder={"Your password"}
-                      onChange={setPassword}
-                      onBlur={passwordRef.onBlur}
-                      name={passwordRef.name}
-                    />
+                      placeholder={"password"}
+                      name={"password"}
+                      registerRef={register}
+                      />
                     {errors.password && (
                       <div className="alert alert-warning mt-2">
                         <div className="flex-1">
