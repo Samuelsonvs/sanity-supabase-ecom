@@ -39,9 +39,11 @@ export const Footer = () => {
                 <div className="relative w-60 md:w-72 lg:w-80">
                   <Input
                     type={"email"}
+                    className={"w-full rounded-full text-tertiary bg-input"}
                     placeholder={"email"}
                     name={"email"}
                     registerRef={register}
+                    errors={errors.email}
                     />
                   <button className="absolute top-0 right-0 rounded-l-none rounded-r-full btn bg-gray-600">
                     send

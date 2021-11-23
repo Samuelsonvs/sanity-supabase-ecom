@@ -1,16 +1,15 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Image from "next/image";
 
 import Container from "@/container/Container";
 import { months, years } from "@/constants/arrays";
-import { CreditCardSVG, ErrorSVG, LockSVG } from "@/lib/svg";
+import { CreditCardSVG } from "@/lib/svg";
 import { useUser } from "@/contexts/AuthContext";
 import { SubmitHandler } from "react-hook-form";
 import { App } from "@/interfaces/app";
 import useFormRef from "@/hooks/useFormRefs";
 import Input from "@/components/Input";
 import { cardSchema } from "@/utils/formValidations";
-import ErrorMessages from "@/utils/formErrors";
 
 export const Index = () => {
   const { loading } = useUser()
@@ -109,42 +108,27 @@ export const Index = () => {
                 <label className="font-bold text-sm mb-2 ml-1">Name on card</label>
                 <div>
                   <Input
-                    className={"w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"}
+                    className={"w-full border-2 rounded-md"}
                     placeholder={"John Smith"}
                     type={"text"}
                     name={"cardname"}
                     registerRef={register}
+                    errors={errors.cardname}
                   />
-                  {errors.cardname && (
-                      <div className="alert alert-warning mt-2">
-                        <div className="flex-1">
-                          <ErrorSVG />
-                          <label>{ErrorMessages["cardname"][errors.cardname.type as keyof typeof ErrorMessages["cardname"]]}</label>
-                        </div>
-                      </div>
-                    )}
                 </div>
               </div>
               <div className="mb-3">
                 <label className="font-bold text-sm mb-2 ml-1">Card number</label>
                 <div>
-                  <input
-                    {...register("cardnum")}
-                    ref={inputCard}
-                    onChange={debitChance}
-                    className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
-                    placeholder="0000 0000 0000 0000"
-                    type="text"
+                  <Input
+                    className={"w-full border-2 rounded-md"}
+                    placeholder={"0000 0000 0000 0000"}
+                    type={"text"}
+                    name={"cardnumber"}
+                    registerRef={register}
+                    errors={errors.cardnumber}          
                   />
                 </div>
-                {errors.password && (
-                      <div className="alert alert-warning mt-2">
-                        <div className="flex-1">
-                          <ErrorSVG />
-                          <label>Password min 6</label>
-                        </div>
-                      </div>
-                    )}
               </div>
               <div className="mb-3 -mx-2 flex items-end">
                 <div className="px-2 w-1/2">
@@ -178,10 +162,13 @@ export const Index = () => {
               <div className="mb-10">
                 <label className="font-bold text-sm mb-2 ml-1">Security code</label>
                 <div>
-                  <input
-                    className="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors"
+                  <Input
+                    className={" border-2 rounded-md"}
                     placeholder="000"
-                    type="text"
+                    type={"text"}
+                    name={"securitycode"}
+                    registerRef={register}
+                    errors={errors.securitycode}                  
                   />
                 </div>
               </div>

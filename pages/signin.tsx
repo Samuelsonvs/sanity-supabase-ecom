@@ -33,7 +33,6 @@ export const Signin: NextPage = () => {
       setLoading(false);
     }
   };
-  console.log(errors)
 
   useEffect(() => {
     if (session) {
@@ -69,6 +68,7 @@ export const Signin: NextPage = () => {
                       placeholder={"email"}
                       name={"email"}
                       registerRef={register}
+                      errors={errors.email}
                       />
                   </div>
                   <div className="form-control">
@@ -80,15 +80,8 @@ export const Signin: NextPage = () => {
                       placeholder={"password"}
                       name={"password"}
                       registerRef={register}
+                      errors={errors.password}
                       />
-                    {errors.password && (
-                      <div className="alert alert-warning mt-2">
-                        <div className="flex-1">
-                          <ErrorSVG />
-                          <label>Password min 6</label>
-                        </div>
-                      </div>
-                    )}
                     <label className="label">
                       <a
                         href="#"

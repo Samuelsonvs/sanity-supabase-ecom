@@ -29,8 +29,9 @@ export namespace App {
     avatar_url?: string | null;
     email?: string | null;
     password?: string;
-    cardnum?: string;
     cardname?: string;
+    cardnumber?: number;
+    securitycode?: number;
     resolver: any;
   }
 
@@ -49,6 +50,7 @@ export namespace App {
     className?: string;
     disabled?: boolean;
     registerRef: UseFormRegister<FormValues>;
+    errors: any;
   }
 
   interface ImageProduct {
