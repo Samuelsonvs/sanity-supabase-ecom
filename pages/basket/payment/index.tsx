@@ -1,7 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import Image from "next/image";
 
-import Container from "@/container/Container";
 import { months, years } from "@/constants/arrays";
 import { CreditCardSVG } from "@/lib/svg";
 import { useUser } from "@/contexts/AuthContext";
@@ -10,40 +9,41 @@ import { App } from "@/interfaces/app";
 import useFormRef from "@/hooks/useFormRefs";
 import Input from "@/components/Input";
 import { cardSchema } from "@/utils/formValidations";
+import { usePayment } from "@/contexts/PaymentContext";
+import Container from "@/container/Container";
 
 export const Index = () => {
-  const { loading } = useUser()
-  const [debitValue, setDebitValue] = useState<string | null>(null)
-  const inputCard = useRef<HTMLInputElement | null>(null);
+  const { loading, basket } = useUser();
+  const { paymentObject } = usePayment()
+  const [debitValue, setDebitValue] = useState<string | null>("");
   const { register, handleSubmit, errors } = useFormRef(cardSchema);
+  console.log(paymentObject)
 
-  const debitChance = () => {
-    if (inputCard.current) {
-      const cardValue = inputCard.current.value
-      .replace(/\D/g, '')
-      .match(/(\d{0,4})(\d{0,4})(\d{0,4})(\d{0,4})/);
-      if (cardValue) {
-        inputCard.current.value = !cardValue[2]
-        ? cardValue[1]
-        : `${cardValue[1]} ${cardValue[2]}${`${
-            cardValue[3] ? ` ${cardValue[3]}` : ''
-          }`}${`${cardValue[4] ? ` ${cardValue[4]}` : ''}`}`;
-        const numbers = inputCard.current.value.replace(/(\D)/g, '');
-        setDebitValue(numbers);
+  const debitChance = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      const replacedValue = e.target.value.replace(/[^0-9]/g, "");
+      if (replacedValue.length <= 16) {
+        const numbers = replacedValue
+          .split("")
+          .map((letter, idx) =>
+            idx % 4 === 0 && idx !== 0 ? " " + letter : letter
+          );
+        setDebitValue(numbers.join(""));
       }
+    } else {
+      setDebitValue("");
     }
   };
 
-  const submitHandler: SubmitHandler<App.FormValues> = () => {
-    typeof debitValue === "string" && console.log(debitValue.length)
+  const submitHandler: SubmitHandler<App.FormValues> = (data) => {
+    typeof debitValue === "string" && console.log(debitValue.length);
+    console.log(data);
   };
-
-  console.log(errors)
 
   return (
     <Container>
-      { !loading ?   
-      (<div className="min-w-screen min-h-screen bg-gray-200 flex items-center justify-center px-5 pb-10 pt-16">
+      {!loading ? (
+        <div className="min-w-screen min-h-screen bg-gray-200 flex items-center justify-center px-5 pb-10 pt-16">
           <div className="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700 max-w-xl">
             <div className="w-full pt-1 pb-5">
               <div className="bg-yellow-600 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center">
@@ -55,10 +55,10 @@ export const Index = () => {
                 Secure payment info
               </h1>
             </div>
-              <form
-                    onSubmit={handleSubmit(data => submitHandler(data))}
-                    className="custom-card"
-                  >
+            <form
+              onSubmit={handleSubmit((data) => submitHandler(data))}
+              className="custom-card"
+            >
               <div className="mb-3 flex flex-col sm:flex-row space-y-5 sm:space-y-0 -mx-2">
                 <div className="px-2">
                   <label
@@ -105,7 +105,9 @@ export const Index = () => {
                 </div>
               </div>
               <div className="mb-3">
-                <label className="font-bold text-sm mb-2 ml-1">Name on card</label>
+                <label className="font-bold text-sm mb-2 ml-1">
+                  Name on card
+                </label>
                 <div>
                   <Input
                     className={"w-full border-2 rounded-md"}
@@ -118,7 +120,9 @@ export const Index = () => {
                 </div>
               </div>
               <div className="mb-3">
-                <label className="font-bold text-sm mb-2 ml-1">Card number</label>
+                <label className="font-bold text-sm mb-2 ml-1">
+                  Card number
+                </label>
                 <div>
                   <Input
                     className={"w-full border-2 rounded-md"}
@@ -126,7 +130,9 @@ export const Index = () => {
                     type={"text"}
                     name={"cardnumber"}
                     registerRef={register}
-                    errors={errors.cardnumber}          
+                    errors={errors.cardnumber}
+                    changer={debitChance}
+                    value={debitValue}
                   />
                 </div>
               </div>
@@ -160,7 +166,9 @@ export const Index = () => {
                 </div>
               </div>
               <div className="mb-10">
-                <label className="font-bold text-sm mb-2 ml-1">Security code</label>
+                <label className="font-bold text-sm mb-2 ml-1">
+                  Security code
+                </label>
                 <div>
                   <Input
                     className={" border-2 rounded-md"}
@@ -168,24 +176,23 @@ export const Index = () => {
                     type={"text"}
                     name={"securitycode"}
                     registerRef={register}
-                    errors={errors.securitycode}                  
+                    errors={errors.securitycode}
                   />
                 </div>
               </div>
               <div>
                 <input
                   type="submit"
-                  value="Submit" 
-                  className="flex space-x-4 justify-center items-center cursor-pointer w-full max-w-xs mx-auto bg-yellow-600 hover:bg-yellow-700 focus:bg-yellow-700 text-white rounded-lg px-3 py-3 font-semibold" 
-                  />
+                  value="Submit"
+                  className="flex space-x-4 justify-center items-center cursor-pointer w-full max-w-xs mx-auto bg-yellow-600 hover:bg-yellow-700 focus:bg-yellow-700 text-white rounded-lg px-3 py-3 font-semibold"
+                />
               </div>
             </form>
           </div>
-        </div>) : 
-        (
-          <div>Loading...</div>
-        )
-        }
+        </div>
+      ) : (
+        <div>Loading...</div>
+      )}
     </Container>
   );
 };

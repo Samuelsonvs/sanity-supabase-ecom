@@ -51,6 +51,8 @@ export namespace App {
     disabled?: boolean;
     registerRef: UseFormRegister<FormValues>;
     errors: any;
+    changer?: any;
+    value?: any;
   }
 
   interface ImageProduct {
@@ -84,5 +86,18 @@ export namespace App {
     customClass: string;
     fill?: string;
     stroke?: string;
+  }
+
+  interface Payment {
+    [key: string]: {
+      count: number;
+      price: number;
+      title: string;
+    }
+  }
+
+  interface PaymentData {
+    paymentObject: Payment | null;
+    setPaymentObject: Dispatch<SetStateAction<Payment | null>>;
   }
 }

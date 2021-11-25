@@ -3,7 +3,6 @@ import React, { MouseEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import Container from "@/container/Container";
 import { useUser } from "@/contexts/AuthContext";
 import { GroqData } from "@/interfaces/groqData";
 import { Steps } from "@/components/Steps";
@@ -12,22 +11,24 @@ import QtyHandler from "@/components/QtyHandler";
 import UseBasket from "@/utils/basket";
 import { sanityImage } from "@/utils/sanity";
 import { BasketSVG, XSVG } from "@/lib/svg";
+import { usePayment } from "@/contexts/PaymentContext";
+import Container from "@/container/Container";
 
 export const Index = () => {
   const { session, user, basket, setBasket, loading } = useUser();
+  const { paymentObject, setPaymentObject } = usePayment()
   const [data, setData] = useState<GroqData.Products | null>(null);
   const dataLen = Array.isArray(data) && data.length;
   const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null);
+  const [paymentData, setPaymentData ] = useState<any | null>(null);
+  
   const totalPrice =
-    Array.isArray(data) &&
-    basket &&
-    data?.reduce(
-      (acc: any, cur: any) =>
-        acc +
-        cur.defaultProductVariant.price *
-          (basketIdCountObj[cur._id] ? basketIdCountObj[cur._id][0] : 1),
-      0
-    );
+    paymentData &&
+    Object.keys(paymentData).reduce((acc, cur) => {
+      const paymentObj = paymentData[cur as keyof typeof paymentData];
+      return acc + paymentObj.price * paymentObj.count;
+    }, 0);
+
   const handleQty = async (
     qtyParam: number,
     _id?: string,
@@ -103,6 +104,30 @@ export const Index = () => {
       );
     }
   }, [session, basket]);
+
+  useEffect(() => {
+    if(data) {
+      const totalPrice = Array.isArray(data) &&
+      data.reduce(
+        (acc, cur) => ({
+          ...acc,
+          [cur._id]: {
+            count: basketIdCountObj[cur._id as keyof typeof basketIdCountObj][0],
+            price: cur.defaultProductVariant.price,
+            title: cur.title,
+          },
+        }),
+        {}
+      );
+      setPaymentData(totalPrice)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (paymentData) {
+      setPaymentObject(paymentData)
+    }
+  }, [paymentData])
 
   return (
     <Container>
@@ -180,7 +205,7 @@ export const Index = () => {
                         )}
                         <div>
                           {currenBasketItems &&
-                            Number(currenBasketItems[0] * Number(price))}
+                            (currenBasketItems[0] * Number(price)).toFixed(2)}
                           $
                         </div>
                         <button

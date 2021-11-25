@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { App } from "@/interfaces/app";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 
 export const useFormRef = (schema: any) => {
   const {
@@ -8,7 +8,6 @@ export const useFormRef = (schema: any) => {
     register,
     formState: { errors },
   } = useForm<App.FormValues>({ resolver: yupResolver(schema) });
-
 
   return {
     register,

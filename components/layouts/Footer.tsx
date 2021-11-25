@@ -11,9 +11,9 @@ import { footerSchema } from "@/utils/formValidations";
 
 export const Footer = () => {
   const { register, handleSubmit, errors } = useFormRef(footerSchema);
- 
+
   const handleLogin: SubmitHandler<App.FormValues> = async (data) => {
-    console.log(data)
+    console.log(data);
     // try {
     //   setLoading(true);
     //   const { error } = await signIn({ email, password });
@@ -29,7 +29,10 @@ export const Footer = () => {
       <div className="prose-lg bg-primary">
         <div className="py-3 grid grid-cols-1 sm:grid-cols-2 w-full border-b-2 border-white">
           <div className="card uppercase">
-            <form onSubmit={handleSubmit(data => handleLogin(data))} className="h-full">
+            <form
+              onSubmit={handleSubmit((data) => handleLogin(data))}
+              className="h-full"
+            >
               <div className="flex flex-col justify-evenly place-items-center lg:flex-row p-5 h-full">
                 <label className="label flex-nowrap">
                   <span className="text-lg text-tertiary">
@@ -44,7 +47,7 @@ export const Footer = () => {
                     name={"email"}
                     registerRef={register}
                     errors={errors.email}
-                    />
+                  />
                   <button className="absolute top-0 right-0 rounded-l-none rounded-r-full btn bg-gray-600">
                     send
                   </button>

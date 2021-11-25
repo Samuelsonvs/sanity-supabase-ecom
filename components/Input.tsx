@@ -5,23 +5,34 @@ import { App } from "@/interfaces/app";
 import { ErrorSVG } from "@/lib/svg";
 import ErrorMessages from "@/utils/formErrors";
 
-export const Input = 
-  (
-    {
-      type,
-      placeholder,
-      className = "",
-      defaultValue = "",
-      disabled = false,
-      name,
-      errors,
-      registerRef,
-    }: App.InputTypes
-  ) => {
-    const errorName = name as keyof typeof ErrorMessages;
-    const errorType = errors?.type as keyof typeof ErrorMessages[typeof errorName];
-    return (
-      <>
+export const Input = ({
+  type,
+  placeholder,
+  className = "",
+  defaultValue = "",
+  disabled = false,
+  name,
+  errors,
+  registerRef,
+  changer,
+  value,
+}: App.InputTypes) => {
+  const errorName = name as keyof typeof ErrorMessages;
+  const errorType =
+    errors?.type as keyof typeof ErrorMessages[typeof errorName];
+  return (
+    <>
+      {changer ? (
+        <input
+          type={type}
+          className={`input input-bordered ${className}`}
+          placeholder={placeholder}
+          disabled={disabled}
+          {...registerRef(name)}
+          onChange={(e) => changer(e)}
+          value={value}
+        />
+      ) : (
         <input
           type={type}
           className={`input input-bordered ${className}`}
@@ -30,16 +41,17 @@ export const Input =
           defaultValue={defaultValue}
           {...registerRef(name)}
         />
-        { errors && 
-        (<div className="alert alert-warning mt-2">
+      )}
+      {errors && (
+        <div className="alert alert-warning mt-2">
           <div className="flex-1">
-              <ErrorSVG />
-              <label>{ErrorMessages[errorName][errorType]}</label>
+            <ErrorSVG />
+            <label>{ErrorMessages[errorName][errorType]}</label>
           </div>
-        </div>)
-        }
-      </>
-    );
-  }
+        </div>
+      )}
+    </>
+  );
+};
 
 export default Input;

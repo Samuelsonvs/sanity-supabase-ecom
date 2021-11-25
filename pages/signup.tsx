@@ -22,7 +22,7 @@ export const Signup: NextPage = () => {
   const router = useRouter();
 
   const handleRegister: SubmitHandler<App.FormValues> = async (data) => {
-    const { email, password} = data
+    const { email, password } = data;
     if (registerName && email && password) {
       const { error, user } = await signUp({ email, password });
       if (error) {
@@ -58,7 +58,7 @@ export const Signup: NextPage = () => {
               </div>
               <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                 <form
-                  onSubmit={handleSubmit(data => handleRegister(data))}
+                  onSubmit={handleSubmit((data) => handleRegister(data))}
                   className="custom-card"
                 >
                   <div className="form-control">
@@ -70,7 +70,7 @@ export const Signup: NextPage = () => {
                       placeholder={"username"}
                       name={"username"}
                       registerRef={register}
-                      />
+                    />
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -81,7 +81,7 @@ export const Signup: NextPage = () => {
                       placeholder={"email"}
                       name={"email"}
                       registerRef={register}
-                      />
+                    />
                   </div>
                   <div className="form-control">
                     <label className="label">
@@ -92,7 +92,7 @@ export const Signup: NextPage = () => {
                       placeholder={"password"}
                       name={"password"}
                       registerRef={register}
-                      />
+                    />
                     {errors.password && (
                       <div className="alert alert-warning mt-2">
                         <div className="flex-1">
