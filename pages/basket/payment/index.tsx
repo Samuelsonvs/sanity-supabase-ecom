@@ -1,5 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { months, years } from "@/constants/arrays";
 import { CreditCardSVG } from "@/lib/svg";
@@ -11,15 +13,17 @@ import Input from "@/components/Input";
 import { cardSchema } from "@/utils/formValidations";
 import { usePayment } from "@/contexts/PaymentContext";
 import Container from "@/container/Container";
+import { Steps } from "@/components/Steps";
 
 export const Index = () => {
-  const { loading, basket } = useUser();
+  const { session, loading } = useUser();
   const { paymentObject } = usePayment()
   const [debitValue, setDebitValue] = useState<string | null>("");
+  const [securityValue, setSecurityValue] = useState<string | null>("");
   const { register, handleSubmit, errors } = useFormRef(cardSchema);
-  console.log(paymentObject)
+  const router = useRouter();
 
-  const debitChance = (e: ChangeEvent<HTMLInputElement>) => {
+  const debitChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       const replacedValue = e.target.value.replace(/[^0-9]/g, "");
       if (replacedValue.length <= 16) {
@@ -35,16 +39,66 @@ export const Index = () => {
     }
   };
 
+  const securityChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      const replacedValue = e.target.value.replace(/[^0-9]/g, "");
+      if (replacedValue.length <= 3) {
+        setSecurityValue(replacedValue);
+      }
+    } else {
+      setSecurityValue("");
+    }
+  }
+
   const submitHandler: SubmitHandler<App.FormValues> = (data) => {
     typeof debitValue === "string" && console.log(debitValue.length);
     console.log(data);
   };
 
+
+  useEffect(() => {
+    if (!session) {
+      router.replace("/");
+    } else if (!paymentObject) {
+      router.replace("/basket");
+    }
+  }, [session, paymentObject]);
+
   return (
     <Container>
       {!loading ? (
-        <div className="min-w-screen min-h-screen bg-gray-200 flex items-center justify-center px-5 pb-10 pt-16">
-          <div className="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700 max-w-xl">
+        <div className="mt-20 p-3 sm:p-10 max-w-4xl mx-auto">
+          <div>
+            <Steps step={["Basket","Purchase"]} />
+          </div>
+        <div className="min-w-screen prose-sm flex flex-col md:flex-row justify-center px-5 pb-10 pt-16">
+          {paymentObject && 
+            (
+              <div className="pr-2 mb-20 flex-shrink-0 mx-auto">
+                <ul className="mx-auto w-60 text-center font-semibold rounded-lg shadow-2xl p-5 text-gray-700 max-w-xl">
+                  {Object.keys(paymentObject).map((id, idx) => {
+                    const {count, price, title} = paymentObject[id];
+                    if (count) {
+                      return (
+                        <li key={idx} className="bg-yellow-200 rounded-lg">
+                          <div className="text-base">{title}</div>
+                          <div className="text-gray-500">
+                          {`${count} x ${price}`}
+                          </div>
+                          <span className="pl-8 text-gray-500">{`= ${(count*price).toFixed(2)}`}</span>
+                        </li>
+                      )
+                    }
+                  })}
+                  <li className="bg-yellow-400 rounded-lg">
+                    <span className="px-2">Total :</span>
+                    <span className="px-2">{paymentObject.totalPrice}$</span>
+                  </li>
+                </ul>
+              </div>
+            )
+          }
+          <div className="w-full mx-auto rounded-lg bg-white shadow-2xl p-5 text-gray-700 max-w-xl">
             <div className="w-full pt-1 pb-5">
               <div className="bg-yellow-600 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center">
                 <CreditCardSVG />
@@ -131,7 +185,7 @@ export const Index = () => {
                     name={"cardnumber"}
                     registerRef={register}
                     errors={errors.cardnumber}
-                    changer={debitChance}
+                    changer={debitChange}
                     value={debitValue}
                   />
                 </div>
@@ -177,6 +231,8 @@ export const Index = () => {
                     name={"securitycode"}
                     registerRef={register}
                     errors={errors.securitycode}
+                    changer={securityChange}
+                    value={securityValue}
                   />
                 </div>
               </div>
@@ -189,6 +245,7 @@ export const Index = () => {
               </div>
             </form>
           </div>
+        </div>
         </div>
       ) : (
         <div>Loading...</div>

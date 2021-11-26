@@ -97,7 +97,6 @@ export namespace App {
   }
 
   interface PaymentData {
-    paymentLoading: boolean;
     paymentObject: Payment | null;
     setPaymentObject: Dispatch<SetStateAction<Payment | null>>;
   }

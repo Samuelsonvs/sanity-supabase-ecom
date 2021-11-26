@@ -16,18 +16,12 @@ import Container from "@/container/Container";
 
 export const Index = () => {
   const { session, user, basket, setBasket, loading } = useUser();
-  const { paymentObject, setPaymentObject } = usePayment()
+  const { setPaymentObject } = usePayment()
   const [data, setData] = useState<GroqData.Products | null>(null);
   const dataLen = Array.isArray(data) && data.length;
   const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null);
   const [paymentData, setPaymentData ] = useState<any | null>(null);
-  
-  const totalPrice =
-    paymentData &&
-    Object.keys(paymentData).reduce((acc, cur) => {
-      const paymentObj = paymentData[cur as keyof typeof paymentData];
-      return acc + paymentObj.price * paymentObj.count;
-    }, 0);
+  const [totalPrice, setTotalPrice ] = useState<any | null>(null);
 
   const handleQty = async (
     qtyParam: number,
@@ -107,7 +101,7 @@ export const Index = () => {
 
   useEffect(() => {
     if(data) {
-      const totalPrice = Array.isArray(data) &&
+      const paymentObject = Array.isArray(data) &&
       data.reduce(
         (acc, cur) => ({
           ...acc,
@@ -119,13 +113,19 @@ export const Index = () => {
         }),
         {}
       );
-      setPaymentData(totalPrice)
+      setPaymentData(paymentObject)
     }
   }, [data])
 
   useEffect(() => {
     if (paymentData) {
-      setPaymentObject(paymentData)
+      const currentTotalPrice =
+      Object.keys(paymentData).reduce((acc, cur) => {
+        const paymentObj = paymentData[cur as keyof typeof paymentData];
+        return acc + paymentObj.price * paymentObj.count;
+      }, 0);
+      setTotalPrice(currentTotalPrice)
+      setPaymentObject({...paymentData, totalPrice: currentTotalPrice})
     }
   }, [paymentData])
 

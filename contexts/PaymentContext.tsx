@@ -8,22 +8,16 @@ export const PaymentContext = createContext({} as App.PaymentData);
 
 export function PaymentProvider({ children }: Auth.Children) {
   const [paymentObject, setPaymentObject] = useState<App.Payment | null>(null);
-  const [paymentLoading, setPaymentLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-      setPaymentLoading(true)
-  }, [paymentLoading])
 
   const paymentValue = useMemo(
     () => ({
-      paymentLoading,
       paymentObject,
       setPaymentObject,
     }),
-    [paymentObject, paymentLoading]
+    [paymentObject]
   );
 
-  return <PaymentContext.Provider value={paymentValue}>{paymentLoading && children}</PaymentContext.Provider>;
+  return <PaymentContext.Provider value={paymentValue}>{children}</PaymentContext.Provider>;
 }
 
 export const usePayment = () => {
