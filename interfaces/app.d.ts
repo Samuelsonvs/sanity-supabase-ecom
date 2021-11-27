@@ -32,6 +32,9 @@ export namespace App {
     cardname?: string;
     cardnumber?: number;
     securitycode?: number;
+    payment?: string;
+    month?: string;
+    year?: string;
     resolver: any;
   }
 
@@ -44,14 +47,16 @@ export namespace App {
 
   interface InputTypes {
     type: string;
-    placeholder: string;
+    id?: string;
+    placeholder?: string;
     name: any;
     defaultValue?: string;
     className?: string;
     disabled?: boolean;
     registerRef: UseFormRegister<FormValues>;
-    errors: any;
+    errors?: any;
     changer?: any;
+    checked?: boolean;
     value?: any;
   }
 

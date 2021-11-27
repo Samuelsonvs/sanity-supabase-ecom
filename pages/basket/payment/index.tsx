@@ -71,7 +71,9 @@ export const Index = () => {
           <div>
             <Steps step={["Basket","Purchase"]} />
           </div>
-        <div className="min-w-screen prose-sm flex flex-col md:flex-row justify-center px-5 pb-10 pt-16">
+        <div className="min-w-screen prose-sm px-5 pb-10 pt-16">
+          <div>sa</div>
+          <div className="flex flex-col md:flex-row justify-center">
           {paymentObject && 
             (
               <div className="pr-2 mb-20 flex-shrink-0 mx-auto">
@@ -119,12 +121,13 @@ export const Index = () => {
                     htmlFor="type1"
                     className="flex items-center cursor-pointer"
                   >
-                    <input
-                      type="radio"
-                      className="form-radio h-5 w-5 text-yellow-600"
-                      name="type"
-                      id="type1"
-                      defaultChecked
+                    <Input
+                      type={"radio"}
+                      id={"type1"}
+                      name={"payment"}
+                      registerRef={register}
+                      checked={true}
+                      value={"credit"} 
                     />
                     <div className="ml-3">
                       <Image
@@ -141,11 +144,12 @@ export const Index = () => {
                     htmlFor="type2"
                     className="flex items-center cursor-pointer"
                   >
-                    <input
-                      type="radio"
-                      className="form-radio h-5 w-5 text-yellow-600"
-                      name="type"
-                      id="type2"
+                    <Input
+                      type={"radio"}
+                      id={"type2"}
+                      name={"payment"}
+                      registerRef={register}
+                      value={"paypal"}
                     />
                     <div className="ml-3">
                       <Image
@@ -196,7 +200,7 @@ export const Index = () => {
                     Expiration date
                   </label>
                   <div>
-                    <select className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
+                    <select {...register("month")} className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
                       {months.map((month, idx) => {
                         return (
                           <option key={idx} value={month[0]}>
@@ -208,7 +212,7 @@ export const Index = () => {
                   </div>
                 </div>
                 <div className="px-2 w-1/2">
-                  <select className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
+                  <select {...register("year")} className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
                     {years.map((year, idx) => {
                       return (
                         <option key={idx} value={year}>
@@ -245,6 +249,7 @@ export const Index = () => {
               </div>
             </form>
           </div>
+        </div>
         </div>
         </div>
       ) : (

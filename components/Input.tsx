@@ -7,10 +7,12 @@ import ErrorMessages from "@/utils/formErrors";
 
 export const Input = ({
   type,
+  id,
   placeholder,
   className = "",
   defaultValue = "",
   disabled = false,
+  checked = false,
   name,
   errors,
   registerRef,
@@ -22,7 +24,16 @@ export const Input = ({
     errors?.type as keyof typeof ErrorMessages[typeof errorName];
   return (
     <>
-      {changer ? (
+      {type === "radio" ? (
+        <input
+        id={id}
+        type={type}
+        className={"form-radio h-5 w-5 text-yellow-600 cursor-pointer"}
+        {...registerRef(name)}
+        defaultChecked={checked}
+        value={value}
+      />
+      ) : changer ? (
         <input
           type={type}
           className={`input input-bordered ${className}`}

@@ -316,3 +316,12 @@ button,
 }
 
 /* debit card */
+
+/* custom prose */
+
+.prose-sm ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* custom prose */
