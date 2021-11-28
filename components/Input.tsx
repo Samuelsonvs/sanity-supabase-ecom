@@ -33,6 +33,12 @@ export const Input = ({
         defaultChecked={checked}
         value={value}
       />
+      ) : type === "textarea" ? (
+        <textarea
+        className="textarea h-24 w-full textarea-bordered border-2"
+        placeholder={placeholder}
+        {...registerRef(name)}
+        />
       ) : changer ? (
         <input
           type={type}

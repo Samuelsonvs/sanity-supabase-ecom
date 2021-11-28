@@ -6,6 +6,8 @@ const email = yup
   .matches(/^\S+@\S+$/i)
   .required();
 const password = yup.string().min(6).max(18).required();
+const phone = yup.string().matches(/[0-9]{3}-[0-9]{3}-[0-9]{4}/g).min(6).max(18).required();
+const address = yup.string().min(10).max(48).required();
 
 const cardname = yup
   .string()
@@ -44,5 +46,14 @@ export const cardSchema = yup
     cardname,
     cardnumber,
     securitycode,
+  })
+  .required();
+
+export const addressSchema = yup
+  .object()
+  .shape({
+    username,
+    phone,
+    address,
   })
   .required();

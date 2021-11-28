@@ -14,6 +14,9 @@ import { cardSchema } from "@/utils/formValidations";
 import { usePayment } from "@/contexts/PaymentContext";
 import Container from "@/container/Container";
 import { Steps } from "@/components/Steps";
+import FormContainer from "@/container/FormContainer";
+import FormInputButton from "@/components/FormInputButton";
+import Label from "@/components/Label";
 
 export const Index = () => {
   const { session, loading } = useUser();
@@ -50,11 +53,10 @@ export const Index = () => {
     }
   }
 
-  const submitHandler: SubmitHandler<App.FormValues> = (data) => {
+  const submitPayment: SubmitHandler<App.FormValues> = (data) => {
     typeof debitValue === "string" && console.log(debitValue.length);
     console.log(data);
   };
-
 
   useEffect(() => {
     if (!session) {
@@ -71,9 +73,7 @@ export const Index = () => {
           <div>
             <Steps step={["Basket","Purchase"]} />
           </div>
-        <div className="min-w-screen prose-sm px-5 pb-10 pt-16">
-          <div>sa</div>
-          <div className="flex flex-col md:flex-row justify-center">
+        <div className="min-w-screen prose-sm flex flex-col md:flex-row justify-center px-5 pb-10 pt-16">
           {paymentObject && 
             (
               <div className="pr-2 mb-20 flex-shrink-0 mx-auto">
@@ -100,19 +100,12 @@ export const Index = () => {
               </div>
             )
           }
-          <div className="w-full mx-auto rounded-lg bg-white shadow-2xl p-5 text-gray-700 max-w-xl">
-            <div className="w-full pt-1 pb-5">
-              <div className="bg-yellow-600 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center">
-                <CreditCardSVG />
-              </div>
-            </div>
-            <div className="mb-10">
-              <h1 className="text-center font-bold text-xl uppercase">
-                Secure payment info
-              </h1>
-            </div>
+          <FormContainer
+          svg={CreditCardSVG}
+          head={"Secure payment info"}
+          >
             <form
-              onSubmit={handleSubmit((data) => submitHandler(data))}
+              onSubmit={handleSubmit((data) => submitPayment(data))}
               className="custom-card"
             >
               <div className="mb-3 flex flex-col sm:flex-row space-y-5 sm:space-y-0 -mx-2">
@@ -163,9 +156,9 @@ export const Index = () => {
                 </div>
               </div>
               <div className="mb-3">
-                <label className="font-bold text-sm mb-2 ml-1">
-                  Name on card
-                </label>
+                <Label
+                  text={"Name on card"}
+                  />
                 <div>
                   <Input
                     className={"w-full border-2 rounded-md"}
@@ -178,9 +171,9 @@ export const Index = () => {
                 </div>
               </div>
               <div className="mb-3">
-                <label className="font-bold text-sm mb-2 ml-1">
-                  Card number
-                </label>
+                <Label
+                  text={"Card number"}
+                  />
                 <div>
                   <Input
                     className={"w-full border-2 rounded-md"}
@@ -196,9 +189,9 @@ export const Index = () => {
               </div>
               <div className="mb-3 -mx-2 flex items-end">
                 <div className="px-2 w-1/2">
-                  <label className="font-bold text-sm mb-2 ml-1">
-                    Expiration date
-                  </label>
+                <Label
+                  text={"Expiration date"}
+                  />
                   <div>
                     <select {...register("month")} className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
                       {months.map((month, idx) => {
@@ -224,9 +217,9 @@ export const Index = () => {
                 </div>
               </div>
               <div className="mb-10">
-                <label className="font-bold text-sm mb-2 ml-1">
-                  Security code
-                </label>
+                <Label
+                  text={"Security code"}
+                  />
                 <div>
                   <Input
                     className={" border-2 rounded-md"}
@@ -241,15 +234,12 @@ export const Index = () => {
                 </div>
               </div>
               <div>
-                <input
-                  type="submit"
-                  value="Submit"
-                  className="flex space-x-4 justify-center items-center cursor-pointer w-full max-w-xs mx-auto bg-yellow-600 hover:bg-yellow-700 focus:bg-yellow-700 text-white rounded-lg px-3 py-3 font-semibold"
-                />
+              <FormInputButton
+                  value={"Submit"}
+                  />
               </div>
             </form>
-          </div>
-        </div>
+          </FormContainer>
         </div>
         </div>
       ) : (

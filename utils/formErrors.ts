@@ -30,6 +30,20 @@ const ErrorMessages = {
     required: "Required field.",
     typeError: "Must be number.",
   },
+  phone: {
+    matches: "Match error.",
+    min: "Must be at least 3 digit.",
+    max: "Must be at most 3 digit.",
+    required: "Required field.",
+    typeError: "Must be number.",
+  },
+  address: {
+    matches: "Match error.",
+    min: "Must be at least 3 digit.",
+    max: "Must be at most 3 digit.",
+    required: "Required field.",
+    typeError: "Must be number.",
+  },
 };
 
 export default ErrorMessages;

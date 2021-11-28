@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { MouseEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import { SubmitHandler } from "react-hook-form";
 
 import { useUser } from "@/contexts/AuthContext";
 import { GroqData } from "@/interfaces/groqData";
@@ -10,18 +12,45 @@ import { productSolver } from "@/utils/groqResolver";
 import QtyHandler from "@/components/QtyHandler";
 import UseBasket from "@/utils/basket";
 import { sanityImage } from "@/utils/sanity";
-import { BasketSVG, XSVG } from "@/lib/svg";
+import { App } from "@/interfaces/app";
+import { BasketSVG, LocationSVG, XSVG } from "@/lib/svg";
 import { usePayment } from "@/contexts/PaymentContext";
 import Container from "@/container/Container";
+import FormContainer from "@/container/FormContainer";
+import Input from "@/components/Input";
+import useFormRef from "@/hooks/useFormRefs";
+import { addressSchema } from "@/utils/formValidations";
+import FormInputButton from "@/components/FormInputButton";
+import Label from "@/components/Label";
 
 export const Index = () => {
   const { session, user, basket, setBasket, loading } = useUser();
+  const { register, handleSubmit, errors } = useFormRef(addressSchema);
   const { setPaymentObject } = usePayment()
   const [data, setData] = useState<GroqData.Products | null>(null);
   const dataLen = Array.isArray(data) && data.length;
   const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null);
   const [paymentData, setPaymentData ] = useState<any | null>(null);
   const [totalPrice, setTotalPrice ] = useState<any | null>(null);
+  const [region, setRegion] = useState<string>('');
+  const [country, setCountry] = useState<string>('');
+  const [phone, setPhone] = useState<string | null>("");
+
+  const phoneChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value) {
+      const replacedValue = e.target.value.replace(/[^0-9]/g, "");
+      if (replacedValue.length <= 10) {
+        const numbers = replacedValue
+          .split("")
+          .map((letter, idx) =>
+            idx === 3 || idx === 6 ? "-" + letter : letter
+          );
+          setPhone(numbers.join(""));
+      }
+    } else {
+      setPhone("");
+    }
+  };
 
   const handleQty = async (
     qtyParam: number,
@@ -129,6 +158,11 @@ export const Index = () => {
     }
   }, [paymentData])
 
+  const addressSubmit: SubmitHandler<App.FormValues> = (data) => {
+    console.log("sa")
+    console.log(data);
+  };
+
   return (
     <Container>
       {!loading ? (
@@ -136,8 +170,91 @@ export const Index = () => {
           <div>
             <Steps step={["Basket"]} />
           </div>
+          <div className="min-w-screen prose-sm flex flex-col justify-center px-5 pb-10 pt-16">
+            <FormContainer
+            svg={LocationSVG}
+            head={"Address info"}
+            >
+            <form
+                onSubmit={handleSubmit((data) => addressSubmit(data))}
+                className="custom-card"
+              >
+                <div className="mb-3">
+                  <Label
+                  text={"Country"}
+                  />
+                  <CountryDropdown
+                    value={country}
+                    onChange={(value) => setCountry(value)}
+                    classes={"select select-bordered border-2 block w-full max-w-xs"}
+                    />
+                </div>
+                <div className="mb-3">
+                <Label
+                  text={"Region"}
+                  />
+                  <RegionDropdown
+                    country={country}
+                    value={region}
+                    onChange={(value) => setRegion(value)}
+                    classes={"select select-bordered border-2 block w-full max-w-xs"}
+                    />
+                </div>
+                <div className="mb-3 w-full">
+                <Label
+                  text={"Name Surname"}
+                  />
+                  <div>
+                    <Input
+                      className={"w-full border-2 rounded-md"}
+                      placeholder={"John Smith"}
+                      type={"text"}
+                      name={"username"}
+                      registerRef={register}
+                      errors={errors.username}
+                    />
+                  </div>
+                </div>
+                <div className="mb-3 w-full">
+                <Label
+                  text={"Phone"}
+                  />
+                  <div>
+                    <Input
+                      className={"w-full border-2 rounded-md"}
+                      placeholder={"123-456-7890"}
+                      type={"tel"}
+                      name={"phone"}
+                      registerRef={register}
+                      errors={errors.phone}
+                      changer={phoneChange}
+                      value={phone}
+                    />
+                  </div>
+                </div>
+                <div className="mb-3 w-full">
+                <Label
+                  text={"Address"}
+                  />
+                  <div>
+                    <Input 
+                      type={"textarea"}
+                      name={"address"}
+                      placeholder={"Address"}
+                      registerRef={register}
+                      errors={errors.address}
+                      />
+                  </div>
+                </div>
+              <div>
+                <FormInputButton
+                  value={"Save"}
+                  />
+              </div>
+            </form>
+          </FormContainer>
           {basket ? (
-            <div className="mt-10 shadow-2xl py-2">
+            <div className="mt-10 shadow-2xl rounded-lg py-2">
               <div className="px-1 sm:pl-36 md:px-1">
                 {data &&
                   Array.isArray(data) &&
@@ -218,7 +335,7 @@ export const Index = () => {
                       </div>
                     );
                   })}
-                <div className="mt-10 flex justify-center items-center sm:justify-between">
+                <div className="mt-10 pl-0 sm:pl-1 flex justify-center items-center sm:justify-between">
                   <Link passHref href="/basket/payment">
                     <a className="flex space-x-1 btn btn-primary rounded-xl px-5 border-yellow-600 hover:border-yellow-700 bg-yellow-600 hover:bg-yellow-700">
                       <BasketSVG
@@ -239,6 +356,7 @@ export const Index = () => {
           ) : (
             <div>There are no products in your cart.</div>
           )}
+          </div>
         </div>
       ) : (
         <div className="mt-20">Pls wait...</div>
