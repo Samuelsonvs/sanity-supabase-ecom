@@ -1,5 +1,3 @@
-import { GroqData } from "@/interfaces/groqData";
-
 export const productSolver = (product: any) => {
   const { blurb, body, category, defaultProductVariant, variants, slug, _id } =
     Array.isArray(product) ? product[0] : product;

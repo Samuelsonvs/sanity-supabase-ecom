@@ -33,7 +33,7 @@ export const setUserBasket = async (
 export const searchUser = async (user: User | null) => {
   const { data, error, status } = await supabase
     .from("users")
-    .select(`username, avatar_url, basket`)
+    .select(`username, avatar_url, basket, address`)
     .eq("id", user!.id)
     .single();
   return { data, error, status };
@@ -51,12 +51,12 @@ export const setAvatarData = async (path: string, file: File) => {
 
 export const getUserDetails = async (user: User | null) => {
   const { data, error, status } = await searchUser(user);
-  const { avatar_url, username, basket } = data;
+  const { avatar_url, username, basket, address } = data;
   if (avatar_url) {
     const { data, error } = await getAvatarData(avatar_url);
     const url = URL.createObjectURL(data);
     if (url && username) {
-      return { url, username, basket };
+      return { url, username, basket, address };
     }
     return { error };
   }
@@ -64,6 +64,19 @@ export const getUserDetails = async (user: User | null) => {
     return { username, basket };
   }
 
+  return { error };
+};
+
+export const setAddressTable = async (
+  user: User,
+  address: Auth.Address
+) => {
+  const { error } = await supabase
+    .from("users")
+    .update({
+      address,
+    })
+    .eq("id", user!.id);
   return { error };
 };
 

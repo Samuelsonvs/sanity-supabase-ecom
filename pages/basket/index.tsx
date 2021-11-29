@@ -13,7 +13,7 @@ import QtyHandler from "@/components/QtyHandler";
 import UseBasket from "@/utils/basket";
 import { sanityImage } from "@/utils/sanity";
 import { App } from "@/interfaces/app";
-import { BasketSVG, LocationSVG, XSVG } from "@/lib/svg";
+import { BasketSVG, LocationSVG, PlusSVG, XSVG } from "@/lib/svg";
 import { usePayment } from "@/contexts/PaymentContext";
 import Container from "@/container/Container";
 import FormContainer from "@/container/FormContainer";
@@ -22,9 +22,10 @@ import useFormRef from "@/hooks/useFormRefs";
 import { addressSchema } from "@/utils/formValidations";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
+import { setAddressTable } from "@/utils/supabaseClient";
 
 export const Index = () => {
-  const { session, user, basket, setBasket, loading } = useUser();
+  const { session, user, basket, setBasket, addresses, setAddresses, loading } = useUser();
   const { register, handleSubmit, errors } = useFormRef(addressSchema);
   const { setPaymentObject } = usePayment()
   const [data, setData] = useState<GroqData.Products | null>(null);
@@ -34,7 +35,11 @@ export const Index = () => {
   const [totalPrice, setTotalPrice ] = useState<any | null>(null);
   const [region, setRegion] = useState<string>('');
   const [country, setCountry] = useState<string>('');
-  const [phone, setPhone] = useState<string | null>("");
+  const [phone, setPhone] = useState<string>('');
+  const [addressForm, setAddressForm] = useState<boolean>(false)
+
+  console.log(loading)
+  console.log(addresses)
 
   const phoneChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -158,10 +163,24 @@ export const Index = () => {
     }
   }, [paymentData])
 
-  const addressSubmit: SubmitHandler<App.FormValues> = (data) => {
-    console.log("sa")
-    console.log(data);
+  const addressSubmit: SubmitHandler<App.FormValues> = async (data) => {
+    const { username, phone, address, addressname} = data;
+    if (user && region && addressname && username && phone && address) {
+      const addressObj = {...addresses,[addressname]: {region, username, phone, address}}
+      const { error } = await setAddressTable(user, addressObj)
+      if (error) {
+        console.log(error)
+      } else {
+        setAddresses(addressObj)
+      }
+    } else { 
+      console.log("Please choose region.")
+    }
   };
+
+  const addressFormOpener = () => {
+    
+  }
 
   return (
     <Container>
@@ -170,7 +189,40 @@ export const Index = () => {
           <div>
             <Steps step={["Basket"]} />
           </div>
-          <div className="min-w-screen prose-sm flex flex-col justify-center px-5 pb-10 pt-16">
+          <div className="min-w-screen prose-sm flex flex-col justify-center pb-10 pt-16">
+            {addresses && (
+            <div className="pb-16 flex flex-col flex-wrap sm:flex-row items-center sm:justify-evenly">
+              {Object.keys(addresses).map((adrs, idx) => {
+                const { address, phone, region, username } = addresses[adrs]
+                const idTag = adrs.toLowerCase().replace(" ", "_");
+                return (
+                  <div key={idx} className="w-72 h-48 p-2 mt-5 flex flex-col border-2 rounded-lg">
+                    <label
+                      htmlFor={idTag}
+                      className="flex items-center cursor-pointer"
+                    >
+                      <input type="radio" defaultChecked={idx === 0 ? true : false} id={idTag} name="address" className="form-radio h-5 w-5 text-yellow-600 cursor-pointer" value={adrs}/>
+                      <div className="ml-3 text-base font-bold">
+                        {adrs}
+                      </div>
+                    </label>
+                    <div><span className="font-semibold">Region: </span>{region}</div>
+                    <div><span className="font-semibold">Phone: </span>{phone}</div>
+                    <div><span className="font-semibold">Name: </span>{username}</div>
+                    <div className="break-words"><span className="font-semibold">Address: </span>{address}</div>
+                  </div>
+                )
+              })}
+              <div className="mt-5">
+                <button onClick={addressFormOpener} className="btn w-72 h-48 border-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200">
+                  <PlusSVG />
+                  address
+                </button>
+              </div>
+            </div>
+            )}
+            
+            <div className={`${addresses ? "hidden" : ""}`}>
             <FormContainer
             svg={LocationSVG}
             head={"Address info"}
@@ -179,6 +231,21 @@ export const Index = () => {
                 onSubmit={handleSubmit((data) => addressSubmit(data))}
                 className="custom-card"
               >
+              <div className="mb-3 w-full">
+                <Label
+                  text={"Address Name"}
+                  />
+                  <div>
+                    <Input
+                      className={"w-full border-2 rounded-md"}
+                      placeholder={"Home Address"}
+                      type={"text"}
+                      name={"addressname"}
+                      registerRef={register}
+                      errors={errors.addressname}
+                    />
+                  </div>
+                </div>
                 <div className="mb-3">
                   <Label
                   text={"Country"}
@@ -253,6 +320,7 @@ export const Index = () => {
               </div>
             </form>
           </FormContainer>
+          </div>
           {basket ? (
             <div className="mt-10 shadow-2xl rounded-lg py-2">
               <div className="px-1 sm:pl-36 md:px-1">

@@ -38,11 +38,13 @@ const ErrorMessages = {
     typeError: "Must be number.",
   },
   address: {
-    matches: "Match error.",
-    min: "Must be at least 3 digit.",
-    max: "Must be at most 3 digit.",
+    min: "Must be at least 10 character.",
+    max: "Must be at most 48 character.",
     required: "Required field.",
-    typeError: "Must be number.",
+  },
+  addressname: {
+    min: "Must be at least 20 character.",
+    required: "Required field.",
   },
 };
 

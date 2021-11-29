@@ -73,7 +73,7 @@ export const Index = () => {
           <div>
             <Steps step={["Basket","Purchase"]} />
           </div>
-        <div className="min-w-screen prose-sm flex flex-col md:flex-row justify-center px-5 pb-10 pt-16">
+        <div className="min-w-screen prose-sm flex flex-col md:flex-row justify-center pb-10 pt-16">
           {paymentObject && 
             (
               <div className="pr-2 mb-20 flex-shrink-0 mx-auto">

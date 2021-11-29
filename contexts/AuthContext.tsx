@@ -13,6 +13,7 @@ export function AuthProvider({ children }: Auth.Children) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
+  const [addresses, setAddresses] = useState<Auth.Address | null>(null); 
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export function AuthProvider({ children }: Auth.Children) {
         setDefaultName(null);
         setBasket(null);
         setAvatarUrl(null);
+        setAddresses(null)
       }
     );
 
@@ -37,17 +39,18 @@ export function AuthProvider({ children }: Auth.Children) {
 
   useEffect(() => {
     if (user) {
-      Promise.resolve(
-        getUserDetails(user).then((results) => {
-          const { url, username, basket } = results;
-          setAvatarUrl(url ?? null);
-          setDefaultName(username);
-          setBasket(basket);
-        })
-      );
-      setLoading(false);
-    } else {
-      setLoading(false);
+      (async() => {
+        await Promise.resolve(
+          getUserDetails(user).then((results) => {
+            const { url, username, basket, address } = results;
+            setAvatarUrl(url ?? null);
+            setDefaultName(username);
+            setBasket(basket);
+            setAddresses(address)
+          })
+        );        
+        setLoading(false)
+      })()
     }
   }, [user]);
 
@@ -61,6 +64,8 @@ export function AuthProvider({ children }: Auth.Children) {
       setAvatarUrl,
       basket,
       setBasket,
+      addresses,
+      setAddresses,
       loading,
       signIn: (options: UserCredentials) => supabase.auth.signIn(options),
       signUp: (options: UserCredentials) => supabase.auth.signUp(options),
@@ -69,7 +74,7 @@ export function AuthProvider({ children }: Auth.Children) {
         return supabase.auth.signOut();
       },
     }),
-    [user, defaultName, session, avatarUrl, basket]
+    [user, defaultName, session, avatarUrl, basket, addresses, loading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

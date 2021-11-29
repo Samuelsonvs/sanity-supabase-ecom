@@ -32,6 +32,7 @@ export namespace App {
     cardname?: string;
     cardnumber?: number;
     phone?: string;
+    addressname?: string;
     address?: string;
     securitycode?: number;
     payment?: string;

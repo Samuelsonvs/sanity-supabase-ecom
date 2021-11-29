@@ -24,6 +24,15 @@ namespace Auth {
     setBasket: Dispatch<SetStateAction<Basket[] | null>>;
   }
 
+  interface Address {
+    [key: string]: {
+      username: string;
+      phone: string;
+      region: string;
+      address: string;
+    }
+  }
+
   interface Context {
     session?: AuthSession | null;
     user: User | null;
@@ -33,6 +42,8 @@ namespace Auth {
     setAvatarUrl: Dispatch<SetStateAction<string | null>>;
     basket: Basket[] | null;
     setBasket: Dispatch<SetStateAction<Basket[] | null>>;
+    addresses: Address | null;
+    setAddresses: Dispatch<SetStateAction<Address | null>>;
     loading: boolean;
     signIn: (options: UserCredentials) => Promise<{
       session: AuthSession | null;
