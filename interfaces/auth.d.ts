@@ -29,6 +29,7 @@ namespace Auth {
       username: string;
       phone: string;
       region: string;
+      country: string;
       address: string;
     }
   }

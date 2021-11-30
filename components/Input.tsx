@@ -10,7 +10,7 @@ export const Input = ({
   id,
   placeholder,
   className = "",
-  defaultValue = "",
+  defaultValue = undefined,
   disabled = false,
   checked = false,
   name,
@@ -38,6 +38,7 @@ export const Input = ({
         className="textarea h-24 w-full textarea-bordered border-2"
         placeholder={placeholder}
         {...registerRef(name)}
+        defaultValue={defaultValue}
         />
       ) : changer ? (
         <input

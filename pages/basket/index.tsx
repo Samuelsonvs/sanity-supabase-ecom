@@ -23,6 +23,7 @@ import { addressSchema } from "@/utils/formValidations";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
 import { setAddressTable } from "@/utils/supabaseClient";
+import { Auth } from "@/interfaces/auth";
 
 export const Index = () => {
   const { session, user, basket, setBasket, addresses, setAddresses, loading } = useUser();
@@ -37,9 +38,9 @@ export const Index = () => {
   const [country, setCountry] = useState<string>('');
   const [phone, setPhone] = useState<string>('');
   const [addressForm, setAddressForm] = useState<boolean>(false)
-
-  console.log(loading)
-  console.log(addresses)
+  const [editAddress, setEditAddress] = useState<Auth.Address | null>(null)
+  const [choosenAddress, setChoosenAddress] = useState<string | null>(null)
+  let initAddress:string | null;
 
   const phoneChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -100,8 +101,6 @@ export const Index = () => {
       });
       if (result) {
         console.log(result);
-      } else {
-        (e.target as HTMLButtonElement).classList.add("hidden");
       }
     }
   };
@@ -166,20 +165,46 @@ export const Index = () => {
   const addressSubmit: SubmitHandler<App.FormValues> = async (data) => {
     const { username, phone, address, addressname} = data;
     if (user && region && addressname && username && phone && address) {
-      const addressObj = {...addresses,[addressname]: {region, username, phone, address}}
+      const addressObj = {...addresses,[addressname]: {country, region, username, phone, address}}
       const { error } = await setAddressTable(user, addressObj)
       if (error) {
         console.log(error)
       } else {
         setAddresses(addressObj)
+        setAddressForm(false)
       }
     } else { 
       console.log("Please choose region.")
     }
   };
 
-  const addressFormOpener = () => {
-    
+  const deleteAddress = async (address: string) => {
+    if (user) {
+      const newUpdatedAddresses = addresses &&  Object.keys(addresses).reduce((acc, cur) => {
+        if (cur !== address) {
+          return ({...acc, [cur]: addresses[cur]})
+        }else {
+          return {...acc}
+        }
+      }, {})
+      const { error } = await setAddressTable(user, {...newUpdatedAddresses})
+      if (error) {
+        console.log(error)
+      } else {
+        setAddresses({...newUpdatedAddresses})
+      }
+    }
+  }
+
+  const updateAddress = (adr: string) => {
+    if (addresses) {
+      const { address, username, phone, country, region } = addresses[adr]
+      setEditAddress({[adr]: {address, username, phone, country, region}})
+      setAddressForm(!addressForm)
+      setPhone(phone)
+      setCountry(country)
+      setRegion(region)
+    }
   }
 
   return (
@@ -193,19 +218,26 @@ export const Index = () => {
             {addresses && (
             <div className="pb-16 flex flex-col flex-wrap sm:flex-row items-center sm:justify-evenly">
               {Object.keys(addresses).map((adrs, idx) => {
-                const { address, phone, region, username } = addresses[adrs]
+                const { address, phone, region, country, username } = addresses[adrs]
                 const idTag = adrs.toLowerCase().replace(" ", "_");
                 return (
-                  <div key={idx} className="w-72 h-48 p-2 mt-5 flex flex-col border-2 rounded-lg">
-                    <label
-                      htmlFor={idTag}
-                      className="flex items-center cursor-pointer"
-                    >
-                      <input type="radio" defaultChecked={idx === 0 ? true : false} id={idTag} name="address" className="form-radio h-5 w-5 text-yellow-600 cursor-pointer" value={adrs}/>
-                      <div className="ml-3 text-base font-bold">
-                        {adrs}
+                  <div key={idx} className="w-72 h-52 p-2 mt-5 flex flex-col border-2 rounded-lg">
+                    <div className="flex justify-between">
+                      <label
+                        htmlFor={idTag}
+                        className="flex items-center cursor-pointer"
+                      >
+                        <input onChange={() => setChoosenAddress(adrs)} type="radio" defaultChecked={idx === 0 ? (initAddress = adrs, true) : false} id={idTag} name="address" className="form-radio h-5 w-5 text-yellow-600 cursor-pointer" value={adrs}/>
+                        <div className="ml-3 text-base font-bold">
+                          {adrs}
+                        </div>
+                      </label>
+                      <div className="flex space-x-2">
+                        <a onClick={() => deleteAddress(adrs)} className="btn px-2 min-h-6 h-8 bg-gray-200 text-gray-500 hover:bg-gray-300 border-none">Delete</a>
+                        <a onClick={() => updateAddress(adrs)} className="btn px-2 min-h-6 h-8 bg-gray-200 text-gray-500 hover:bg-gray-300 border-none">Edit</a>
                       </div>
-                    </label>
+                    </div>
+                    <div><span className="font-semibold">Country: </span>{country}</div>
                     <div><span className="font-semibold">Region: </span>{region}</div>
                     <div><span className="font-semibold">Phone: </span>{phone}</div>
                     <div><span className="font-semibold">Name: </span>{username}</div>
@@ -214,7 +246,7 @@ export const Index = () => {
                 )
               })}
               <div className="mt-5">
-                <button onClick={addressFormOpener} className="btn w-72 h-48 border-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200">
+                <button onClick={() => setAddressForm(true)} className="btn w-72 h-48 border-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200">
                   <PlusSVG />
                   address
                 </button>
@@ -222,7 +254,7 @@ export const Index = () => {
             </div>
             )}
             
-            <div className={`${addresses ? "hidden" : ""}`}>
+            <div className={`${addresses && !addressForm ? "hidden" : ""}`}>
             <FormContainer
             svg={LocationSVG}
             head={"Address info"}
@@ -242,6 +274,7 @@ export const Index = () => {
                       type={"text"}
                       name={"addressname"}
                       registerRef={register}
+                      defaultValue={editAddress ? Object.keys(editAddress)[0] : undefined}
                       errors={errors.addressname}
                     />
                   </div>
@@ -278,6 +311,7 @@ export const Index = () => {
                       type={"text"}
                       name={"username"}
                       registerRef={register}
+                      defaultValue={editAddress ? Object.values(editAddress)[0].username : undefined}
                       errors={errors.username}
                     />
                   </div>
@@ -309,6 +343,7 @@ export const Index = () => {
                       name={"address"}
                       placeholder={"Address"}
                       registerRef={register}
+                      defaultValue={editAddress ? Object.values(editAddress)[0].address : undefined}
                       errors={errors.address}
                       />
                   </div>
@@ -395,7 +430,7 @@ export const Index = () => {
                         </div>
                         <button
                           onClick={(e) => removeHandler(e, _id, 1, null)}
-                          className="btn btn-sm leading-4"
+                          className="btn min-h-8 h-3 flex-nowrap px-2"
                         >
                           <XSVG customClass={"w-5 h-5 mr-2"} />
                           Delete
