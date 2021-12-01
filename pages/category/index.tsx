@@ -9,9 +9,10 @@ import Container from "@/container/Container";
 import { productsTopCategory } from "@/utils/groqs";
 import { topCategorySolver } from "@/utils/groqResolver";
 import { GroqData } from "@/interfaces/groqData";
-import { categoryImages, defImage } from "@/constants/staticImages";
+import StaticImages from "@/constants/staticImages.json";
 
 export const Index: NextPage<GroqData.TopCategory> = ({ categories }) => {
+  const { categoryImages, defImage } = StaticImages;
   return (
     <Container>
       <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">

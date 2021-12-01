@@ -2,14 +2,16 @@ import React, { useRef, useState } from "react";
 import Image from "next/image";
 
 import { useSlider } from "@/hooks/useSlider";
-import { topCarouselImages } from "@/constants/staticImages";
+import StaticImages from "@/constants/staticImages.json";
 
-export const TopCarousel = () => {
+const TopCarousel = () => {
+  const { topCarouselImages } = StaticImages;
   const [opacities, setOpacities] = useState<number[]>([]);
   const sliderContainerRef = useRef<HTMLDivElement | null>(null);
+  const ImagesJsonKeys = Object.keys(topCarouselImages);
 
   const { mounted, active, next, prev } = useSlider(sliderContainerRef, {
-    slides: topCarouselImages.length,
+    slides: ImagesJsonKeys.length,
     loop: true,
     duration: 3000,
     move(s) {
@@ -24,7 +26,7 @@ export const TopCarousel = () => {
         ref={sliderContainerRef}
         className="relative h-96 sm:h-120 overflow-hidden"
       >
-        {topCarouselImages.map((image, idx) => {
+        {ImagesJsonKeys.map((imageKey, idx) => {
           return (
             <div
               key={idx}
@@ -34,7 +36,7 @@ export const TopCarousel = () => {
               {" "}
               {/* prod absolute */}
               <Image
-                src={image}
+                src={topCarouselImages[imageKey as keyof typeof topCarouselImages]}
                 priority
                 alt="crsl"
                 objectFit="cover"

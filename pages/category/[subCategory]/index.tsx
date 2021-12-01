@@ -13,9 +13,10 @@ import {
 import { subCategorySolver } from "@/utils/groqResolver";
 import Container from "@/container/Container";
 import Breadcrumb from "@/components/Breadcrumb";
-import { subCategoryImages, defImage } from "@/constants/staticImages";
+import StaticImages from "@/constants/staticImages.json";
 
 export const Index: NextPage<any> = ({ subCategories }) => {
+  const { subCategoryImages, defImage } = StaticImages;
   const router = useRouter();
   return (
     <Container>

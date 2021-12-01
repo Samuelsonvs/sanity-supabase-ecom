@@ -3,7 +3,7 @@ import React, { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { months, years } from "@/constants/arrays";
+import Dates from "@/constants/yearsMonths.json";
 import CreditCardSVG from "@/public/static/svg/creditCard.svg";
 import { useUser } from "@/contexts/AuthContext";
 import { SubmitHandler } from "react-hook-form";
@@ -19,6 +19,7 @@ import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
 
 export const Index = () => {
+  const { months, years } = Dates;
   const { session, loading } = useUser();
   const { paymentObject, selectedAddress } = usePayment()
   const [debitValue, setDebitValue] = useState<string | null>("");
@@ -195,10 +196,11 @@ export const Index = () => {
                   />
                   <div>
                     <select {...register("month")} className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
-                      {months.map((month, idx) => {
+                      {Object.keys(months).map((key, idx) => {
+                        const month = months[key as keyof typeof months]
                         return (
-                          <option key={idx} value={month[0]}>
-                            {month[0]} - {month[1]}
+                          <option key={idx} value={month}>
+                            {key} - {month}
                           </option>
                         );
                       })}
@@ -207,7 +209,8 @@ export const Index = () => {
                 </div>
                 <div className="px-2 w-1/2">
                   <select {...register("year")} className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
-                    {years.map((year, idx) => {
+                    {Object.keys(years).map((key, idx) => {
+                      const year = years[key as keyof typeof years]
                       return (
                         <option key={idx} value={year}>
                           {year}
