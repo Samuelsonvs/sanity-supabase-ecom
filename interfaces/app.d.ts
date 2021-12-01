@@ -107,5 +107,7 @@ export namespace App {
   interface PaymentData {
     paymentObject: Payment | null;
     setPaymentObject: Dispatch<SetStateAction<Payment | null>>;
+    selectedAddress : Auth.Address | null;
+    setSelectedAddress: Dispatch<SetStateAction<Auth.Address | null>>;
   }
 }

@@ -34,6 +34,15 @@ export const signUpSchema = yup
   })
   .required();
 
+export const settingsSchema = yup  
+  .object()
+  .shape({
+    username,
+    email,
+    password,
+  })
+  .required();
+
 export const footerSchema = yup
   .object()
   .shape({

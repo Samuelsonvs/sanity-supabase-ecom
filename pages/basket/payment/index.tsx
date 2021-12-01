@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { months, years } from "@/constants/arrays";
-import { CreditCardSVG } from "@/lib/svg";
+import CreditCardSVG from "@/public/static/svg/creditCard.svg";
 import { useUser } from "@/contexts/AuthContext";
 import { SubmitHandler } from "react-hook-form";
 import { App } from "@/interfaces/app";
@@ -20,12 +20,13 @@ import Label from "@/components/Label";
 
 export const Index = () => {
   const { session, loading } = useUser();
-  const { paymentObject } = usePayment()
+  const { paymentObject, selectedAddress } = usePayment()
   const [debitValue, setDebitValue] = useState<string | null>("");
   const [securityValue, setSecurityValue] = useState<string | null>("");
   const { register, handleSubmit, errors } = useFormRef(cardSchema);
   const router = useRouter();
 
+  console.log(selectedAddress);
   const debitChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       const replacedValue = e.target.value.replace(/[^0-9]/g, "");

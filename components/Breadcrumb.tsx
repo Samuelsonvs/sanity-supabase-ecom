@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { BreadcrumbSVG } from "@/lib/svg";
+import BreadcrumbSVG from "@/public/static/svg/breadcrumb.svg";
 
 interface Props {
   asPath: string;
@@ -22,7 +22,7 @@ export const Breadcrumb = ({ asPath }: Props) => {
                   <Link href={`/${newPath.join("/")}`}>
                     <a className="capitalize">{pathRefactor[idx]}</a>
                   </Link>
-                  <BreadcrumbSVG />
+                  <BreadcrumbSVG className="h-6 w-6"/>
                 </li>
               );
             } else {

@@ -2,7 +2,7 @@
 import React from "react";
 
 import { App } from "@/interfaces/app";
-import { ErrorSVG } from "@/lib/svg";
+import ErrorSVG from "@/public/static/svg/error.svg";
 import ErrorMessages from "@/utils/formErrors";
 
 export const Input = ({
@@ -63,7 +63,7 @@ export const Input = ({
       {errors && (
         <div className="alert alert-warning mt-2">
           <div className="flex-1">
-            <ErrorSVG />
+            <ErrorSVG className="w-6 h-6 mx-2"/>
             <label>{ErrorMessages[errorName][errorType]}</label>
           </div>
         </div>

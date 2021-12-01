@@ -6,8 +6,10 @@ import Link from "next/link";
 import { App } from "@/interfaces/app";
 import Input from "@/components/Input";
 import useFormRef from "@/hooks/useFormRefs";
-import { FacebookSVG, InstagramSVG, TwitterSVG } from "@/lib/svg";
 import { footerSchema } from "@/utils/formValidations";
+import InstagramSVG from "@/public/static/svg/instagram.svg";
+import FacebookSVG from "@/public/static/svg/facebook.svg";
+import TwitterSVG from "@/public/static/svg/twitter.svg";
 
 export const Footer = () => {
   const { register, handleSubmit, errors } = useFormRef(footerSchema);

@@ -9,7 +9,6 @@ import { useUser } from "@/contexts/AuthContext";
 import Container from "@/container/Container";
 import { App } from "@/interfaces/app";
 import Input from "@/components/Input";
-import { ErrorSVG } from "@/lib/svg";
 import { signInSchema } from "@/utils/formValidations";
 import useFormRef from "@/hooks/useFormRefs";
 

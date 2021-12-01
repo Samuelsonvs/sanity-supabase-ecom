@@ -5,15 +5,13 @@ import Link from "next/link";
 import { Popover, Transition } from "@headlessui/react";
 
 import { useUser } from "@/contexts/AuthContext";
-import {
-  BasketSVG,
-  BurgerSVG,
-  ProfileSVG,
-  SearchSVG,
-  SettingsSVG,
-  SignoutSVG,
-  XSVG,
-} from "@/lib/svg";
+import BasketSVG from "@/public/static/svg/basket.svg";
+import SearchSVG from "@/public/static/svg/search.svg";
+import BurgerSVG from "@/public/static/svg/burger.svg";
+import XSVG from "@/public/static/svg/x.svg";
+import ProfileSVG from "@/public/static/svg/profile.svg";
+import Logout from "@/public/static/svg/logout.svg";
+import SettingsSVG from "@/public/static/svg/settings.svg";
 
 const navItems = [
   { home: "/" },
@@ -35,7 +33,7 @@ export const Navbar = () => {
       <div className="navbar relative sm:absolute top-0 left-0 right-0 z-30 shadow-lg bg-primary bg-opacity-70 text-neutral-content">
         <div className="flex flex-none">
           <label htmlFor="my-modal-2" className="btn btn-square btn-ghost">
-            <BurgerSVG />
+            <BurgerSVG className="h-8 w-8" />
           </label>
           <input
             ref={inputRef}
@@ -50,7 +48,7 @@ export const Navbar = () => {
                 className="absolute top-14 right-0 sm:right-2"
                 onClick={() => inputRef.current?.click()}
               >
-                <XSVG customClass={"w-12 h-12"} />
+                <XSVG className="h-12 w-12" />
               </button>
               <div className="modal-action flex-col justify-center items-center">
                 <ul>
@@ -105,7 +103,7 @@ export const Navbar = () => {
         </div>
         <div className="flex-none">
           <button className="btn btn-square btn-ghost">
-            <SearchSVG />
+            <SearchSVG className="h-8 w-8" />
           </button>
         </div>
         <div className="flex-none indicator">
@@ -118,7 +116,8 @@ export const Navbar = () => {
           </div>
           <Link passHref href={`${session ? "/basket" : "/signin"}`}>
             <a className="btn btn-square btn-ghost">
-              <BasketSVG customClass={"w-5 h-5 sm:w-6 sm:h-6"} />
+              {/* <BasketSVG customClass={"w-5 h-5 sm:w-6 sm:h-6"} /> */}
+              <BasketSVG className="h-8 w-8"/>
             </a>
           </Link>
         </div>
@@ -159,26 +158,27 @@ export const Navbar = () => {
                       <Popover.Panel className="absolute z-50 w-32 mt-3 transform -translate-x-2/4">
                         <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                           <div className="relative grid gap-8 text-sm font-medium text-gray-600 bg-white p-5  text-center">
+                          <Link passHref href="/profile/settings">
                             <a
-                              href="#"
-                              className="flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                              className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                             >
-                              <ProfileSVG />
-                              <span>Your profile</span>
+                              <ProfileSVG className="h-5 w-5"/>
+                              <span className="pl-1">Profile</span>
                             </a>
+                            </Link>
                             <Link passHref href="/profile/settings">
-                              <a className="flex p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
-                                <SettingsSVG />
-                                <span>Settings</span>
+                              <a className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
+                                <SettingsSVG className="h-5 w-5" />
+                                <span className="pl-1">Settings</span>
                               </a>
                             </Link>
                             <Link passHref href="/">
                               <a
                                 onClick={() => logOut()}
-                                className="flex p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                                className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                               >
-                                <SignoutSVG />
-                                <span>Sign out</span>
+                                <Logout className="h-5 w-5"/>
+                                <span className="pl-1">Sign out</span>
                               </a>
                             </Link>
                           </div>

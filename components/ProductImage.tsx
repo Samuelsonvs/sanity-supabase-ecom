@@ -6,7 +6,7 @@ import { sanityImage } from "@/utils/sanity";
 import { App } from "@/interfaces/app";
 import { useUser } from "@/contexts/AuthContext";
 import UseBasket from "@/utils/basket";
-import { BasketSVG } from "@/lib/svg";
+import BasketSVG  from "@/public/static/svg/basketButton.svg";
 
 export const ProductImage = ({
   slug,
@@ -64,7 +64,7 @@ export const ProductImage = ({
               onClick={sendToBasket}
               className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full"
             >
-              <BasketSVG customClass={"w-4 h-4"} fill={"white"} stroke={"0"} />
+              <BasketSVG className="w-5 h-5"/>
             </button>
           </div>
         </div>

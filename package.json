@@ -36,6 +36,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@svgr/webpack": "^6.0.0",
     "@types/react": "17.0.20",
     "autoprefixer": "^10.3.4",
     "eslint": "7.32.0",

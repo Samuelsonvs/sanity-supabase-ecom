@@ -10,7 +10,7 @@ import { setUserProfiles } from "@/utils/supabaseClient";
 import Container from "@/container/Container";
 import Input from "@/components/Input";
 import { App } from "@/interfaces/app";
-import { ErrorSVG } from "@/lib/svg";
+import ErrorSVG from "@/public/static/svg/error.svg";
 import { signUpSchema } from "@/utils/formValidations";
 import useFormRef from "@/hooks/useFormRefs";
 
@@ -96,7 +96,7 @@ export const Signup: NextPage = () => {
                     {errors.password && (
                       <div className="alert alert-warning mt-2">
                         <div className="flex-1">
-                          <ErrorSVG />
+                          <ErrorSVG className="w-6 h-6 mx-2"/>
                           <label>Password min 6</label>
                         </div>
                       </div>

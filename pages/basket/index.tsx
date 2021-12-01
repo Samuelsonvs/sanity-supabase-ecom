@@ -13,7 +13,10 @@ import QtyHandler from "@/components/QtyHandler";
 import UseBasket from "@/utils/basket";
 import { sanityImage } from "@/utils/sanity";
 import { App } from "@/interfaces/app";
-import { BasketSVG, LocationSVG, PlusSVG, XSVG } from "@/lib/svg";
+import BasketSVG from "@/public/static/svg/basketButton.svg";
+import XSVG from "@/public/static/svg/xButton.svg";
+import LocationSVG from "@/public/static/svg/location.svg";
+import PlusSVG from "@/public/static/svg/plus.svg";
 import { usePayment } from "@/contexts/PaymentContext";
 import Container from "@/container/Container";
 import FormContainer from "@/container/FormContainer";
@@ -28,7 +31,7 @@ import { Auth } from "@/interfaces/auth";
 export const Index = () => {
   const { session, user, basket, setBasket, addresses, setAddresses, loading } = useUser();
   const { register, handleSubmit, errors } = useFormRef(addressSchema);
-  const { setPaymentObject } = usePayment()
+  const { setPaymentObject, setSelectedAddress } = usePayment()
   const [data, setData] = useState<GroqData.Products | null>(null);
   const dataLen = Array.isArray(data) && data.length;
   const [basketIdCountObj, setBasketCountObj] = useState<any | null>(null);
@@ -40,7 +43,7 @@ export const Index = () => {
   const [addressForm, setAddressForm] = useState<boolean>(false)
   const [editAddress, setEditAddress] = useState<Auth.Address | null>(null)
   const [choosenAddress, setChoosenAddress] = useState<string | null>(null)
-  let initAddress:string | null;
+  let initAddress: string | null;
 
   const phoneChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -207,6 +210,14 @@ export const Index = () => {
     }
   }
 
+  const handleCurrentAddress = () => {
+    const addressName = choosenAddress ?? initAddress
+    if (addressName && addresses) {
+      const currentAddress = {[addressName]: addresses[addressName]}
+      setSelectedAddress(currentAddress)
+    }
+  }
+
   return (
     <Container>
       {!loading ? (
@@ -247,7 +258,7 @@ export const Index = () => {
               })}
               <div className="mt-5">
                 <button onClick={() => setAddressForm(true)} className="btn w-72 h-48 border-2 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200">
-                  <PlusSVG />
+                  <PlusSVG className="w-8 h-8" />
                   address
                 </button>
               </div>
@@ -432,7 +443,7 @@ export const Index = () => {
                           onClick={(e) => removeHandler(e, _id, 1, null)}
                           className="btn min-h-8 h-3 flex-nowrap px-2"
                         >
-                          <XSVG customClass={"w-5 h-5 mr-2"} />
+                          <XSVG className="w-5 h-5 mr-1" />
                           Delete
                         </button>
                       </div>
@@ -440,11 +451,9 @@ export const Index = () => {
                   })}
                 <div className="mt-10 pl-0 sm:pl-1 flex justify-center items-center sm:justify-between">
                   <Link passHref href="/basket/payment">
-                    <a className="flex space-x-1 btn btn-primary rounded-xl px-5 border-yellow-600 hover:border-yellow-700 bg-yellow-600 hover:bg-yellow-700">
+                    <a onClick={handleCurrentAddress} className="flex space-x-1 btn btn-primary rounded-xl px-5 border-yellow-600 hover:border-yellow-700 bg-yellow-600 hover:bg-yellow-700">
                       <BasketSVG
-                        customClass={"w-4 h-4"}
-                        fill={"white"}
-                        stroke={"0"}
+                        className="w-5 h-5"
                       />
                       <span>Checkout</span>
                     </a>

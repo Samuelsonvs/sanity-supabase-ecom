@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 
 import { setUserProfiles, setAvatarData } from "@/utils/supabaseClient";
 import Avatar from "@/components/Avatar";
@@ -10,6 +10,7 @@ import Container from "@/container/Container";
 import { App } from "@/interfaces/app";
 import Input from "@/components/Input";
 import useFormRef from "@/hooks/useFormRefs";
+import { settingsSchema } from "@/utils/formValidations";
 
 export const Account: NextPage = () => {
   const { session, user, setAvatarUrl, defaultName, setDefaultName } =
@@ -19,11 +20,7 @@ export const Account: NextPage = () => {
   const [email, setEmail] = useState<string | null>(null);
   const [tempAvatarUrl, setTempAvatarUrl] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<App.Path | null>(null);
-  const { passwordRef, emailRef, usernameRef } = useFormRef();
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = useForm<App.FormValues>();
+  const { register, handleSubmit, errors } = useFormRef(settingsSchema);
   const router = useRouter();
   const handleUpdate: SubmitHandler<App.FormValues> = async () => {
     try {
@@ -91,12 +88,10 @@ export const Account: NextPage = () => {
                     </label>
                     <Input
                       type={"text"}
-                      ref={usernameRef.ref}
-                      placeholder={"Your username"}
-                      defaultValue={defaultName ?? ""}
-                      onChange={setUsername}
-                      onBlur={usernameRef.onBlur}
-                      name={usernameRef.name}
+                      placeholder={"username"}
+                      name={"username"}
+                      registerRef={register}
+                      defaultValue={defaultName ?? undefined}
                     />
                   </div>
                   <div className="form-control sm:w-96">
@@ -105,12 +100,11 @@ export const Account: NextPage = () => {
                     </label>
                     <Input
                       type={"password"}
-                      ref={passwordRef.ref}
                       placeholder={"Your password"}
-                      onBlur={passwordRef.onBlur}
+                      name={"password"}
+                      registerRef={register}
                       defaultValue="**********"
                       disabled={true}
-                      name={passwordRef.name}
                     />
                     <label className="label">
                       <a
@@ -127,12 +121,11 @@ export const Account: NextPage = () => {
                     </label>
                     <Input
                       type={"email"}
-                      ref={emailRef.ref}
                       placeholder={"Your email"}
-                      onBlur={emailRef.onBlur}
+                      name={"email"}
+                      registerRef={register}
                       defaultValue={user?.email}
                       disabled={true}
-                      name={emailRef.name}
                     />
                     <label className="label">
                       <a
