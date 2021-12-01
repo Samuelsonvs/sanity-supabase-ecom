@@ -13,7 +13,7 @@ export function AuthProvider({ children }: Auth.Children) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
-  const [addresses, setAddresses] = useState<Auth.Address | null>(null); 
+  const [addresses, setAddresses] = useState<Auth.Address | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export function AuthProvider({ children }: Auth.Children) {
         setDefaultName(null);
         setBasket(null);
         setAvatarUrl(null);
-        setAddresses(null)
+        setAddresses(null);
       }
     );
 
@@ -39,18 +39,18 @@ export function AuthProvider({ children }: Auth.Children) {
 
   useEffect(() => {
     if (user) {
-      (async() => {
+      (async () => {
         await Promise.resolve(
           getUserDetails(user).then((results) => {
             const { url, username, basket, address } = results;
             setAvatarUrl(url ?? null);
             setDefaultName(username);
             setBasket(basket);
-            setAddresses(address)
+            setAddresses(address);
           })
-        );        
-        setLoading(false)
-      })()
+        );
+        setLoading(false);
+      })();
     }
   }, [user]);
 

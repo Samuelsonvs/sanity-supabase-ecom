@@ -67,10 +67,7 @@ export const getUserDetails = async (user: User | null) => {
   return { error };
 };
 
-export const setAddressTable = async (
-  user: User,
-  address: Auth.Address
-) => {
+export const setAddressTable = async (user: User, address: Auth.Address) => {
   const { error } = await supabase
     .from("users")
     .update({

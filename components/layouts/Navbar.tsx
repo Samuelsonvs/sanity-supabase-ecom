@@ -116,8 +116,7 @@ export const Navbar = () => {
           </div>
           <Link passHref href={`${session ? "/basket" : "/signin"}`}>
             <a className="btn btn-square btn-ghost">
-              {/* <BasketSVG customClass={"w-5 h-5 sm:w-6 sm:h-6"} /> */}
-              <BasketSVG className="h-8 w-8"/>
+              <BasketSVG className="h-8 w-8" />
             </a>
           </Link>
         </div>
@@ -158,13 +157,11 @@ export const Navbar = () => {
                       <Popover.Panel className="absolute z-50 w-32 mt-3 transform -translate-x-2/4">
                         <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                           <div className="relative grid gap-8 text-sm font-medium text-gray-600 bg-white p-5  text-center">
-                          <Link passHref href="/profile/settings">
-                            <a
-                              className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                            >
-                              <ProfileSVG className="h-5 w-5"/>
-                              <span className="pl-1">Profile</span>
-                            </a>
+                            <Link passHref href="/profile/settings">
+                              <a className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
+                                <ProfileSVG className="h-5 w-5" />
+                                <span className="pl-1">Profile</span>
+                              </a>
                             </Link>
                             <Link passHref href="/profile/settings">
                               <a className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
@@ -177,7 +174,7 @@ export const Navbar = () => {
                                 onClick={() => logOut()}
                                 className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
                               >
-                                <Logout className="h-5 w-5"/>
+                                <Logout className="h-5 w-5" />
                                 <span className="pl-1">Sign out</span>
                               </a>
                             </Link>

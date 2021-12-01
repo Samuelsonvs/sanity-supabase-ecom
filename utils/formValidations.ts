@@ -6,7 +6,12 @@ const email = yup
   .matches(/^\S+@\S+$/i)
   .required();
 const password = yup.string().min(6).max(18).required();
-const phone = yup.string().matches(/[0-9]{3}-[0-9]{3}-[0-9]{4}/g).min(6).max(18).required();
+const phone = yup
+  .string()
+  .matches(/[0-9]{3}-[0-9]{3}-[0-9]{4}/g)
+  .min(6)
+  .max(18)
+  .required();
 const address = yup.string().min(10).max(48).required();
 const addressname = yup.string().max(18).required();
 
@@ -34,7 +39,7 @@ export const signUpSchema = yup
   })
   .required();
 
-export const settingsSchema = yup  
+export const settingsSchema = yup
   .object()
   .shape({
     username,

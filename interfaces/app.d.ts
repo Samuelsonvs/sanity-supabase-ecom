@@ -101,13 +101,13 @@ export namespace App {
       count: number;
       price: number;
       title: string;
-    }
+    };
   }
 
   interface PaymentData {
     paymentObject: Payment | null;
     setPaymentObject: Dispatch<SetStateAction<Payment | null>>;
-    selectedAddress : Auth.Address | null;
+    selectedAddress: Auth.Address | null;
     setSelectedAddress: Dispatch<SetStateAction<Auth.Address | null>>;
   }
 }

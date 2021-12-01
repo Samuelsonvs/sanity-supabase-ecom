@@ -26,19 +26,19 @@ export const Input = ({
     <>
       {type === "radio" ? (
         <input
-        id={id}
-        type={type}
-        className={"form-radio h-5 w-5 text-yellow-600 cursor-pointer"}
-        {...registerRef(name)}
-        defaultChecked={checked}
-        value={value}
-      />
+          id={id}
+          type={type}
+          className={"form-radio h-5 w-5 text-yellow-600 cursor-pointer"}
+          {...registerRef(name)}
+          defaultChecked={checked}
+          value={value}
+        />
       ) : type === "textarea" ? (
         <textarea
-        className="textarea h-24 w-full textarea-bordered border-2"
-        placeholder={placeholder}
-        {...registerRef(name)}
-        defaultValue={defaultValue}
+          className="textarea h-24 w-full textarea-bordered border-2"
+          placeholder={placeholder}
+          {...registerRef(name)}
+          defaultValue={defaultValue}
         />
       ) : changer ? (
         <input
@@ -63,7 +63,7 @@ export const Input = ({
       {errors && (
         <div className="alert alert-warning mt-2">
           <div className="flex-1">
-            <ErrorSVG className="w-6 h-6 mx-2"/>
+            <ErrorSVG className="w-6 h-6 mx-2" />
             <label>{ErrorMessages[errorName][errorType]}</label>
           </div>
         </div>

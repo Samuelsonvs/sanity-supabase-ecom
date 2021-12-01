@@ -22,7 +22,7 @@ export const Breadcrumb = ({ asPath }: Props) => {
                   <Link href={`/${newPath.join("/")}`}>
                     <a className="capitalize">{pathRefactor[idx]}</a>
                   </Link>
-                  <BreadcrumbSVG className="h-6 w-6"/>
+                  <BreadcrumbSVG className="h-6 w-6" />
                 </li>
               );
             } else {

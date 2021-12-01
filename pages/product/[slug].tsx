@@ -249,9 +249,7 @@ export const Slug: NextPage<GroqData.Product> = ({
                     onClick={sendToBasket}
                     className="btn btn-primary rounded-3xl px-2 sm:px-5 lg:px-10 bg-yellow-600 hover:bg-yellow-700"
                   >
-                    <BasketSVG
-                      className="w-4 h-4"
-                    />
+                    <BasketSVG className="w-4 h-4" />
                     <span className="ml-1 sm:ml-3">shop now</span>
                   </button>
                 </div>

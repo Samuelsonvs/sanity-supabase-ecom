@@ -31,7 +31,7 @@ namespace Auth {
       region: string;
       country: string;
       address: string;
-    }
+    };
   }
 
   interface Context {

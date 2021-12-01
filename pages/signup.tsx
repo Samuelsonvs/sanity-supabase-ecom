@@ -96,7 +96,7 @@ export const Signup: NextPage = () => {
                     {errors.password && (
                       <div className="alert alert-warning mt-2">
                         <div className="flex-1">
-                          <ErrorSVG className="w-6 h-6 mx-2"/>
+                          <ErrorSVG className="w-6 h-6 mx-2" />
                           <label>Password min 6</label>
                         </div>
                       </div>

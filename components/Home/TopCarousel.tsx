@@ -36,7 +36,9 @@ const TopCarousel = () => {
               {" "}
               {/* prod absolute */}
               <Image
-                src={topCarouselImages[imageKey as keyof typeof topCarouselImages]}
+                src={
+                  topCarouselImages[imageKey as keyof typeof topCarouselImages]
+                }
                 priority
                 alt="crsl"
                 objectFit="cover"
