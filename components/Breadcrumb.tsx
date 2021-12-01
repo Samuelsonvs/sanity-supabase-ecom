@@ -4,7 +4,7 @@ import Link from "next/link";
 import BreadcrumbSVG from "@/public/static/svg/breadcrumb.svg";
 import { App } from "@/interfaces/app";
 
-export const Breadcrumb = ({ asPath }: App.Breadcrumb) => {
+export const Breadcrumb = ({ asPath }: App.Prop) => {
   const pathArray = asPath.split("/");
   const pathRefactor = pathArray.map((path) => path.replace(/-/g, " "));
   const pathLength = pathArray.length - 1;

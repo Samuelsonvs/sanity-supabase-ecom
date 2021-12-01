@@ -112,24 +112,10 @@ export namespace App {
     setSelectedAddress: Dispatch<SetStateAction<Auth.Address | null>>;
   }
 
-  interface Breadcrumb {
-    asPath: string;
+  interface Prop {
+    [key:string]: string;
   }
-
-  interface FormInputButton {
-    value: string;
-  }
-
-  interface Label {
-    text: string;
-  }
-
-  interface ProductCard {
-    image: string;
-    href: string;
-    title: string;
-  }
-
+  
   interface Steps {
     step: string[];
   }

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { sanityImage } from "@/utils/sanity";
 import { App } from "@/interfaces/app";
 
-export const ProductCard = ({ image, href, title }: App.ProductCard) => {
+export const ProductCard = ({ image, href, title }: App.Prop) => {
   return (
     <div className="card prose text-center shadow-2xl w-80 mx-auto sm:mx-0">
       <figure className="px-10">
