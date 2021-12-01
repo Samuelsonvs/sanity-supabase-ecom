@@ -111,4 +111,32 @@ export namespace App {
     selectedAddress: Auth.Address | null;
     setSelectedAddress: Dispatch<SetStateAction<Auth.Address | null>>;
   }
+
+  interface Breadcrumb {
+    asPath: string;
+  }
+
+  interface FormInputButton {
+    value: string;
+  }
+
+  interface Label {
+    text: string;
+  }
+
+  interface ProductCard {
+    image: string;
+    href: string;
+    title: string;
+  }
+
+  interface Steps {
+    step: string[];
+  }
+
+  interface FormContainer {
+    svg: () => JSX.Element;
+    head: string;
+    children: JSX.Element;
+  }
 }

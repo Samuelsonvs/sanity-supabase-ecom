@@ -1,12 +1,7 @@
+import { App } from "@/interfaces/app";
 import React from "react";
 
-interface P {
-  svg: () => JSX.Element;
-  head: string;
-  children: JSX.Element;
-}
-
-const FormContainer = ({ svg, head, children }: P) => {
+const FormContainer = ({ svg, head, children }: App.FormContainer) => {
   return (
     <div className="form-container">
       <div className="svg-container">

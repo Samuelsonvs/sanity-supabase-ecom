@@ -1,4 +1,14 @@
 export namespace GroqData {
+
+  interface Asset {
+    _ref: string;
+  }
+
+  interface BodyChildren {
+    [key: string]: {
+      text: string;
+    };
+  }
   interface Variant {
     colors: [[string]];
     Color: {
@@ -6,9 +16,7 @@ export namespace GroqData {
     };
     images: {
       [key: string]: {
-        asset: {
-          _ref: string;
-        };
+        asset: Asset;
         _key: string;
       };
     };
@@ -21,12 +29,27 @@ export namespace GroqData {
   interface Body {
     en: {
       [key: string]: {
-        children: {
-          [key: string]: {
-            text: string;
-          };
-        };
+        children: BodyChildren;
       };
+    };
+  }
+
+  interface Description {
+    [key: string]: {
+      children?: BodyChildren;
+      asset?: Asset;
+      style?: string;
+      _type: string;
+    };
+  }
+
+  interface BodySolver {
+    element: {
+      children?: BodyChildren
+      listItem: string;
+      asset?: Asset
+      style?: string;
+      _type: string;
     };
   }
 
@@ -81,9 +104,7 @@ export namespace GroqData {
     Color: string | null;
     images: {
       [key: string]: {
-        asset: {
-          _ref: string;
-        };
+        asset: Asset;
         _key: string;
       };
     } | null;

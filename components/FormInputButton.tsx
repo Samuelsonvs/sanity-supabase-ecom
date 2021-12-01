@@ -1,10 +1,7 @@
+import { App } from "@/interfaces/app";
 import React from "react";
 
-interface P {
-  value: string;
-}
-
-const FormInputButton = ({ value }: P) => {
+const FormInputButton = ({ value }: App.FormInputButton) => {
   return (
     <input
       type="submit"

@@ -1,4 +1,4 @@
-import { AuthSession, createClient, User } from "@supabase/supabase-js";
+import { createClient, User } from "@supabase/supabase-js";
 
 import { App } from "@/interfaces/app";
 import { Auth } from "@/interfaces/auth";

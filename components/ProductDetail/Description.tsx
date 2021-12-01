@@ -1,22 +1,8 @@
+import { GroqData } from "@/interfaces/groqData";
 import React from "react";
 import { BodySolver } from "../BodySolver";
 
-interface Props {
-  [key: string]: {
-    children?: {
-      [key: string]: {
-        text: string;
-      };
-    };
-    asset?: {
-      _ref: string;
-    };
-    style?: string;
-    _type: string;
-  };
-}
-
-export const Description = ({ body }: Props) => {
+export const Description = ({ body }: GroqData.Description) => {
   return (
     <div className="prose py-10 mx-auto">
       {Array.isArray(body) &&

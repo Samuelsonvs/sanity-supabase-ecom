@@ -3,22 +3,7 @@ import React from "react";
 import Image from "next/image";
 
 import { sanityImage } from "@/utils/sanity";
-
-interface Props {
-  element: {
-    children?: {
-      [key: string]: {
-        text: string;
-      };
-    };
-    listItem: string;
-    asset?: {
-      _ref: string;
-    };
-    style?: string;
-    _type: string;
-  };
-}
+import { GroqData } from "@/interfaces/groqData";
 
 const elements = {
   h1: "h1",
@@ -38,7 +23,7 @@ const elementor = (text: string, element: string) => {
   }
 };
 
-export const BodySolver = ({ element }: Props) => {
+export const BodySolver = ({ element }: GroqData.BodySolver) => {
   const key = element.listItem ?? element.style;
   const imageDimensions = element.asset?._ref.split("-")[2].split("x") || [
     500, 300,

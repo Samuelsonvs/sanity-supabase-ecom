@@ -1,12 +1,9 @@
+import { App } from "@/interfaces/app";
 import React from "react";
-
-interface Prop {
-  step: string[];
-}
 
 const stepNames = ["Basket", "Purchase", "Receive Product"];
 
-export const Steps = ({ step }: Prop) => {
+export const Steps = ({ step }: App.Steps) => {
   return (
     <ul className="w-full steps">
       {stepNames.map((name, idx) => {

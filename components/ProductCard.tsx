@@ -3,14 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { sanityImage } from "@/utils/sanity";
+import { App } from "@/interfaces/app";
 
-interface Prop {
-  image: string;
-  href: string;
-  title: string;
-}
-
-export const ProductCard = ({ image, href, title }: Prop) => {
+export const ProductCard = ({ image, href, title }: App.ProductCard) => {
   return (
     <div className="card prose text-center shadow-2xl w-80 mx-auto sm:mx-0">
       <figure className="px-10">

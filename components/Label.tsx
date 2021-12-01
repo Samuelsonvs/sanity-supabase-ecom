@@ -1,10 +1,7 @@
+import { App } from "@/interfaces/app";
 import React from "react";
 
-interface P {
-  text: string;
-}
-
-const Label = ({ text }: P) => {
+const Label = ({ text }: App.Label) => {
   return <label className="font-bold text-sm mb-2 ml-1">{text}</label>;
 };
 

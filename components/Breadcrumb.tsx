@@ -2,12 +2,9 @@ import React from "react";
 import Link from "next/link";
 
 import BreadcrumbSVG from "@/public/static/svg/breadcrumb.svg";
+import { App } from "@/interfaces/app";
 
-interface Props {
-  asPath: string;
-}
-
-export const Breadcrumb = ({ asPath }: Props) => {
+export const Breadcrumb = ({ asPath }: App.Breadcrumb) => {
   const pathArray = asPath.split("/");
   const pathRefactor = pathArray.map((path) => path.replace(/-/g, " "));
   const pathLength = pathArray.length - 1;
