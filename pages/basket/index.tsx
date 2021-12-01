@@ -444,15 +444,17 @@ export const Index = () => {
                         >
                           <div className="flex flex-col items-center sm:flex-row space-x-3 space-y-3 sm:space-y-0">
                             <Link passHref href={exactSlug}>
-                              <Image
-                                alt="ss"
-                                src={sanityImage(images[0], 170, 120) || ""}
-                                loading="lazy"
-                                title={"ss"}
-                                className="rounded-xl cursor-pointer"
-                                height={120}
-                                width={170}
-                              />
+                              <a>
+                                <Image
+                                  alt="ss"
+                                  src={sanityImage(images[0], 170, 120) || ""}
+                                  loading="lazy"
+                                  title={"ss"}
+                                  className="rounded-xl cursor-pointer"
+                                  height={120}
+                                  width={170}
+                                />
+                              </a>
                             </Link>
                             <Link passHref href={exactSlug}>
                               <a className="w-40 leading-5 text-sm hover:underline">

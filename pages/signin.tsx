@@ -104,6 +104,7 @@ export const Signin: NextPage = () => {
                     <input
                       disabled={loading}
                       className="btn btn-primary bg-yellow-600 border-yellow-600 hover:bg-yellow-600 hover:border-yellow-600"
+                      value="Sign In"
                       type="submit"
                     />
                   </div>

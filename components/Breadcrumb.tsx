@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+
 import BreadcrumbSVG from "@/public/static/svg/breadcrumb.svg";
 
 interface Props {

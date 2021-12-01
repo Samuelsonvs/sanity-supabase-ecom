@@ -1,6 +1,7 @@
-import { Auth } from "./auth";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormRegister } from "react-hook-form";
+
+import { Auth } from "./auth";
 
 export namespace App {
   interface ContainerProps extends Auth.Children {

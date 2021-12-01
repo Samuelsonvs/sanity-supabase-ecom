@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, MutableRefObject } from "react";
 import KeenSlider, { TOptionsEvents } from "keen-slider";
+
 import { App } from "@/interfaces/app";
 
 export function useSlider(
