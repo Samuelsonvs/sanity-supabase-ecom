@@ -242,7 +242,7 @@ export const Slug: NextPage<GroqData.Product> = ({
                       max={currentItems.qty ?? qty}
                       step={1}
                       css={"w-5"}
-                      containerCss={"inline ml-3 py-2 border rounded-3xl"}
+                      containerCss={"inline-block ml-3 border"}
                     />
                   </div>
                   <button
