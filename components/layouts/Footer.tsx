@@ -88,7 +88,7 @@ export const Footer = () => {
               </a>
             </Link>
           </div>
-          <div>© 2019 Bamboo All Rights Reserved</div>
+          <div>© 2021 Bamboo All Rights Reserved</div>
         </div>
       </div>
     </>
