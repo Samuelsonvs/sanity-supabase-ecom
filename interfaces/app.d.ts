@@ -31,11 +31,11 @@ export namespace App {
     email?: string | null;
     password?: string;
     cardname?: string;
-    cardnumber?: number;
+    cardnumber?: string;
     phone?: string;
     addressname?: string;
     address?: string;
-    securitycode?: number;
+    securitycode?: string;
     payment?: string;
     month?: string;
     year?: string;
@@ -125,4 +125,10 @@ export namespace App {
     head: string;
     children: JSX.Element;
   }
+
+  interface Modal {
+    isOpen : boolean;
+    setIsOpen : Dispatch<SetStateAction<boolean>>
+}
+
 }

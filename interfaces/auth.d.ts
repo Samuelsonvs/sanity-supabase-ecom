@@ -34,6 +34,17 @@ namespace Auth {
     };
   }
 
+  interface Payment {
+    [key: string]: {
+      cardname: string;
+      cardnumber: string;
+      month: string;
+      payment: string;
+      securitycode: string;
+      year: string;
+    }
+  }
+
   interface Context {
     session?: AuthSession | null;
     user: User | null;
@@ -45,6 +56,8 @@ namespace Auth {
     setBasket: Dispatch<SetStateAction<Basket[] | null>>;
     addresses: Address | null;
     setAddresses: Dispatch<SetStateAction<Address | null>>;
+    paymentMethods: Auth.Payment | null;
+    setPaymentMethods: Dispatch<SetStateAction<Auth.Payment | null>>;
     loading: boolean;
     signIn: (options: UserCredentials) => Promise<{
       session: AuthSession | null;

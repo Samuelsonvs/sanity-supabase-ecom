@@ -14,6 +14,7 @@ export function AuthProvider({ children }: Auth.Children) {
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
   const [addresses, setAddresses] = useState<Auth.Address | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<Auth.Payment | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export function AuthProvider({ children }: Auth.Children) {
         setBasket(null);
         setAvatarUrl(null);
         setAddresses(null);
+        setPaymentMethods(null);
       }
     );
 
@@ -42,11 +44,12 @@ export function AuthProvider({ children }: Auth.Children) {
       (async () => {
         await Promise.resolve(
           getUserDetails(user).then((results) => {
-            const { url, username, basket, address } = results;
+            const { url, username, basket, address, payment_method } = results;
             setAvatarUrl(url ?? null);
             setDefaultName(username);
             setBasket(basket);
             setAddresses(address);
+            setPaymentMethods(payment_method)
           })
         );
         setLoading(false);
@@ -66,6 +69,8 @@ export function AuthProvider({ children }: Auth.Children) {
       setBasket,
       addresses,
       setAddresses,
+      paymentMethods,
+      setPaymentMethods,
       loading,
       signIn: (options: UserCredentials) => supabase.auth.signIn(options),
       signUp: (options: UserCredentials) => supabase.auth.signUp(options),
@@ -74,7 +79,7 @@ export function AuthProvider({ children }: Auth.Children) {
         return supabase.auth.signOut();
       },
     }),
-    [user, defaultName, session, avatarUrl, basket, addresses, loading]
+    [user, defaultName, session, avatarUrl, basket, addresses, paymentMethods, loading]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

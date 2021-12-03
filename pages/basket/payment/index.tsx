@@ -17,17 +17,19 @@ import { Steps } from "@/components/Steps";
 import FormContainer from "@/container/FormContainer";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
+import Modal from "@/components/Modal";
+import { setPayment } from "@/utils/supabaseClient";
 
 export const Index = () => {
   const { months, years } = Dates;
-  const { session, loading } = useUser();
+  const { session, user, paymentMethods, loading } = useUser();
   const { paymentObject, selectedAddress } = usePayment();
   const [debitValue, setDebitValue] = useState<string | null>("");
   const [securityValue, setSecurityValue] = useState<string | null>("");
   const { register, handleSubmit, errors } = useFormRef(cardSchema);
+  const [modalValue, setModalValue] = useState<boolean>(false)
   const router = useRouter();
 
-  console.log(selectedAddress);
   const debitChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
       const replacedValue = e.target.value.replace(/[^0-9]/g, "");
@@ -55,9 +57,15 @@ export const Index = () => {
     }
   };
 
-  const submitPayment: SubmitHandler<App.FormValues> = (data) => {
-    typeof debitValue === "string" && console.log(debitValue.length);
-    console.log(data);
+  const submitPayment: SubmitHandler<App.FormValues> = async (data) => {
+    const {cardname, cardnumber, month, payment, securitycode, year} = data
+    const key = cardnumber?.split(" ")[3]
+    const { error } = await setPayment(user!, {[key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!}})
+    if (error) {
+      console.log(error)
+    } else {
+      setModalValue(true)
+    }
   };
 
   useEffect(() => {
@@ -119,7 +127,7 @@ export const Index = () => {
                         name={"payment"}
                         registerRef={register}
                         checked={true}
-                        value={"credit"}
+                        value={"Credit"}
                       />
                       <div className="ml-3">
                         <Image
@@ -141,7 +149,7 @@ export const Index = () => {
                         id={"type2"}
                         name={"payment"}
                         registerRef={register}
-                        value={"paypal"}
+                        value={"Paypal"}
                       />
                       <div className="ml-3">
                         <Image
@@ -237,6 +245,10 @@ export const Index = () => {
                 </div>
               </form>
             </FormContainer>
+            <Modal
+              isOpen={modalValue}
+              setIsOpen={setModalValue}
+              />
           </div>
         </div>
       ) : (
