@@ -22,12 +22,14 @@ import { setPayment } from "@/utils/supabaseClient";
 
 export const Index = () => {
   const { months, years } = Dates;
-  const { session, user, paymentMethods, loading } = useUser();
-  const { paymentObject, selectedAddress } = usePayment();
+  const { session, user, setPaymentMethods, paymentMethods, loading } = useUser();
+  const { paymentObject, selectedAddress, setPurchase } = usePayment();
   const [debitValue, setDebitValue] = useState<string | null>("");
   const [securityValue, setSecurityValue] = useState<string | null>("");
   const { register, handleSubmit, errors } = useFormRef(cardSchema);
-  const [modalValue, setModalValue] = useState<boolean>(false)
+  const [paymentSuccesModal, setPaymentSuccesModal] = useState<boolean>(false)
+  const [cardSaveModal, setCardSaveModal] = useState<boolean>(false)
+  const [cardObject, setCardObject] = useState<any | null>(null)
   const router = useRouter();
 
   const debitChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -58,15 +60,27 @@ export const Index = () => {
   };
 
   const submitPayment: SubmitHandler<App.FormValues> = async (data) => {
-    const {cardname, cardnumber, month, payment, securitycode, year} = data
-    const key = cardnumber?.split(" ")[3]
-    const { error } = await setPayment(user!, {[key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!}})
-    if (error) {
-      console.log(error)
-    } else {
-      setModalValue(true)
-    }
+    setCardObject(data)
+    setCardSaveModal(true)
   };
+
+  const submitModalHandler = async (data:any) => {
+    if (data) {
+      const {cardname, cardnumber, month, payment, securitycode, year} = data
+      const key = cardnumber?.split(" ")[3]
+      const { error } = await setPayment(user!, {[key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!}})
+      if (error) {
+        console.log(error)
+      } else {
+        setPaymentMethods({...paymentMethods, [key!]: {cardname: cardname!, year: year!, lastdigits: key!}})
+        setPurchase(true)
+        setPaymentSuccesModal(true)
+      }
+    } else {
+      setPurchase(true)
+      setTimeout(() => {setPaymentSuccesModal(true)}, 500);
+    }
+  }
 
   useEffect(() => {
     if (!session) {
@@ -84,6 +98,12 @@ export const Index = () => {
             <Steps step={["Basket", "Purchase"]} />
           </div>
           <div className="min-w-screen prose-sm flex flex-col md:flex-row justify-center pb-10 pt-16">
+            {paymentMethods && Object.values(paymentMethods).map((cardObj, idx) => {
+              const { cardname, year, lastdigits } = cardObj
+              return (
+              <div key={idx}>{cardname}</div>
+            )
+            })}
             {paymentObject && (
               <div className="pr-2 mb-20 flex-shrink-0 mx-auto">
                 <ul className="mx-auto w-60 text-center font-semibold rounded-lg shadow-2xl p-5 text-gray-700 max-w-xl">
@@ -246,8 +266,18 @@ export const Index = () => {
               </form>
             </FormContainer>
             <Modal
-              isOpen={modalValue}
-              setIsOpen={setModalValue}
+              isOpen={paymentSuccesModal}
+              setIsOpen={setPaymentSuccesModal}
+              />
+            <Modal
+              isOpen={cardSaveModal}
+              setIsOpen={setCardSaveModal}
+              cardObject={cardObject}
+              handler={submitModalHandler}
+              dialogTitleMessage={"Save card info"}
+              dialogMessage={"If you want, you can save card details for the next shopping"}
+              firstButtonMessage={"Cancel"}
+              secondButtonMessage={"Save"}
               />
           </div>
         </div>

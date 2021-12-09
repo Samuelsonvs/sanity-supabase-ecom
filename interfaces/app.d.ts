@@ -110,6 +110,8 @@ export namespace App {
     setPaymentObject: Dispatch<SetStateAction<Payment | null>>;
     selectedAddress: Auth.Address | null;
     setSelectedAddress: Dispatch<SetStateAction<Auth.Address | null>>;
+    purchase: boolean;
+    setPurchase: Dispatch<SetStateAction<boolean>>;
   }
 
   interface Prop {
@@ -128,7 +130,18 @@ export namespace App {
 
   interface Modal {
     isOpen : boolean;
-    setIsOpen : Dispatch<SetStateAction<boolean>>
-}
+    setIsOpen : Dispatch<SetStateAction<boolean>>;
+    cardObject?: any | null;
+    handler?: any;
+    firstButtonMessage?: string;
+    secondButtonMessage?: string;
+    dialogTitleMessage?: string;
+    dialogMessage?: string
+  }
 
+  interface Alert {
+    message: string;
+    type: string;
+  }
+  
 }

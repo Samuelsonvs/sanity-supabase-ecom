@@ -2,6 +2,7 @@ import { createClient, User } from "@supabase/supabase-js";
 
 import { App } from "@/interfaces/app";
 import { Auth } from "@/interfaces/auth";
+import encryption from "./paymentEncryption";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "url";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "key";
@@ -53,16 +54,17 @@ export const setAvatarData = async (path: string, file: File) => {
 export const getUserDetails = async (user: User | null) => {
   const { data, error, status } = await searchUser(user);
   const { avatar_url, username, basket, address, payment_method } = data;
+  const { encryptionPaymentMethod } = encryption(payment_method)
   if (avatar_url) {
     const { data, error } = await getAvatarData(avatar_url);
     const url = URL.createObjectURL(data);
     if (url && username) {
-      return { url, username, basket, address, payment_method };
+      return { url, username, basket, address, payment_method: encryptionPaymentMethod };
     }
     return { error };
   }
   if (username) {
-    return { username, basket, address, payment_method };
+    return { username, basket, address, payment_method: encryptionPaymentMethod };
   }
 
   return { error };

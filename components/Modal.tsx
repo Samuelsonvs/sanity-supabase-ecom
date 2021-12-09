@@ -1,11 +1,38 @@
 import { App } from '@/interfaces/app'
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
+import { Fragment, useRef } from 'react'
+import { useRouter } from "next/router";
 
-const Modal = ({isOpen, setIsOpen} : App.Modal) => {
+const Modal = ({
+  isOpen, 
+  setIsOpen, 
+  cardObject, 
+  handler, 
+  firstButtonMessage = "Got it, thanks!", 
+  secondButtonMessage = "",
+  dialogTitleMessage = "Payment successful",
+  dialogMessage = "Your payment has been successfully submitted. We’ve sent you an email with all of the details of your order."
+} : App.Modal) => {
+
+  const completeButtonRef = useRef<HTMLButtonElement | null>(null)
+  const router = useRouter();
 
   const closeModal = () => {
     setIsOpen(false)
+  }
+
+  const closeCardObjectModal = () => {
+    setIsOpen(false)
+    if (cardObject) {
+      handler()
+    } else {
+      router.replace("/basket/payment/success");
+    }
+  }
+
+  const saveCloseCardObjectModal = () => {
+    setIsOpen(false)
+    handler(cardObject)
   }
 
   return (
@@ -13,6 +40,7 @@ const Modal = ({isOpen, setIsOpen} : App.Modal) => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
+          initialFocus={completeButtonRef}
           className="fixed inset-0 z-10 overflow-y-auto bg-gray-700 bg-opacity-70"
           onClose={closeModal}
         >
@@ -50,23 +78,33 @@ const Modal = ({isOpen, setIsOpen} : App.Modal) => {
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                  Payment successful
+                  {dialogTitleMessage}
                 </Dialog.Title>
                 <div className="mt-2">
                   <p className="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
+                    {dialogMessage}
                   </p>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 flex justify-evenly">
+                  <button
+                    ref={completeButtonRef}
+                    type="button"
+                    className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-yellow-600 hover:bg-yellow-700 text-white border border-transparent rounded-md focus:outline-none"
+                    onClick={closeCardObjectModal}
+                  >
+                    {firstButtonMessage}
+                  </button>
+                  {cardObject && (
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-yellow-600 hover:bg-yellow-700 text-white border border-transparent rounded-md focus:outline-none"
-                    onClick={closeModal}
+                    onClick={saveCloseCardObjectModal}
                   >
-                    Got it, thanks!
+                    {secondButtonMessage}
                   </button>
+                  )}
+                  
                 </div>
               </div>
             </Transition.Child>

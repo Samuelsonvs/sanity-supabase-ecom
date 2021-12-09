@@ -14,7 +14,7 @@ export function AuthProvider({ children }: Auth.Children) {
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
   const [addresses, setAddresses] = useState<Auth.Address | null>(null);
-  const [paymentMethods, setPaymentMethods] = useState<Auth.Payment | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<Auth.EncryptPayment | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {

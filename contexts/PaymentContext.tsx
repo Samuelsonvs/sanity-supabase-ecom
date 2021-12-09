@@ -11,6 +11,7 @@ export function PaymentProvider({ children }: Auth.Children) {
   const [selectedAddress, setSelectedAddress] = useState<Auth.Address | null>(
     null
   );
+  const [purchase, setPurchase] = useState<boolean>(false);
 
   const paymentValue = useMemo(
     () => ({
@@ -18,8 +19,10 @@ export function PaymentProvider({ children }: Auth.Children) {
       setPaymentObject,
       selectedAddress,
       setSelectedAddress,
+      purchase,
+      setPurchase
     }),
-    [paymentObject, selectedAddress]
+    [paymentObject, selectedAddress, purchase]
   );
 
   return (
