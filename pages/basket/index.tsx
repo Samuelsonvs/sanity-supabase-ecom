@@ -162,8 +162,9 @@ export const Index = () => {
         const paymentObj = paymentData[cur as keyof typeof paymentData];
         return acc + paymentObj.price * paymentObj.count;
       }, 0);
-      setTotalPrice(currentTotalPrice);
-      setPaymentObject({ ...paymentData, totalPrice: currentTotalPrice });
+      const fixedPrice = currentTotalPrice.toFixed(2)
+      setTotalPrice(fixedPrice);
+      setPaymentObject({ ...paymentData, totalPrice: fixedPrice });
     }
   }, [paymentData]);
 
@@ -507,7 +508,7 @@ export const Index = () => {
                     </Link>
                     <div className="pr-0 sm:pr-20 md:pr-36">
                       <span className="px-4">Total :</span>
-                      <span>{totalPrice && totalPrice.toFixed(2)}$</span>
+                      <span>{totalPrice && totalPrice}$</span>
                     </div>
                   </div>
                 </div>
