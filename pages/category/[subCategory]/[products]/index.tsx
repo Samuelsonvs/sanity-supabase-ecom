@@ -1,3 +1,4 @@
+import React, { Fragment } from 'react'
 import { GetStaticPropsContext, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
@@ -36,12 +37,13 @@ export const Index: NextPage<any> = ({ products }) => {
               slug,
             } = productSolver(product);
             return (
-              <ProductCard
-                key={idx}
-                image={images[0].asset._ref}
-                href={`/product/${slug}`}
-                title={title}
-              />
+              <Fragment key={idx}>
+                <ProductCard
+                  image={images[0].asset._ref}
+                  href={`/product/${slug}`}
+                  title={title}
+                />
+              </Fragment>
             );
           })}
         </div>
