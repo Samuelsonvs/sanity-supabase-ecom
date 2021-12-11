@@ -27,6 +27,7 @@ import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
 import { setAddressTable } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
+import Alert from "@/components/Alert";
 
 export const Index = () => {
   const { session, user, basket, setBasket, addresses, setAddresses, loading } =
@@ -313,7 +314,7 @@ export const Index = () => {
               </div>
             )}
 
-            <div className={`${addresses && !addressForm ? "hidden" : ""}`}>
+            <div className={`${addresses && !addressForm || !basket ? "hidden" : ""}`}>
               <FormContainer svg={LocationSVG} head={"Address info"}>
                 <form
                   onSubmit={handleSubmit((data) => addressSubmit(data))}
@@ -514,7 +515,10 @@ export const Index = () => {
                 </div>
               </div>
             ) : (
-              <div>There are no products in your cart.</div>
+              <Alert
+                type={"alert-warning"}
+                message={"There are no products in your cart."} 
+              />
             )}
           </div>
         </div>
