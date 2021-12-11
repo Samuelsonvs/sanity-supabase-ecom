@@ -6,6 +6,7 @@ import { Popover, Transition } from "@headlessui/react";
 
 import { useUser } from "@/contexts/AuthContext";
 import BasketSVG from "@/public/static/svg/basket.svg";
+import BasketButtonSVG from "@/public/static/svg/basketButton.svg";
 import SearchSVG from "@/public/static/svg/search.svg";
 import BurgerSVG from "@/public/static/svg/burger.svg";
 import XSVG from "@/public/static/svg/x.svg";
@@ -161,6 +162,12 @@ export const Navbar = () => {
                               <a className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
                                 <ProfileSVG className="h-5 w-5" />
                                 <span className="pl-1">Profile</span>
+                              </a>
+                            </Link>
+                            <Link passHref href="/orders">
+                              <a className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
+                                <BasketButtonSVG className="h-5 w-5" />
+                                <span className="pl-1">Orders</span>
                               </a>
                             </Link>
                             <Link passHref href="/profile/settings">

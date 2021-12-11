@@ -57,7 +57,7 @@ export const getUserDetails = async (user: User | null) => {
   const { encryptionPaymentMethod } = encryption(payment_method)
   if (avatar_url) {
     const { data, error } = await getAvatarData(avatar_url);
-    const url = URL.createObjectURL(data);
+    const url = URL.createObjectURL(data!);
     if (url && username) {
       return { url, username, basket, address, payment_method: encryptionPaymentMethod };
     }
