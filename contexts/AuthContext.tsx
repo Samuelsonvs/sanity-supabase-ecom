@@ -14,7 +14,8 @@ export function AuthProvider({ children }: Auth.Children) {
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
   const [addresses, setAddresses] = useState<Auth.Address | null>(null);
-  const [paymentMethods, setPaymentMethods] = useState<Auth.EncryptPayment | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<Auth.Payment | null>(null);
+  const [productHistory, setProductHistory] = useState<Auth.ProductHistory | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export function AuthProvider({ children }: Auth.Children) {
         setAvatarUrl(null);
         setAddresses(null);
         setPaymentMethods(null);
+        setProductHistory(null);
       }
     );
 
@@ -44,12 +46,13 @@ export function AuthProvider({ children }: Auth.Children) {
       (async () => {
         await Promise.resolve(
           getUserDetails(user).then((results) => {
-            const { url, username, basket, address, payment_method } = results;
+            const { url, username, basket, address, payment_method, product_history } = results;
             setAvatarUrl(url ?? null);
             setDefaultName(username);
             setBasket(basket);
             setAddresses(address);
             setPaymentMethods(payment_method)
+            setProductHistory(product_history)
           })
         );
         setLoading(false);
@@ -71,6 +74,8 @@ export function AuthProvider({ children }: Auth.Children) {
       setAddresses,
       paymentMethods,
       setPaymentMethods,
+      productHistory,
+      setProductHistory,
       loading,
       signIn: (options: UserCredentials) => supabase.auth.signIn(options),
       signUp: (options: UserCredentials) => supabase.auth.signUp(options),
@@ -79,7 +84,7 @@ export function AuthProvider({ children }: Auth.Children) {
         return supabase.auth.signOut();
       },
     }),
-    [user, defaultName, session, avatarUrl, basket, addresses, paymentMethods, loading]
+    [user, defaultName, session, avatarUrl, basket, addresses, paymentMethods, loading, productHistory]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

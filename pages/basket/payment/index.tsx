@@ -18,12 +18,13 @@ import FormContainer from "@/container/FormContainer";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
 import Modal from "@/components/Modal";
-import { setPayment } from "@/utils/supabaseClient";
+import { allCards, setPayment, updateCards } from "@/utils/supabaseClient";
 
 export const Index = () => {
   const { months, years } = Dates;
   const { session, user, setPaymentMethods, paymentMethods, loading } = useUser();
   const { paymentObject, selectedAddress, setPurchase } = usePayment();
+  const [formStatus, setFormStatus] = useState<boolean>(false)
   const [debitValue, setDebitValue] = useState<string | null>("");
   const [securityValue, setSecurityValue] = useState<string | null>("");
   const { register, handleSubmit, errors } = useFormRef(cardSchema);
@@ -60,19 +61,27 @@ export const Index = () => {
   };
 
   const submitPayment: SubmitHandler<App.FormValues> = async (data) => {
-    setCardObject(data)
-    setCardSaveModal(true)
+    const {cardname, cardnumber, month, payment, securitycode, year} = data
+    const key = cardnumber?.split(" ")[3];
+    const newcard = {...paymentMethods, [key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!, lastdigits: key!}}
+    const updates = await updateCards(newcard, user!.id);
+    if (!updates.error) {
+      setPaymentMethods(newcard)
+      setFormStatus(false)
+    } else {
+      console.error(updates.error)
+    }
   };
 
   const submitModalHandler = async (data:any) => {
     if (data) {
       const {cardname, cardnumber, month, payment, securitycode, year} = data
       const key = cardnumber?.split(" ")[3]
-      const { error } = await setPayment(user!, {[key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!}})
+      const { error } = await setPayment(user!, {...paymentMethods, [key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!}})
       if (error) {
         console.log(error)
       } else {
-        setPaymentMethods({...paymentMethods, [key!]: {cardname: cardname!, year: year!, lastdigits: key!}})
+        setPaymentMethods({...paymentMethods, [key!]: {cardname: cardname!, year: `${month!}/${year!}`, lastdigits: key!}})
         setPurchase(true)
         setPaymentSuccesModal(true)
       }
@@ -97,21 +106,52 @@ export const Index = () => {
           <div>
             <Steps step={["Basket", "Purchase"]} />
           </div>
-          <div className="min-w-screen prose-sm flex flex-col md:flex-row justify-center pb-10 pt-16">
-            {paymentMethods && Object.values(paymentMethods).map((cardObj, idx) => {
-              const { cardname, year, lastdigits } = cardObj
-              return (
-              <div key={idx}>{cardname}</div>
-            )
-            })}
+          <div className="py-20">
+            <ul className="flex justify-between">
+              <li>
+                Name
+              </li>
+              <ul className="flex space-x-7">
+                <li className="pl-24">
+                  Year
+                </li>
+                <li>
+                  Last digits
+                </li>
+              </ul>
+            </ul>
+              {paymentMethods && Object.values(paymentMethods).map((cardObj, idx) => {
+                const { cardname, year, lastdigits } = cardObj
+                return (
+                  <div key={idx} className="border mt-2">
+                    <ul className="p-1 flex justify-between">
+                      <li className="flex items-center space-x-2">
+                        <input className="form-radio h-5 w-5 text-yellow-600 cursor-pointer" type="radio" name="card" />
+                        <span>{cardname}</span>
+                      </li>
+                      <ul className="flex space-x-14">
+                        <li>
+                          {year}
+                        </li>
+                        <li>
+                          {lastdigits}
+                        </li>
+                      </ul>
+                    </ul>
+                  </div>
+              )
+              })}
+              <button onClick={() => setFormStatus(true)} className="btn btn-link btn-active text-gray-600" role="button" aria-pressed="true">Add new card</button>
+          </div>
+          <div className="prose-sm flex flex-col justify-center pb-10">
             {paymentObject && (
-              <div className="pr-2 mb-20 flex-shrink-0 mx-auto">
-                <ul className="mx-auto w-60 text-center font-semibold rounded-lg shadow-2xl p-5 text-gray-700 max-w-xl">
+              <div className="mb-20 mx-auto">
+                <ul className="mx-auto text-center font-semibold rounded-lg shadow-2xl p-5 text-gray-700">
                   {Object.keys(paymentObject).map((id, idx) => {
                     const { count, price, title } = paymentObject[id];
                     if (count) {
                       return (
-                        <li key={idx} className="bg-yellow-200 rounded-lg">
+                        <li key={idx}>
                           <div className="text-base">{title}</div>
                           <div className="text-gray-500">
                             {`${count} x ${price}`}
@@ -123,13 +163,17 @@ export const Index = () => {
                       );
                     }
                   })}
-                  <li className="bg-yellow-400 rounded-lg">
+                  <li className="border">
                     <span className="px-2">Total :</span>
                     <span className="px-2">{paymentObject.totalPrice}$</span>
+                  </li>
+                  <li className="pt-3">
+                    <button className="btn bg-yellow-600 hover:bg-yellow-700">Buy now</button>
                   </li>
                 </ul>
               </div>
             )}
+            {formStatus && (
             <FormContainer svg={CreditCardSVG} head={"Secure payment info"}>
               <form
                 onSubmit={handleSubmit((data) => submitPayment(data))}
@@ -221,7 +265,7 @@ export const Index = () => {
                         {Object.keys(months).map((key, idx) => {
                           const month = months[key as keyof typeof months];
                           return (
-                            <option key={idx} value={month}>
+                            <option key={idx} value={key}>
                               {key} - {month}
                             </option>
                           );
@@ -261,11 +305,12 @@ export const Index = () => {
                   </div>
                 </div>
                 <div>
-                  <FormInputButton value={"Submit"} />
+                  <FormInputButton value={"Add card"} />
                 </div>
               </form>
             </FormContainer>
-            <Modal
+            )}
+            {/* <Modal
               isOpen={paymentSuccesModal}
               setIsOpen={setPaymentSuccesModal}
               />
@@ -278,7 +323,7 @@ export const Index = () => {
               dialogMessage={"If you want, you can save card details for the next shopping"}
               firstButtonMessage={"Cancel"}
               secondButtonMessage={"Save"}
-              />
+              /> */}
           </div>
         </div>
       ) : (

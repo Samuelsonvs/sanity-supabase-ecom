@@ -34,22 +34,31 @@ namespace Auth {
     };
   }
 
-  interface EncryptPayment {
-    [key: string]: {
-      cardname: string;
-      year: string;
-      lastdigits: string;
-    }
-  }
-
-  interface Payment extends EncryptPayment {
+  interface Payment {
     [key: string]: {
       cardname: string;
       year: string;
       cardnumber: string;
+      lastdigits: string;
       month: string;
       payment: string;
       securitycode: string;
+    }
+  }
+
+  interface ProductHistory {
+    [key: string]: {
+      products: {
+        [key: string]: string
+      };
+      address: string;
+      price: string;
+      card: {
+        name: string;
+        lastdigits: string;
+        month: string;
+        year: string;
+      }
     }
   }
 
@@ -64,8 +73,10 @@ namespace Auth {
     setBasket: Dispatch<SetStateAction<Basket[] | null>>;
     addresses: Address | null;
     setAddresses: Dispatch<SetStateAction<Address | null>>;
-    paymentMethods: Auth.EncryptPayment | null;
-    setPaymentMethods: Dispatch<SetStateAction<Auth.EncryptPayment | null>>;
+    paymentMethods: Payment | null;
+    setPaymentMethods: Dispatch<SetStateAction<Payment | null>>;
+    productHistory: ProductHistory | null;
+    setProductHistory: Dispatch<SetStateAction<ProductHistory | null>>;
     loading: boolean;
     signIn: (options: UserCredentials) => Promise<{
       session: AuthSession | null;
