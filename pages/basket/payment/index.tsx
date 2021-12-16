@@ -18,13 +18,12 @@ import FormContainer from "@/container/FormContainer";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
 import Modal from "@/components/Modal";
-import { setPayment, updateCards, updateProductHistory } from "@/utils/supabaseClient";
-import { dateResolver } from "@/utils/dateResolver";
+import { setUserBasket, updateCards, updateProductHistory } from "@/utils/supabaseClient";
 
 export const Index = () => {
   const { months, years } = Dates;
   const { session, user, setBasket, setPaymentMethods, paymentMethods, loading, setProductHistory, productHistory } = useUser();
-  const { paymentObject, selectedAddress, setPurchase } = usePayment();
+  const { paymentObject, setPaymentObject, selectedAddress, setPurchase } = usePayment();
   const [formStatus, setFormStatus] = useState<boolean>(false)
   const [debitValue, setDebitValue] = useState<string | null>("");
   const [securityValue, setSecurityValue] = useState<string | null>("");
@@ -80,7 +79,11 @@ export const Index = () => {
       console.error(error)
     } else {
       setProductHistory(newHistory)
-      setBasket(null)
+      const { error } = await setUserBasket(user!,null)
+      if (!error) {
+        setBasket(null)
+        setPaymentObject(null)
+      }
     }
   }
 
