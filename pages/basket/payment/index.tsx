@@ -18,19 +18,19 @@ import FormContainer from "@/container/FormContainer";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
 import Modal from "@/components/Modal";
-import { allCards, setPayment, updateCards } from "@/utils/supabaseClient";
+import { setPayment, updateCards, updateProductHistory } from "@/utils/supabaseClient";
+import { dateResolver } from "@/utils/dateResolver";
 
 export const Index = () => {
   const { months, years } = Dates;
-  const { session, user, setPaymentMethods, paymentMethods, loading } = useUser();
+  const { session, user, setBasket, setPaymentMethods, paymentMethods, loading, setProductHistory, productHistory } = useUser();
   const { paymentObject, selectedAddress, setPurchase } = usePayment();
   const [formStatus, setFormStatus] = useState<boolean>(false)
   const [debitValue, setDebitValue] = useState<string | null>("");
   const [securityValue, setSecurityValue] = useState<string | null>("");
   const { register, handleSubmit, errors } = useFormRef(cardSchema);
-  const [paymentSuccesModal, setPaymentSuccesModal] = useState<boolean>(false)
-  const [cardSaveModal, setCardSaveModal] = useState<boolean>(false)
-  const [cardObject, setCardObject] = useState<any | null>(null)
+  const [sureModal, setSureModal] = useState<boolean>(false)
+  const [currentCard, setCurrentCard] = useState<any | null>(null)
   const router = useRouter();
 
   const debitChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -73,21 +73,14 @@ export const Index = () => {
     }
   };
 
-  const submitModalHandler = async (data:any) => {
-    if (data) {
-      const {cardname, cardnumber, month, payment, securitycode, year} = data
-      const key = cardnumber?.split(" ")[3]
-      const { error } = await setPayment(user!, {...paymentMethods, [key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!}})
-      if (error) {
-        console.log(error)
-      } else {
-        setPaymentMethods({...paymentMethods, [key!]: {cardname: cardname!, year: `${month!}/${year!}`, lastdigits: key!}})
-        setPurchase(true)
-        setPaymentSuccesModal(true)
-      }
+  const submitModalHandler = async () => {
+    const newHistory = {...productHistory,[Date.now()] : {products: {...paymentObject}, address: {...selectedAddress}, card: {...currentCard}, price: paymentObject!.totalPrice!}}
+    const { data, error } = await updateProductHistory(newHistory, user!.id)
+    if (error) {
+      console.error(error)
     } else {
-      setPurchase(true)
-      setTimeout(() => {setPaymentSuccesModal(true)}, 500);
+      setProductHistory(newHistory)
+      setBasket(null)
     }
   }
 
@@ -98,6 +91,14 @@ export const Index = () => {
       router.replace("/basket");
     }
   }, [session, paymentObject]);
+
+  useEffect(() => {
+    if (paymentMethods) {
+      const firstPaymentKey = Object.values(paymentMethods)[0]
+      const { cardname, year, month, lastdigits } = firstPaymentKey
+      setCurrentCard({[lastdigits]: {cardname, year, month, lastdigits}})
+    }
+  }, [])
 
   return (
     <Container>
@@ -113,7 +114,7 @@ export const Index = () => {
               </li>
               <ul className="flex space-x-7">
                 <li className="pl-24">
-                  Year
+                  Date
                 </li>
                 <li>
                   Last digits
@@ -121,17 +122,17 @@ export const Index = () => {
               </ul>
             </ul>
               {paymentMethods && Object.values(paymentMethods).map((cardObj, idx) => {
-                const { cardname, year, lastdigits } = cardObj
+                const { cardname, year, month, lastdigits } = cardObj
                 return (
                   <div key={idx} className="border mt-2">
                     <ul className="p-1 flex justify-between">
                       <li className="flex items-center space-x-2">
-                        <input className="form-radio h-5 w-5 text-yellow-600 cursor-pointer" type="radio" name="card" />
+                        <input onClick={() => setCurrentCard({[lastdigits]: {cardname, year, month, lastdigits}})} className="form-radio h-5 w-5 text-yellow-600 cursor-pointer" type="radio" name="card" defaultChecked={idx === 0 &&  true} />
                         <span>{cardname}</span>
                       </li>
                       <ul className="flex space-x-14">
                         <li>
-                          {year}
+                          {month+"/"+year.replace("20", "")}
                         </li>
                         <li>
                           {lastdigits}
@@ -142,9 +143,7 @@ export const Index = () => {
               )
               })}
               <button onClick={() => setFormStatus(true)} className="btn btn-link btn-active text-gray-600" role="button" aria-pressed="true">Add new card</button>
-          </div>
-          <div className="prose-sm flex flex-col justify-center pb-10">
-            {paymentObject && (
+              {paymentObject && (
               <div className="mb-20 mx-auto">
                 <ul className="mx-auto text-center font-semibold rounded-lg shadow-2xl p-5 text-gray-700">
                   {Object.keys(paymentObject).map((id, idx) => {
@@ -168,11 +167,13 @@ export const Index = () => {
                     <span className="px-2">{paymentObject.totalPrice}$</span>
                   </li>
                   <li className="pt-3">
-                    <button className="btn bg-yellow-600 hover:bg-yellow-700">Buy now</button>
+                    <button onClick={() => setSureModal(true)} className="btn bg-yellow-600 hover:bg-yellow-700">Buy now</button>
                   </li>
                 </ul>
               </div>
             )}
+          </div>
+          <div className="prose-sm flex flex-col justify-center pb-10">
             {formStatus && (
             <FormContainer svg={CreditCardSVG} head={"Secure payment info"}>
               <form
@@ -310,20 +311,15 @@ export const Index = () => {
               </form>
             </FormContainer>
             )}
-            {/* <Modal
-              isOpen={paymentSuccesModal}
-              setIsOpen={setPaymentSuccesModal}
-              />
             <Modal
-              isOpen={cardSaveModal}
-              setIsOpen={setCardSaveModal}
-              cardObject={cardObject}
+              isOpen={sureModal}
+              setIsOpen={setSureModal}
               handler={submitModalHandler}
-              dialogTitleMessage={"Save card info"}
-              dialogMessage={"If you want, you can save card details for the next shopping"}
+              dialogTitleMessage={"Buy Now"}
+              dialogMessage={"Do you confirm the purchase ?"}
               firstButtonMessage={"Cancel"}
-              secondButtonMessage={"Save"}
-              /> */}
+              secondButtonMessage={"Yes"}
+              />
           </div>
         </div>
       ) : (

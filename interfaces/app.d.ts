@@ -103,6 +103,7 @@ export namespace App {
       price: number;
       title: string;
     };
+    totalPrice?: string;
   }
 
   interface PaymentData {
@@ -131,7 +132,6 @@ export namespace App {
   interface Modal {
     isOpen : boolean;
     setIsOpen : Dispatch<SetStateAction<boolean>>;
-    cardObject?: any | null;
     handler?: any;
     firstButtonMessage?: string;
     secondButtonMessage?: string;

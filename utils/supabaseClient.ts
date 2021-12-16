@@ -103,6 +103,17 @@ export const updateCards = async (payment_method: Auth.Payment, id: string) => {
   }
 };
 
+export const updateProductHistory = async (product_history: Auth.ProductHistory, id: string) => {
+  const {data, error} = await supabase
+    .from("users")
+    .update({
+      product_history
+    })
+    .eq("id", id)
+  return { data, error };
+};
+
+
 export const setPayment = async (user: User, payment_method: Auth.Payment) => {
   const { error } = await supabase
     .from("users")

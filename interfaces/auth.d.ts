@@ -6,6 +6,8 @@ import {
   Provider,
 } from "@supabase/supabase-js";
 
+import { App } from "./app";
+
 namespace Auth {
   interface Children {
     children: JSX.Element;
@@ -31,34 +33,32 @@ namespace Auth {
       region: string;
       country: string;
       address: string;
-    };
-  }
-
-  interface Payment {
-    [key: string]: {
-      cardname: string;
-      year: string;
-      cardnumber: string;
-      lastdigits: string;
-      month: string;
-      payment: string;
-      securitycode: string;
     }
   }
 
+  interface Card {
+    cardname: string;
+    lastdigits: string;
+    month: string;
+    year: string;
+    cardnumber: string;
+    payment: string;
+    securitycode: string;
+  }
+
+  interface BriefPayment {
+    [key: number]: Omit<Card, "cardnumber" | "payment" | "securitycode">
+  }
+  interface Payment {
+    [key: string]: Card
+  }
+
   interface ProductHistory {
-    [key: string]: {
-      products: {
-        [key: string]: string
-      };
-      address: string;
+    [key: number]: {
+      products: App.Payment;
+      address: Address;
+      card: Omit<Card, "cardnumber" | "payment" | "securitycode">
       price: string;
-      card: {
-        name: string;
-        lastdigits: string;
-        month: string;
-        year: string;
-      }
     }
   }
 

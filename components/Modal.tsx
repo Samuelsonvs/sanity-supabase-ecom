@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 const Modal = ({
   isOpen, 
   setIsOpen, 
-  cardObject, 
   handler, 
   firstButtonMessage = "Got it, thanks!", 
   secondButtonMessage = "",
@@ -21,18 +20,13 @@ const Modal = ({
     setIsOpen(false)
   }
 
-  const closeCardObjectModal = () => {
+  const answerCancelHandler = () => {
     setIsOpen(false)
-    if (cardObject) {
-      handler()
-    } else {
-      router.replace("/basket/payment/success");
-    }
   }
 
-  const saveCloseCardObjectModal = () => {
+  const answerYesHandler = () => {
     setIsOpen(false)
-    handler(cardObject)
+    handler()
   }
 
   return (
@@ -91,20 +85,17 @@ const Modal = ({
                     ref={completeButtonRef}
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-yellow-600 hover:bg-yellow-700 text-white border border-transparent rounded-md focus:outline-none"
-                    onClick={closeCardObjectModal}
+                    onClick={answerCancelHandler}
                   >
                     {firstButtonMessage}
                   </button>
-                  {cardObject && (
                   <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-yellow-600 hover:bg-yellow-700 text-white border border-transparent rounded-md focus:outline-none"
-                    onClick={saveCloseCardObjectModal}
+                    onClick={answerYesHandler}
                   >
                     {secondButtonMessage}
                   </button>
-                  )}
-                  
                 </div>
               </div>
             </Transition.Child>
