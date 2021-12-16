@@ -25,9 +25,10 @@ import useFormRef from "@/hooks/useFormRefs";
 import { addressSchema } from "@/utils/formValidations";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
-import { setAddressTable } from "@/utils/supabaseClient";
+import { updater } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
 import Alert from "@/components/Alert";
+import { ADDRESS_TABLE } from "@/constants/dbTables"
 
 export const Index = () => {
   const { session, user, basket, setBasket, addresses, setAddresses, loading } =
@@ -176,7 +177,7 @@ export const Index = () => {
         ...addresses,
         [addressname]: { country, region, username, phone, address },
       };
-      const { error } = await setAddressTable(user, addressObj);
+      const { error } = await updater(user.id, addressObj, ADDRESS_TABLE);
       if (error) {
         console.log(error);
       } else {
@@ -199,7 +200,7 @@ export const Index = () => {
             return { ...acc };
           }
         }, {});
-      const { error } = await setAddressTable(user, { ...newUpdatedAddresses });
+      const { error } = await updater(user.id, { ...newUpdatedAddresses }, ADDRESS_TABLE);
       if (error) {
         console.log(error);
       } else {
@@ -235,7 +236,7 @@ export const Index = () => {
             <Steps step={["Basket"]} />
           </div>
           <div className="min-w-screen prose-sm flex flex-col justify-center pb-10 pt-16">
-            {addresses && (
+            {addresses && basket &&  (
               <div className="pb-16 flex flex-col flex-wrap sm:flex-row items-center sm:justify-evenly">
                 {Object.keys(addresses).map((adrs, idx) => {
                   const { address, phone, region, country, username } =

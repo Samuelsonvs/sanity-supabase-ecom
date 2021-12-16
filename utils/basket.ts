@@ -1,5 +1,6 @@
-import { setUserBasket } from "@/utils/supabaseClient";
+import { updater } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
+import { BASKET_TABLE } from "@/constants/dbTables";
 
 export const UseBasket = async ({
   _id,
@@ -21,7 +22,7 @@ export const UseBasket = async ({
     if (method === "REMOVE") {
       const filtered = basket.filter((product) => product._id !== _id);
       isList = filtered.length > 0 ? [...filtered] : null;
-      const { error } = await setUserBasket(user, isList);
+      const { error } = await updater(user.id, isList, BASKET_TABLE);
       result = error;
     } else {
       basket.forEach((product) => {
@@ -31,17 +32,17 @@ export const UseBasket = async ({
         const totalCount =
           method === "UPDATE" ? count : isProduct[0].count + count;
         updateCount = [...newBasket, { _id, isVariant, count: totalCount }];
-        const { error } = await setUserBasket(user, updateCount);
+        const { error } = await updater(user.id, updateCount, BASKET_TABLE);
         result = error;
       } else {
         updateBasket = [...basket, { _id, isVariant, count }];
-        const { error } = await setUserBasket(user, updateBasket);
+        const { error } = await updater(user.id, updateBasket, BASKET_TABLE);
         result = error;
       }
     }
   } else {
     basketFirstItem = [{ _id, isVariant, count }];
-    const { error } = await setUserBasket(user, basketFirstItem);
+    const { error } = await updater(user.id, basketFirstItem, BASKET_TABLE);
     result = error;
   }
 

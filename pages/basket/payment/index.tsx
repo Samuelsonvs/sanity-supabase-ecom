@@ -18,7 +18,8 @@ import FormContainer from "@/container/FormContainer";
 import FormInputButton from "@/components/FormInputButton";
 import Label from "@/components/Label";
 import Modal from "@/components/Modal";
-import { setUserBasket, updateCards, updateProductHistory } from "@/utils/supabaseClient";
+import { updater } from "@/utils/supabaseClient";
+import { BASKET_TABLE, PAYMENT_METHOD_TABLE, PRODUCT_HISTORY_TABLE } from "@/constants/dbTables";
 
 export const Index = () => {
   const { months, years } = Dates;
@@ -63,7 +64,7 @@ export const Index = () => {
     const {cardname, cardnumber, month, payment, securitycode, year} = data
     const key = cardnumber?.split(" ")[3];
     const newcard = {...paymentMethods, [key!]: {cardname: cardname!, cardnumber: cardnumber!, month: month!, payment: payment!, securitycode: securitycode!, year: year!, lastdigits: key!}}
-    const updates = await updateCards(newcard, user!.id);
+    const updates = await updater(user!.id, newcard, PAYMENT_METHOD_TABLE);
     if (!updates.error) {
       setPaymentMethods(newcard)
       setFormStatus(false)
@@ -74,12 +75,12 @@ export const Index = () => {
 
   const submitModalHandler = async () => {
     const newHistory = {...productHistory,[Date.now()] : {products: {...paymentObject}, address: {...selectedAddress}, card: {...currentCard}, price: paymentObject!.totalPrice!}}
-    const { data, error } = await updateProductHistory(newHistory, user!.id)
+    const { data, error } = await updater(user!.id, newHistory, PRODUCT_HISTORY_TABLE)
     if (error) {
       console.error(error)
     } else {
       setProductHistory(newHistory)
-      const { error } = await setUserBasket(user!,null)
+      const { error } = await updater(user!.id,null,BASKET_TABLE)
       if (!error) {
         setBasket(null)
         setPaymentObject(null)

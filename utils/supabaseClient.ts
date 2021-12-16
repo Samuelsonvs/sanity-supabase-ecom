@@ -1,7 +1,6 @@
 import { createClient, User } from "@supabase/supabase-js";
 
 import { App } from "@/interfaces/app";
-import { Auth } from "@/interfaces/auth";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "url";
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "key";
@@ -18,17 +17,14 @@ export const setUserProfiles = async (user: User, features: App.Updates) => {
   return { error };
 };
 
-export const setUserBasket = async (
-  user: User,
-  basket: Auth.Basket[] | null
-) => {
-  const { error } = await supabase
+export const updater = async (id: string, update_item: any, table: string) => {
+  const {data, error} = await supabase
     .from("users")
     .update({
-      basket,
+      [table]: update_item
     })
-    .eq("id", user!.id);
-  return { error };
+    .eq("id", id)
+  return { data, error };
 };
 
 export const searchUser = async (user: User | null) => {
@@ -68,61 +64,6 @@ export const getUserDetails = async (user: User | null) => {
   return { error };
 };
 
-export const setAddressTable = async (user: User, address: Auth.Address) => {
-  const { error } = await supabase
-    .from("users")
-    .update({
-      address,
-    })
-    .eq("id", user!.id);
-  return { error };
-};
-
-export const allCards = async (id: string) => {
-  const { error, data } = await supabase
-    .from("users")
-    .select(`payment_method`)
-    .eq("id", id)
-    .single();
-  return { data, error };
-};
-
-export const updateCards = async (payment_method: Auth.Payment, id: string) => {
-  const { data, error } = await allCards(id)
-  if (data) {
-    const {data, error} = await supabase
-      .from("users")
-      .update({
-        payment_method
-      })
-      .eq("id", id) 
-    return { data, error };
-    
-  } else {
-    return { data, error }
-  }
-};
-
-export const updateProductHistory = async (product_history: Auth.ProductHistory, id: string) => {
-  const {data, error} = await supabase
-    .from("users")
-    .update({
-      product_history
-    })
-    .eq("id", id)
-  return { data, error };
-};
-
-
-export const setPayment = async (user: User, payment_method: Auth.Payment) => {
-  const { error } = await supabase
-    .from("users")
-    .update({
-      payment_method
-    })
-    .eq("id", user!.id);
-  return { error };
-};
 
 // export const deleteUser = async (session: AuthSession) => {
 //   const { user, error } = await supabase.auth.api.deleteUser(
