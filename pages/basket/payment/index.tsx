@@ -24,7 +24,7 @@ import { BASKET_TABLE, PAYMENT_METHOD_TABLE, PRODUCT_HISTORY_TABLE } from "@/con
 export const Index = () => {
   const { months, years } = Dates;
   const { session, user, setBasket, setPaymentMethods, paymentMethods, loading, setProductHistory, productHistory } = useUser();
-  const { paymentObject, setPaymentObject, selectedAddress, setPurchase } = usePayment();
+  const { paymentObject, selectedAddress } = usePayment();
   const [formStatus, setFormStatus] = useState<boolean>(false)
   const [debitValue, setDebitValue] = useState<string | null>("");
   const [securityValue, setSecurityValue] = useState<string | null>("");
@@ -83,7 +83,7 @@ export const Index = () => {
       const { error } = await updater(user!.id,null,BASKET_TABLE)
       if (!error) {
         setBasket(null)
-        setPaymentObject(null)
+        router.replace("/basket/payment/success");
       }
     }
   }
@@ -111,6 +111,7 @@ export const Index = () => {
           <div>
             <Steps step={["Basket", "Purchase"]} />
           </div>
+          {paymentObject && (
           <div className="py-20">
             <ul className="flex justify-between">
               <li>
@@ -177,6 +178,8 @@ export const Index = () => {
               </div>
             )}
           </div>
+          )}
+
           <div className="prose-sm flex flex-col justify-center pb-10">
             {formStatus && (
             <FormContainer svg={CreditCardSVG} head={"Secure payment info"}>
