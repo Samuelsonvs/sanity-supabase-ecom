@@ -54,7 +54,7 @@ namespace Auth {
   }
 
   interface ProductHistory {
-    [key: number]: {
+    [key: string | number]: {
       products: App.Payment;
       address: Address;
       card: Omit<Card, "cardnumber" | "payment" | "securitycode">
