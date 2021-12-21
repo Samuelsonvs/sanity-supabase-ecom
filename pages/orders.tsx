@@ -4,12 +4,12 @@ import Container from "@/container/Container";
 import { useUser } from '@/contexts/AuthContext';
 import { dateResolver } from '@/utils/dateResolver';
 import Collapse from '@/components/Collapse';
+import withAuth from "@/container/AuthContainer"
 
 const Orders = () => {
     const { productHistory } = useUser();
     console.log(productHistory)
     return (
-        <Container>
             <div className='mt-20'>
             <div className="w-full px-4 pt-16">
                 {productHistory && Object.keys(productHistory).reverse().map((productDate, idx) => {
@@ -28,8 +28,7 @@ const Orders = () => {
                 })}
                    </div>
             </div>
-        </Container>
     )
 }
 
-export default Orders
+export default withAuth(Orders)
