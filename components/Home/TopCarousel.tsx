@@ -31,7 +31,9 @@ const TopCarousel = () => {
             <div
               key={idx}
               style={{ opacity: opacities[idx] }}
-              className={`w-full h-full ${process.env.NEXT_PUBLIC_CAROUSEL_RELATIVE ?? "absolute"}`}
+              className={`w-full h-full ${
+                process.env.NEXT_PUBLIC_CAROUSEL_RELATIVE ?? "absolute"
+              }`}
             >
               {" "}
               {/* prod absolute */}

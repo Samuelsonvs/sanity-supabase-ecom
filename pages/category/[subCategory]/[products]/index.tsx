@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment } from "react";
 import { GetStaticPropsContext, GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";

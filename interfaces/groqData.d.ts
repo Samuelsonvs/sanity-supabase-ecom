@@ -1,5 +1,4 @@
 export namespace GroqData {
-
   interface Asset {
     _ref: string;
   }
@@ -45,9 +44,9 @@ export namespace GroqData {
 
   interface BodySolver {
     element: {
-      children?: BodyChildren
+      children?: BodyChildren;
       listItem: string;
-      asset?: Asset
+      asset?: Asset;
       style?: string;
       _type: string;
     };

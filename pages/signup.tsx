@@ -24,17 +24,19 @@ export const Signup: NextPage = () => {
   const handleRegister: SubmitHandler<App.FormValues> = async (data) => {
     const { email, password, username } = data;
 
-    const { error, user } = await signUp({ email: email!, password: password! });
+    const { error, user } = await signUp({
+      email: email!,
+      password: password!,
+    });
     if (error) {
       return alert(error.message);
     } else {
       if (user) {
         const { error } = await setUserProfiles(user, {
-          username: username!
+          username: username!,
         });
       }
     }
-    
   };
 
   useEffect(() => {

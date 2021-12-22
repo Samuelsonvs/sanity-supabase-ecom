@@ -15,35 +15,37 @@ export function AuthProvider({ children }: Auth.Children) {
   const [defaultName, setDefaultName] = useState<string | null>(null);
   const [basket, setBasket] = useState<Auth.Basket[] | null>(null);
   const [addresses, setAddresses] = useState<Auth.Address | null>(null);
-  const [paymentMethods, setPaymentMethods] = useState<Auth.Payment | null>(null);
-  const [productHistory, setProductHistory] = useState<Auth.ProductHistory | null>(null);
+  const [paymentMethods, setPaymentMethods] = useState<Auth.Payment | null>(
+    null
+  );
+  const [productHistory, setProductHistory] =
+    useState<Auth.ProductHistory | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [mounted, setMounted] = useState<boolean>(false);
-  const { setCookie, removeCookie } = useCookie(session!)
+  const { setCookie, removeCookie } = useCookie(session!);
 
   useEffect(() => {
+    setLoading(true);
+    const session = supabase.auth.session();
+    setSession(session);
+    setUser(session?.user ?? null);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setDefaultName(null);
+        setBasket(null);
+        setAvatarUrl(null);
+        setAddresses(null);
+        setPaymentMethods(null);
+        setProductHistory(null);
+        removeCookie();
+      }
+    );
 
-      setLoading(true);
-      const session = supabase.auth.session();
-      setSession(session);
-      setUser(session?.user ?? null);
-      const { data: authListener } = supabase.auth.onAuthStateChange(
-        async (event, session) => {
-          setSession(session);
-          setUser(session?.user ?? null);
-          setDefaultName(null);
-          setBasket(null);
-          setAvatarUrl(null);
-          setAddresses(null);
-          setPaymentMethods(null);
-          setProductHistory(null);
-          removeCookie();
-        }
-      );
-
-      return () => {
-        authListener?.unsubscribe();
-      };
+    return () => {
+      authListener?.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -51,7 +53,14 @@ export function AuthProvider({ children }: Auth.Children) {
       (async () => {
         await Promise.resolve(
           getUserDetails(user).then((results) => {
-            const { url, username, basket, address, payment_method, product_history } = results;
+            const {
+              url,
+              username,
+              basket,
+              address,
+              payment_method,
+              product_history,
+            } = results;
             setAvatarUrl(url ?? null);
             setDefaultName(username);
             setBasket(basket);
@@ -92,18 +101,26 @@ export function AuthProvider({ children }: Auth.Children) {
         return supabase.auth.signOut();
       },
     }),
-    [user, defaultName, session, avatarUrl, basket, addresses, paymentMethods, loading, productHistory]
+    [
+      user,
+      defaultName,
+      session,
+      avatarUrl,
+      basket,
+      addresses,
+      paymentMethods,
+      loading,
+      productHistory,
+    ]
   );
-  
-   
+
   return (
     <>
       {mounted && (
-      <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
       )}
     </>
-  ) 
-   
+  );
 }
 
 export const useUser = () => {

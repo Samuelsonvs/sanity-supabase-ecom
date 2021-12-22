@@ -1,33 +1,32 @@
-import { App } from '@/interfaces/app'
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useRef } from 'react'
+import { App } from "@/interfaces/app";
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useRef } from "react";
 import { useRouter } from "next/router";
 
 const Modal = ({
-  isOpen, 
-  setIsOpen, 
-  handler, 
-  firstButtonMessage = "Got it, thanks!", 
+  isOpen,
+  setIsOpen,
+  handler,
+  firstButtonMessage = "Got it, thanks!",
   secondButtonMessage = "",
   dialogTitleMessage = "Payment successful",
-  dialogMessage = "Your payment has been successfully submitted. We’ve sent you an email with all of the details of your order."
-} : App.Modal) => {
-
-  const completeButtonRef = useRef<HTMLButtonElement | null>(null)
+  dialogMessage = "Your payment has been successfully submitted. We’ve sent you an email with all of the details of your order.",
+}: App.Modal) => {
+  const completeButtonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
 
   const closeModal = () => {
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   const answerCancelHandler = () => {
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
 
   const answerYesHandler = () => {
-    setIsOpen(false)
-    handler()
-  }
+    setIsOpen(false);
+    handler();
+  };
 
   return (
     <>
@@ -75,9 +74,7 @@ const Modal = ({
                   {dialogTitleMessage}
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    {dialogMessage}
-                  </p>
+                  <p className="text-sm text-gray-500">{dialogMessage}</p>
                 </div>
 
                 <div className="mt-4 flex justify-evenly">
@@ -103,7 +100,7 @@ const Modal = ({
         </Dialog>
       </Transition>
     </>
-  )
-}
+  );
+};
 
 export default Modal;

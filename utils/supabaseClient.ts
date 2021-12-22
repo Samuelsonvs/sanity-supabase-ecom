@@ -18,19 +18,21 @@ export const setUserProfiles = async (user: User, features: App.Updates) => {
 };
 
 export const updater = async (id: string, update_item: any, table: string) => {
-  const {data, error} = await supabase
+  const { data, error } = await supabase
     .from("users")
     .update({
-      [table]: update_item
+      [table]: update_item,
     })
-    .eq("id", id)
+    .eq("id", id);
   return { data, error };
 };
 
 export const searchUser = async (user: User | null) => {
   const { data, error, status } = await supabase
     .from("users")
-    .select(`username, avatar_url, basket, address, payment_method, product_history`)
+    .select(
+      `username, avatar_url, basket, address, payment_method, product_history`
+    )
     .eq("id", user!.id)
     .single();
   return { data, error, status };
@@ -48,12 +50,26 @@ export const setAvatarData = async (path: string, file: File) => {
 
 export const getUserDetails = async (user: User | null) => {
   const { data, error, status } = await searchUser(user);
-  const { avatar_url, username, basket, address, payment_method, product_history } = data;
+  const {
+    avatar_url,
+    username,
+    basket,
+    address,
+    payment_method,
+    product_history,
+  } = data;
   if (avatar_url) {
     const { data, error } = await getAvatarData(avatar_url);
     const url = URL.createObjectURL(data!);
     if (url && username) {
-      return { url, username, basket, address, payment_method, product_history };
+      return {
+        url,
+        username,
+        basket,
+        address,
+        payment_method,
+        product_history,
+      };
     }
     return { error };
   }
@@ -65,12 +81,9 @@ export const getUserDetails = async (user: User | null) => {
 };
 
 export const getUserFromCookie = async (token: string) => {
-  const { user, error } = await supabase.auth.api.getUser(
-    token
-  )
+  const { user, error } = await supabase.auth.api.getUser(token);
   return { user, error };
 };
-
 
 // export const deleteUser = async (session: AuthSession) => {
 //   const { user, error } = await supabase.auth.api.deleteUser(

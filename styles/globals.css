@@ -329,26 +329,26 @@ button,
 /* form-container */
 
 .form-container {
-  @apply w-full mx-auto rounded-lg bg-white shadow-2xl p-5 text-gray-700 max-w-xl
+  @apply w-full mx-auto rounded-lg bg-white shadow-2xl p-5 text-gray-700 max-w-xl;
 }
 
 .svg-container {
-  @apply w-full pt-1 pb-5
+  @apply w-full pt-1 pb-5;
 }
 
 .svg-inner-container {
-  @apply bg-yellow-600 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center
+  @apply bg-yellow-600 text-white overflow-hidden rounded-full w-20 h-20 -mt-16 mx-auto shadow-lg flex justify-center items-center;
 }
 
 .svg {
-  @apply w-12 h-12
+  @apply w-12 h-12;
 }
 
 .header-container {
-  @apply mb-10
+  @apply mb-10;
 }
 
 .header-h1 {
-  @apply text-center font-bold text-xl uppercase
+  @apply text-center font-bold text-xl uppercase;
 }
 /* form-container */

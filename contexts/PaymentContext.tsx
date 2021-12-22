@@ -20,7 +20,7 @@ export function PaymentProvider({ children }: Auth.Children) {
       selectedAddress,
       setSelectedAddress,
       purchase,
-      setPurchase
+      setPurchase,
     }),
     [paymentObject, selectedAddress, purchase]
   );

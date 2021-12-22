@@ -116,9 +116,9 @@ export namespace App {
   }
 
   interface Prop {
-    [key:string]: string;
+    [key: string]: string;
   }
-  
+
   interface Steps {
     step: string[];
   }
@@ -130,18 +130,17 @@ export namespace App {
   }
 
   interface Modal {
-    isOpen : boolean;
-    setIsOpen : Dispatch<SetStateAction<boolean>>;
+    isOpen: boolean;
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
     handler?: any;
     firstButtonMessage?: string;
     secondButtonMessage?: string;
     dialogTitleMessage?: string;
-    dialogMessage?: string
+    dialogMessage?: string;
   }
 
   interface Alert {
     message: string;
     type: string;
   }
-  
 }

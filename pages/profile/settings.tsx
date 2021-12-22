@@ -10,11 +10,10 @@ import { App } from "@/interfaces/app";
 import Input from "@/components/Input";
 import useFormRef from "@/hooks/useFormRefs";
 import { settingsSchema } from "@/utils/formValidations";
-import withAuth from "@/container/AuthContainer"
+import withAuth from "@/container/AuthContainer";
 
 export const Account: NextPage = () => {
-  const { user, setAvatarUrl, defaultName, setDefaultName } =
-    useUser();
+  const { user, setAvatarUrl, defaultName, setDefaultName } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
@@ -76,10 +75,7 @@ export const Account: NextPage = () => {
             />
           </div>
           <div>
-            <form
-              onSubmit={handleSubmit(handleUpdate)}
-              className="custom-card"
-            >
+            <form onSubmit={handleSubmit(handleUpdate)} className="custom-card">
               <div className="form-control sm:w-96">
                 <label className="label">
                   <span className="label-text">Username</span>

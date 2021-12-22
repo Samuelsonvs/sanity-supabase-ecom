@@ -33,7 +33,7 @@ namespace Auth {
       region: string;
       country: string;
       address: string;
-    }
+    };
   }
 
   interface Card {
@@ -47,19 +47,19 @@ namespace Auth {
   }
 
   interface BriefPayment {
-    [key: number]: Omit<Card, "cardnumber" | "payment" | "securitycode">
+    [key: number]: Omit<Card, "cardnumber" | "payment" | "securitycode">;
   }
   interface Payment {
-    [key: string]: Card
+    [key: string]: Card;
   }
 
   interface ProductHistory {
     [key: string | number]: {
       products: App.Payment;
       address: Address;
-      card: Omit<Card, "cardnumber" | "payment" | "securitycode">
+      card: Omit<Card, "cardnumber" | "payment" | "securitycode">;
       price: string;
-    }
+    };
   }
 
   interface Context {

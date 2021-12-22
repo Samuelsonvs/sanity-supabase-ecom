@@ -28,7 +28,7 @@ import Label from "@/components/Label";
 import { updater } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
 import Alert from "@/components/Alert";
-import { ADDRESS_TABLE } from "@/constants/dbTables"
+import { ADDRESS_TABLE } from "@/constants/dbTables";
 
 export const Index = () => {
   const { session, user, basket, setBasket, addresses, setAddresses, loading } =
@@ -164,7 +164,7 @@ export const Index = () => {
         const paymentObj = paymentData[cur as keyof typeof paymentData];
         return acc + paymentObj.price * paymentObj.count;
       }, 0);
-      const fixedPrice = currentTotalPrice.toFixed(2)
+      const fixedPrice = currentTotalPrice.toFixed(2);
       setTotalPrice(fixedPrice);
       setPaymentObject({ ...paymentData, totalPrice: fixedPrice });
     }
@@ -200,7 +200,11 @@ export const Index = () => {
             return { ...acc };
           }
         }, {});
-      const { error } = await updater(user.id, { ...newUpdatedAddresses }, ADDRESS_TABLE);
+      const { error } = await updater(
+        user.id,
+        { ...newUpdatedAddresses },
+        ADDRESS_TABLE
+      );
       if (error) {
         console.log(error);
       } else {
@@ -236,7 +240,7 @@ export const Index = () => {
             <Steps step={["Basket"]} />
           </div>
           <div className="min-w-screen prose-sm flex flex-col justify-center pb-10 pt-16">
-            {addresses && basket &&  (
+            {addresses && basket && (
               <div className="pb-16 flex flex-col flex-wrap sm:flex-row items-center sm:justify-evenly">
                 {Object.keys(addresses).map((adrs, idx) => {
                   const { address, phone, region, country, username } =
@@ -315,7 +319,11 @@ export const Index = () => {
               </div>
             )}
 
-            <div className={`${addresses && !addressForm || !basket ? "hidden" : ""}`}>
+            <div
+              className={`${
+                (addresses && !addressForm) || !basket ? "hidden" : ""
+              }`}
+            >
               <FormContainer svg={LocationSVG} head={"Address info"}>
                 <form
                   onSubmit={handleSubmit((data) => addressSubmit(data))}
@@ -518,7 +526,7 @@ export const Index = () => {
             ) : (
               <Alert
                 type={"alert-warning"}
-                message={"There are no products in your cart."} 
+                message={"There are no products in your cart."}
               />
             )}
           </div>
