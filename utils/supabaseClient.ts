@@ -64,6 +64,13 @@ export const getUserDetails = async (user: User | null) => {
   return { error };
 };
 
+export const getUserFromCookie = async (token: string) => {
+  const { user, error } = await supabase.auth.api.getUser(
+    token
+  )
+  return { user, error };
+};
+
 
 // export const deleteUser = async (session: AuthSession) => {
 //   const { user, error } = await supabase.auth.api.deleteUser(

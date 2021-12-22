@@ -4,6 +4,7 @@ import { User, AuthSession, UserCredentials } from "@supabase/supabase-js";
 
 import { supabase, getUserDetails } from "@/utils/supabaseClient";
 import { Auth } from "@/interfaces/auth";
+import useCookie from "@/hooks/useCookie";
 
 export const AuthContext = createContext({} as Auth.Context);
 
@@ -17,28 +18,32 @@ export function AuthProvider({ children }: Auth.Children) {
   const [paymentMethods, setPaymentMethods] = useState<Auth.Payment | null>(null);
   const [productHistory, setProductHistory] = useState<Auth.ProductHistory | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const { setCookie, removeCookie } = useCookie(session!)
 
   useEffect(() => {
-    setLoading(true);
-    const session = supabase.auth.session();
-    setSession(session);
-    setUser(session?.user ?? null);
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setDefaultName(null);
-        setBasket(null);
-        setAvatarUrl(null);
-        setAddresses(null);
-        setPaymentMethods(null);
-        setProductHistory(null);
-      }
-    );
 
-    return () => {
-      authListener?.unsubscribe();
-    };
+      setLoading(true);
+      const session = supabase.auth.session();
+      setSession(session);
+      setUser(session?.user ?? null);
+      const { data: authListener } = supabase.auth.onAuthStateChange(
+        async (event, session) => {
+          setSession(session);
+          setUser(session?.user ?? null);
+          setDefaultName(null);
+          setBasket(null);
+          setAvatarUrl(null);
+          setAddresses(null);
+          setPaymentMethods(null);
+          setProductHistory(null);
+          removeCookie();
+        }
+      );
+
+      return () => {
+        authListener?.unsubscribe();
+      };
   }, []);
 
   useEffect(() => {
@@ -51,14 +56,17 @@ export function AuthProvider({ children }: Auth.Children) {
             setDefaultName(username);
             setBasket(basket);
             setAddresses(address);
-            setPaymentMethods(payment_method)
-            setProductHistory(product_history)
+            setPaymentMethods(payment_method);
+            setProductHistory(product_history);
+            setCookie();
           })
         );
         setLoading(false);
       })();
     }
   }, [user]);
+
+  useEffect(() => setMounted(true), []);
 
   const value = useMemo(
     () => ({
@@ -86,8 +94,16 @@ export function AuthProvider({ children }: Auth.Children) {
     }),
     [user, defaultName, session, avatarUrl, basket, addresses, paymentMethods, loading, productHistory]
   );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  
+   
+  return (
+    <>
+      {mounted && (
+      <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+      )}
+    </>
+  ) 
+   
 }
 
 export const useUser = () => {

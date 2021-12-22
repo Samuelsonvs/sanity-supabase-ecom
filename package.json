@@ -33,6 +33,7 @@
     "sanity-react-extra": "^0.2.4",
     "sharp": "^0.29.1",
     "swr": "^1.0.1",
+    "universal-cookie": "^4.0.4",
     "yup": "^0.32.11"
   },
   "devDependencies": {
