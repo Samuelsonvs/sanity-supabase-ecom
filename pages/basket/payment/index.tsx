@@ -24,6 +24,7 @@ import {
   PAYMENT_METHOD_TABLE,
   PRODUCT_HISTORY_TABLE,
 } from "@/constants/dbTables";
+import withAuth from "@/container/AuthContainer";
 
 export const Index = () => {
   const { months, years } = Dates;
@@ -151,10 +152,12 @@ export const Index = () => {
             <div className="py-20">
               <ul className="flex justify-between">
                 <li>Name</li>
-                <ul className="flex space-x-7">
-                  <li className="pl-24">Date</li>
-                  <li>Last digits</li>
-                </ul>
+                <li>
+                  <ul className="flex space-x-7">
+                    <li className="pl-24">Date</li>
+                    <li>Last digits</li>
+                  </ul>
+                </li>
               </ul>
               {paymentMethods &&
                 Object.values(paymentMethods).map((cardObj, idx) => {
@@ -390,4 +393,4 @@ export const Index = () => {
   );
 };
 
-export default Index;
+export default withAuth(Index);

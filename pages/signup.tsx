@@ -126,7 +126,7 @@ export const Signup: NextPage = () => {
             </div>
           </div>
         </Container>
-      )}
+       )}
     </>
   );
 };
