@@ -10,6 +10,7 @@ import Container from "@/container/Container";
 import { productsGroq } from "@/utils/groqs";
 
 const Home: NextPage<GroqData.Products> = ({ products }) => {
+  console.log(products)
   return (
     <Container>
       <>

@@ -1,6 +1,5 @@
 import React from "react";
 
-import Container from "@/container/Container";
 import { useUser } from "@/contexts/AuthContext";
 import { dateResolver } from "@/utils/dateResolver";
 import Collapse from "@/components/Collapse";

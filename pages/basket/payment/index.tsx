@@ -29,7 +29,6 @@ import withAuth from "@/container/AuthContainer";
 export const Index = () => {
   const { months, years } = Dates;
   const {
-    session,
     user,
     setBasket,
     setPaymentMethods,
@@ -116,22 +115,36 @@ export const Index = () => {
     if (error) {
       console.error(error);
     } else {
-      setProductHistory(newHistory);
-      const { error } = await updater(user!.id, null, BASKET_TABLE);
-      if (!error) {
-        setBasket(null);
-        router.replace("/basket/payment/success");
+      const sanityProducts = Object.keys(paymentObject!).reduce((acc, _id) => ({
+        ...acc, _id: paymentObject![_id].count
+      }), {});
+      const { errors } = await fetch("/api/productUpdate", {
+        body: JSON.stringify({
+          body: sanityProducts,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      }).then(res => res.json());
+      if (errors.length > 0) {
+        console.error(errors)
+      } else {
+        setProductHistory(newHistory);
+        const { error } = await updater(user!.id, null, BASKET_TABLE);
+        if (!error) {
+          setBasket(null);
+          router.replace("/basket/payment/success");
+        }
       }
     }
   };
 
   useEffect(() => {
-    if (!session) {
-      router.replace("/");
-    } else if (!paymentObject) {
+    if (!paymentObject) {
       router.replace("/basket");
-    }
-  }, [session, paymentObject]);
+    };
+  }, [paymentObject]);
 
   useEffect(() => {
     if (paymentMethods) {
