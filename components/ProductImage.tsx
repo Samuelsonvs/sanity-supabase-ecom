@@ -61,6 +61,8 @@ export const ProductImage = ({
           <div>{price}$</div>
           <div className="-my-2">
             <button
+              type="button"
+              title="Add basket"
               onClick={sendToBasket}
               className="btn h-auto min-h-0 bg-yellow-600 hover:bg-yellow-700 p-3 rounded-full"
             >
