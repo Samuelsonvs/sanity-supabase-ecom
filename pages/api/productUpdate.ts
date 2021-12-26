@@ -17,11 +17,13 @@ export default async function handler(
     const content: string[] = []
     await Promise.all(
       Object.keys(body).map(async(_id) => {
-        await writeSanityClient.patch(_id)
-          .dec({'[_type == "productVariant"].qty': body[_id]})
-          .commit()
-          .then(updateQty => updateQty)
-          .catch(err => content.push(err))
+        if (_id !== "totalPrice") {
+          await writeSanityClient.patch(_id)
+            .dec({'[_type == "productVariant"].qty': body[_id].count})
+            .commit()
+            .then(updateQty => updateQty)
+            .catch(err => content.push(err))
+        }
       })
       );
     res.status(200).json({ errors: content });

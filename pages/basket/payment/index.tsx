@@ -115,12 +115,9 @@ export const Index = () => {
     if (error) {
       console.error(error);
     } else {
-      const sanityProducts = Object.keys(paymentObject!).reduce((acc, _id) => ({
-        ...acc, _id: paymentObject![_id].count
-      }), {});
       const { errors } = await fetch("/api/productUpdate", {
         body: JSON.stringify({
-          body: sanityProducts,
+          body: paymentObject,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -179,6 +176,7 @@ export const Index = () => {
                     <div key={idx} className="border mt-2">
                       <ul className="p-1 flex justify-between">
                         <li className="flex items-center space-x-2">
+                          <label htmlFor={year+month+lastdigits}>
                           <input
                             onClick={() =>
                               setCurrentCard({
@@ -191,16 +189,21 @@ export const Index = () => {
                               })
                             }
                             className="form-radio h-5 w-5 text-yellow-600 cursor-pointer"
+                            id={year+month+lastdigits}
                             type="radio"
+                            title="card"
                             name="card"
                             defaultChecked={idx === 0 && true}
                           />
+                          </label>
                           <span>{cardname}</span>
                         </li>
-                        <ul className="flex space-x-14">
-                          <li>{month + "/" + year.replace("20", "")}</li>
-                          <li>{lastdigits}</li>
-                        </ul>
+                        <li>
+                          <ul className="flex space-x-14">
+                            <li>{month + "/" + year.replace("20", "")}</li>
+                            <li>{lastdigits}</li>
+                          </ul>
+                        </li>
                       </ul>
                     </div>
                   );

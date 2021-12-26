@@ -43,6 +43,7 @@ export const FeaturedProduct = ({ products }: GroqData.Products) => {
       </div>
       <div className="flex justify-center mt-20">
         <button
+          type="button"
           disabled={productsLength <= sliceNumber ? true : false}
           className="btn btn-primary rounded-3xl px-10 bg-yellow-600 hover:bg-yellow-700"
           onClick={() => setSliceNumber(sliceNumber + 3)}

@@ -25,6 +25,7 @@ export const Input = ({
   return (
     <>
       {type === "radio" ? (
+        <label htmlFor={id}>
         <input
           id={id}
           type={type}
@@ -33,6 +34,7 @@ export const Input = ({
           defaultChecked={checked}
           value={value}
         />
+        </label>
       ) : type === "textarea" ? (
         <textarea
           className="textarea h-24 w-full textarea-bordered border-2"
