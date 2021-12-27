@@ -50,7 +50,7 @@ export const Footer = () => {
                     registerRef={register}
                     errors={errors.email}
                   />
-                  <button className="absolute top-0 right-0 rounded-l-none rounded-r-full btn bg-gray-600">
+                  <button type="button" className="absolute top-0 right-0 rounded-l-none rounded-r-full btn bg-gray-600">
                     send
                   </button>
                 </div>

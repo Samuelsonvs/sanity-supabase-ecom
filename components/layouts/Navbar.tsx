@@ -37,15 +37,18 @@ export const Navbar = () => {
             <BurgerSVG className="h-8 w-8" />
           </label>
           <input
-            ref={inputRef}
-            type="checkbox"
-            defaultChecked={false}
-            id="my-modal-2"
-            className="modal-toggle"
-          />
+              title="modal-toggle"
+              ref={inputRef}
+              type="checkbox"
+              defaultChecked={false}
+              id="my-modal-2"
+              className="modal-toggle"
+            />
           <div className="modal">
             <div className="modal-box bg-black h-full w-full max-w-full rounded-none absolute flex flex-col justify-center items-center">
               <button
+                title="Close"
+                type="button"
                 className="absolute top-14 right-0 sm:right-2"
                 onClick={() => inputRef.current?.click()}
               >
@@ -103,7 +106,7 @@ export const Navbar = () => {
           </div>
         </div>
         <div className="flex-none">
-          <button className="btn btn-square btn-ghost">
+          <button title="Search" type="button" className="btn btn-square btn-ghost">
             <SearchSVG className="h-8 w-8" />
           </button>
         </div>

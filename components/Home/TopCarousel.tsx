@@ -53,10 +53,10 @@ const TopCarousel = () => {
       <div className="absolute z-20 flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
         {mounted && (
           <>
-            <button onClick={next} className="btn btn-circle bg-opacity-70">
+            <button type="button" onClick={next} className="btn btn-circle bg-opacity-70">
               ❮
             </button>
-            <button onClick={prev} className="btn btn-circle bg-opacity-70">
+            <button type="button" onClick={prev} className="btn btn-circle bg-opacity-70">
               ❯
             </button>
           </>
@@ -74,7 +74,7 @@ const TopCarousel = () => {
           <p>Bamboo has a fantastic range of indoor furniture</p>
           <p>perfect for any modern home</p>
         </div>
-        <button className="btn btn-primary rounded-3xl px-10 bg-yellow-600 hover:bg-yellow-700">
+        <button type="button" className="btn btn-primary rounded-3xl px-10 bg-yellow-600 hover:bg-yellow-700">
           button
         </button>
       </div>
