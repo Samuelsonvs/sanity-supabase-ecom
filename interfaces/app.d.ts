@@ -68,6 +68,7 @@ export namespace App {
     slug: string;
     image: any;
     price: string;
+    qty: number;
     title: string;
     _id: string;
     width: number;

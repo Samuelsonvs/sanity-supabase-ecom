@@ -45,22 +45,31 @@ const QtyHandler = ({
   return (
     <div className={containerCss}>
       <button
+        disabled={qty === 0 && true}
+        title="Decrease"
+        type="button"
         className="bg-gray-200 inline"
         onClick={() => handleQtyNumber("-")}
       >
         -
       </button>
-      <input
-        id="qty"
-        type="number"
-        onChange={(e) => handleQtyInput(e)}
-        value={inputQty}
-        min={min}
-        max={max}
-        step={step}
-        className={css}
-      />
+      <label htmlFor="qty">
+        <input
+          id="qty"
+          title="Count"
+          type="number"
+          onChange={(e) => handleQtyInput(e)}
+          value={inputQty}
+          min={min}
+          max={max}
+          step={step}
+          className={css}
+        />
+      </label>
       <button
+        disabled={qty === 0 && true}
+        title="Increase"
+        type="button"
         className="bg-gray-200 inline"
         onClick={() => handleQtyNumber("+")}
       >

@@ -12,6 +12,7 @@ export const ProductImage = ({
   slug,
   image,
   price,
+  qty,
   title,
   _id,
   width,
@@ -61,6 +62,7 @@ export const ProductImage = ({
           <div>{price}$</div>
           <div className="-my-2">
             <button
+              disabled={qty === 0 && true}
               type="button"
               title="Add basket"
               onClick={sendToBasket}

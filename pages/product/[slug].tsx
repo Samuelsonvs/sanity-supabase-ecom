@@ -192,13 +192,13 @@ export const Slug: NextPage<GroqData.Product> = ({
             <div className="p-4 prose-sm">
               <h2>{currentItems.title ?? title}</h2>
               <div>
-                <h3>${currentItems.price ?? price}</h3>
+                <h3>$ {currentItems.price ?? price}</h3>
                 <p>
                   <span>Available :</span>
                   <span>
                     {(currentItems.qty ?? qty) > 0
                       ? " In Stock"
-                      : "Not Avaliable"}
+                      : " Not Avaliable"}
                   </span>
                 </p>
                 <p>{text}</p>
@@ -209,6 +209,8 @@ export const Slug: NextPage<GroqData.Product> = ({
                     style={{ backgroundColor: `${Color.hex}` }}
                   >
                     <button
+                      title="Variant"
+                      type="button"
                       onClick={variantReset}
                       className="flex pr-0 rounded-full"
                     ></button>
@@ -222,6 +224,8 @@ export const Slug: NextPage<GroqData.Product> = ({
                           style={{ backgroundColor: `${variant.Color.hex}` }}
                         >
                           <button
+                            title="Variant"
+                            type="button"
                             onClick={() => variantHandler(index)}
                             className="flex pr-0 rounded-full"
                           ></button>
@@ -236,7 +240,7 @@ export const Slug: NextPage<GroqData.Product> = ({
                     </label>
                     <QtyHandler
                       setter={setInputQty}
-                      inputQty={inputQty}
+                      inputQty={qty === 0 ? 0 : inputQty}
                       qty={qty}
                       min={1}
                       max={currentItems.qty ?? qty}
@@ -246,6 +250,9 @@ export const Slug: NextPage<GroqData.Product> = ({
                     />
                   </div>
                   <button
+                    disabled={qty === 0 && true}
+                    title="Add basket"
+                    type="button"
                     onClick={sendToBasket}
                     className="btn btn-primary rounded-3xl px-2 sm:px-5 lg:px-10 bg-yellow-600 hover:bg-yellow-700"
                   >
