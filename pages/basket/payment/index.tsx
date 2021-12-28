@@ -12,7 +12,6 @@ import useFormRef from "@/hooks/useFormRefs";
 import Input from "@/components/Input";
 import { cardSchema } from "@/utils/formValidations";
 import { usePayment } from "@/contexts/PaymentContext";
-import Container from "@/container/Container";
 import { Steps } from "@/components/Steps";
 import FormContainer from "@/container/FormContainer";
 import FormInputButton from "@/components/FormInputButton";
@@ -152,7 +151,7 @@ export const Index = () => {
   }, []);
 
   return (
-    <Container>
+    <>
       {!loading ? (
         <div className="mt-20 p-3 sm:p-10 max-w-4xl mx-auto">
           <div>
@@ -405,7 +404,7 @@ export const Index = () => {
       ) : (
         <div>Loading...</div>
       )}
-    </Container>
+    </>
   );
 };
 

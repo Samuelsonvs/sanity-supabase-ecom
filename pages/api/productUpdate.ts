@@ -7,6 +7,13 @@ type Data = {
   status?: string;
 };
 
+interface Product {
+  _id: string;
+  defaultProductVariant: {
+    qty: number
+  }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -14,18 +21,27 @@ export default async function handler(
   const method = req.method;
   if (method === "POST") {
     const { body } = req.body;
-    const content: string[] = []
-    await Promise.all(
-      Object.keys(body).map(async(_id) => {
-        if (_id !== "totalPrice") {
-          await writeSanityClient.patch(_id)
-            .dec({'[_type == "productVariant"].qty': body[_id].count})
-            .commit()
-            .then(updateQty => updateQty)
-            .catch(err => content.push(err))
-        }
-      })
+    const decQuery = '[_type == "productVariant"].qty'
+    const productKeys = Object.keys(body).filter(key => key !== "totalPrice")
+    const countQuery = `*[_type == "product" && _id in ${JSON.stringify(productKeys)}] {_id,defaultProductVariant{qty}}`;
+    const content: string[] = [];
+    await writeSanityClient.fetch(countQuery).then(async(products) => {
+      await Promise.all(
+        products.map(async(product: Product) => {
+          const stockNumber = product.defaultProductVariant.qty;
+          const buyerNumber = body[product._id].count;
+          if (stockNumber - buyerNumber >= 0) {
+            await writeSanityClient.patch(product._id)
+              .dec({[decQuery]: buyerNumber})
+              .commit()
+              .then(updateQty => updateQty)
+              .catch(err => content.push(err))
+          } else {
+            content.push(`${product._id} product out of stock`)
+          }
+        })
       );
+    });
     res.status(200).json({ errors: content });
   } else {
     res.status(200).json({ status: "Method error." });
