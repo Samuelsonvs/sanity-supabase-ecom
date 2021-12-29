@@ -6,11 +6,11 @@ import Badge from "./Badge";
 interface P {
   date: string;
   price: string;
-  content: string;
+  children: JSX.Element;
   status: string;
 }
 
-const Collapse = ({ date, content, price, status }: P) => {
+const Collapse = ({ date, children, price, status }: P) => {
   return (
     <Disclosure>
       {({ open }) => (
@@ -30,7 +30,7 @@ const Collapse = ({ date, content, price, status }: P) => {
             />
           </Disclosure.Button>
           <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-            {content}
+            {children}
           </Disclosure.Panel>
         </>
       )}

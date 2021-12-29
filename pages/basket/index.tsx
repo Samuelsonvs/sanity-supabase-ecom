@@ -526,6 +526,7 @@ export const Index = () => {
             ) : (
               <Alert
                 type={"alert-warning"}
+                svgName={"warning"}
                 message={"There are no products in your cart."}
               />
             )}

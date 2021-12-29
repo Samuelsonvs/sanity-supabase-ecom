@@ -66,6 +66,7 @@ export const Input = ({
         <Alert
           message={ErrorMessages[errorName][errorType]}
           type={"alert-warning"}
+          svgName={"warning"}
         />
       )}
     </>

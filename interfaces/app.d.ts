@@ -142,6 +142,16 @@ export namespace App {
 
   interface Alert {
     message: string;
+    svgName: string;
     type: string;
+  }
+
+  interface AlertName {
+    warning: JSX.Element;
+    error: JSX.Element;
+    success: JSX.Element;
+  }
+  interface AlertGetter extends AlertName {
+    getAlert: (type: Alerts | string) => JSX.Element
   }
 }

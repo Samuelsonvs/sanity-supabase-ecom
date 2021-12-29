@@ -4,6 +4,7 @@ import { useUser } from "@/contexts/AuthContext";
 import { dateResolver } from "@/utils/dateResolver";
 import Collapse from "@/components/Collapse";
 import withAuth from "@/container/AuthContainer";
+import Alert from "@/components/Alert";
 
 const Orders = () => {
   const { productHistory } = useUser();
@@ -11,12 +12,12 @@ const Orders = () => {
   return (
     <div className="mt-20">
       <div className="w-full px-4 pt-16">
-        {productHistory &&
+        {productHistory ?
           Object.keys(productHistory)
             .reverse()
             .map((productDate, idx) => {
               const date = dateResolver(Number(productDate));
-              const { price } =
+              const { price, address, card, products } =
                 productHistory[productDate as keyof typeof productHistory];
               return (
                 <div
@@ -26,14 +27,24 @@ const Orders = () => {
                   <Collapse
                     date={date}
                     price={price + " $"}
-                    content={
-                      "If you're unhappy with your purchase for any reason, email us within 90 days and we'll refund you in full, no questions asked."
-                    }
                     status={"info"}
-                  />
+                  >
+                    <div>
+                      
+                    </div>
+                  </Collapse>
                 </div>
               );
-            })}
+            })
+          : (
+          <div>
+            <Alert
+              message={"There are no products here"}
+              type={"alert-warning"}
+              svgName={"warning"}
+            />
+          </div>
+          )}
       </div>
     </div>
   );

@@ -29,6 +29,7 @@ const Success = () => {
               <Alert
                 message={"Purchase is success. Your order is preparing..."}
                 type={"alert-success"}
+                svgName={"success"}
               />
             </div>
           )}
