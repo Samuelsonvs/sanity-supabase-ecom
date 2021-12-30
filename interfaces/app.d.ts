@@ -154,4 +154,8 @@ export namespace App {
   interface AlertGetter extends AlertName {
     getAlert: (type: Alerts | string) => JSX.Element
   }
+
+  interface Status {
+    status: string;
+  }
 }

@@ -3,10 +3,7 @@ import Clock from "@/public/static/svg/clock.svg";
 import Success from "@/public/static/svg/check.svg";
 import Cargo from "@/public/static/svg/cargo.svg";
 import X from "@/public/static/svg/x.svg";
-
-interface P {
-  status: string;
-}
+import { App } from '@/interfaces/app';
 
 const svg = (status: string) => {
   switch (status) {
@@ -37,7 +34,7 @@ const statusClass = {
   error: "badge-error",
 }
 
-const Badge = ({ status }: P) => {
+const Badge = ({ status }: App.Status) => {
   return (
     <div className={`badge ${statusClass[status as keyof typeof statusClass]} flex items-center`}>
       {svg(status)}
