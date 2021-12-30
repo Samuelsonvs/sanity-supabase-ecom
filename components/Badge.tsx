@@ -30,9 +30,16 @@ const text = {
   error: "Canceled",
 };
 
+const statusClass = {
+  info: "badge-info",
+  warning: "badge-warning",
+  success: "badge-success",
+  error: "badge-error",
+}
+
 const Badge = ({ status }: P) => {
   return (
-    <div className={`badge badge-${status} flex items-center`}>
+    <div className={`badge ${statusClass[status as keyof typeof statusClass]} flex items-center`}>
       {svg(status)}
       {text[status as keyof typeof text]}
     </div>

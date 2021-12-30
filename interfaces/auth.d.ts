@@ -28,6 +28,7 @@ namespace Auth {
 
   interface Address {
     [key: string]: {
+      [key: string]: string;
       username: string;
       phone: string;
       region: string;
