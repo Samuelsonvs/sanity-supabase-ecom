@@ -143,15 +143,20 @@ export const Index = () => {
       const paymentObject =
         Array.isArray(data) &&
         data.reduce(
-          (acc, cur) => ({
+          (acc, product) => {
+            const {slug, images, title, price, _id, Color} = productSolver(product);
+            return ({
             ...acc,
-            [cur._id]: {
+            [_id]: {
               count:
-                basketIdCountObj[cur._id as keyof typeof basketIdCountObj][0],
-              price: cur.defaultProductVariant.price,
-              title: cur.title,
+                basketIdCountObj[_id as keyof typeof basketIdCountObj][0],
+              image: images[0],
+              price,
+              Color,
+              slug,
+              title,
             },
-          }),
+          })},
           {}
         );
       setPaymentData(paymentObject);

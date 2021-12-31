@@ -103,6 +103,15 @@ export namespace App {
       count: number;
       price: number;
       title: string;
+      slug: string;
+      image: {
+        asset: {
+          _ref: string
+        }
+      };
+      Color: {
+        hex: string
+      };
     };
     totalPrice?: string;
   }
