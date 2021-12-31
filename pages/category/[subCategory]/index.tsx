@@ -20,7 +20,7 @@ export const Index: NextPage<any> = ({ subCategories }) => {
   const router = useRouter();
   return (
     <Container>
-      <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
+      <div className="px-3 prose max-w-6xl mx-auto">
         <Breadcrumb asPath={router.asPath} />
         <h1>Furniture -2 </h1>
         <ul className="sm:flex sm:flex-wrap sm:justify-evenly carousel gap-3 py-4 sm:py-8 sm:overflow-visible">

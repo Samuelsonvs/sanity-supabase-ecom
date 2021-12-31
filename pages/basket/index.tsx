@@ -240,7 +240,7 @@ export const Index = () => {
   return (
     <Container>
       {!loading ? (
-        <div className="mt-20 p-3 sm:p-10 max-w-4xl mx-auto">
+        <div className="p-3 sm:p-10 max-w-4xl mx-auto">
           <div>
             <Steps step={["Basket"]} />
           </div>

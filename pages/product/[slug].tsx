@@ -123,7 +123,7 @@ export const Slug: NextPage<GroqData.Product> = ({
   return (
     <Container>
       <>
-        <section className="mt-4 sm:mt-20 prose max-w-6xl mx-auto relative">
+        <section className="mt-4 prose max-w-6xl mx-auto relative">
           <div className="flex flex-col md:flex-row space-x-10">
             <div className="flex flex-col">
               <div className="relative p-4 w-80 mx-auto md:mx-0 sm:w-96">

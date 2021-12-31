@@ -30,8 +30,7 @@ export const Navbar = () => {
   };
 
   return (
-    <>
-      <div className="navbar relative sm:absolute top-0 left-0 right-0 z-30 shadow-lg bg-primary bg-opacity-70 text-neutral-content">
+      <div className="navbar relative shadow-lg bg-primary bg-opacity-70 text-neutral-content">
         <div className="flex flex-none">
           <label htmlFor="my-modal-2" className="btn btn-square btn-ghost">
             <BurgerSVG className="h-8 w-8" />
@@ -161,7 +160,7 @@ export const Navbar = () => {
                       <Popover.Panel className="absolute z-50 w-32 mt-3 transform -translate-x-2/4">
                         <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                           <div className="relative grid gap-8 text-sm font-medium text-gray-600 bg-white p-5  text-center">
-                            <Link passHref href="/profile/settings">
+                            <Link passHref href="/profile">
                               <a className="flex items-center space-x-3 p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50">
                                 <ProfileSVG className="h-5 w-5" />
                                 <span className="pl-1">Profile</span>
@@ -203,7 +202,6 @@ export const Navbar = () => {
           )}
         </div>
       </div>
-    </>
   );
 };
 

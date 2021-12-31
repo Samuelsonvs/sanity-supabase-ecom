@@ -13,7 +13,6 @@ const Orders = () => {
   const { productHistory } = useUser();
   console.log(productHistory);
   return (
-    <div className="mt-0 sm:mt-20">
       <div className="w-full px-4 pt-2 sm:pt-16">
         {productHistory ?
           Object.keys(productHistory)
@@ -127,7 +126,6 @@ const Orders = () => {
           </div>
           )}
       </div>
-    </div>
   );
 };
 

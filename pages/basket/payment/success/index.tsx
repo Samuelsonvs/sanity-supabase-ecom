@@ -19,7 +19,7 @@ const Success = () => {
 
   return (
     <Container>
-      <div className="mt-20">
+      <>
         <div>
           <Steps step={["Basket", "Purchase", "Receive Product"]} />
         </div>
@@ -39,7 +39,7 @@ const Success = () => {
             </Link>
           </div>
         </div>
-      </div>
+      </>
     </Container>
   );
 };

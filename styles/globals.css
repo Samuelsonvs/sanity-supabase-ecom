@@ -26,6 +26,10 @@ a {
   min-height: 100vh;
 }
 
+main {
+  @apply mt-4
+}
+
 footer {
   @apply mt-auto;
 }

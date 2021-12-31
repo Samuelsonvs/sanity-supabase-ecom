@@ -63,7 +63,7 @@ export const Account: NextPage = () => {
   };
   return (
     <>
-      <div className="mt-20 p-10 max-w-3xl mx-auto">
+      <div className="p-10 max-w-3xl mx-auto">
         <h1 className="text-4xl font-semibold"> Account Settings </h1>
         <div className="py-5 mt-5 flex flex-col md:flex-row-reverse justify-center shadow-2xl">
           <div className="custom-card">

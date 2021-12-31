@@ -19,7 +19,7 @@ export const Index: NextPage<any> = ({ products }) => {
   const router = useRouter();
   return (
     <Container>
-      <div className="mt-4 sm:mt-20 px-3 prose max-w-6xl mx-auto">
+      <div className="px-3 prose max-w-6xl mx-auto">
         <Breadcrumb asPath={router.asPath} />
         <div className="flex flex-wrap gap-10">
           {products.map((product: any, idx: number) => {
