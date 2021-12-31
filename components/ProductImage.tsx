@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { sanityImage } from "@/utils/sanity";
 import { App } from "@/interfaces/app";
 import { useUser } from "@/contexts/AuthContext";
 import UseBasket from "@/utils/basket";
 import BasketSVG from "@/public/static/svg/basketButton.svg";
+import Modal from "./Modal";
 
 export const ProductImage = ({
   slug,
@@ -21,6 +23,8 @@ export const ProductImage = ({
   hoverCss,
 }: App.ImageProduct) => {
   const { user, basket, setBasket } = useUser();
+  const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter();
   const sendToBasket = async () => {
     if (user) {
       const { result } = await UseBasket({
@@ -34,9 +38,15 @@ export const ProductImage = ({
       });
       if (result) {
         console.log(result);
+      } else {
+        setIsOpen(true)
       }
     }
   };
+
+  const basketRouter = () => {
+    router.replace('/basket')
+  }
   return (
     <div
       className={`relative rounded-3xl overflow-hidden border-4 border-transparent bg-origin-border hover:border-yellow-600 ${containerCss}`}
@@ -71,6 +81,15 @@ export const ProductImage = ({
               <BasketSVG className="w-5 h-5" />
             </button>
           </div>
+          <Modal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            firstButtonMessage={'Keep on Shopping'}
+            secondButtonMessage={'Go to Basket'}
+            dialogTitleMessage={'Successfully'}
+            dialogMessage={'What do you want'}
+            handler={basketRouter}
+          />
         </div>
         <div className="py-3">{title}</div>
       </div>

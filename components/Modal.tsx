@@ -1,7 +1,6 @@
 import { App } from "@/interfaces/app";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useRef } from "react";
-import { useRouter } from "next/router";
 
 const Modal = ({
   isOpen,
@@ -13,7 +12,6 @@ const Modal = ({
   dialogMessage = "Your payment has been successfully submitted. We’ve sent you an email with all of the details of your order.",
 }: App.Modal) => {
   const completeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const router = useRouter();
 
   const closeModal = () => {
     setIsOpen(false);
@@ -86,7 +84,7 @@ const Modal = ({
                   >
                     {firstButtonMessage}
                   </button>
-                  <button
+                 <button
                     type="button"
                     className="inline-flex justify-center px-4 py-2 text-sm font-medium bg-yellow-600 hover:bg-yellow-700 text-white border border-transparent rounded-md focus:outline-none"
                     onClick={answerYesHandler}
