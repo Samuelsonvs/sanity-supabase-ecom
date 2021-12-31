@@ -21,7 +21,7 @@ const TopCarousel = () => {
   });
 
   return (
-    <section className="relative w-full max-w-screen-3xl mx-auto">
+    <section className="relative -mt-4 w-full max-w-screen-3xl mx-auto">
       <div
         ref={sliderContainerRef}
         className="relative h-96 sm:h-120 overflow-hidden"
