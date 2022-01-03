@@ -122,14 +122,6 @@ export const Account: NextPage = () => {
                   defaultValue={user?.email}
                   disabled
                 />
-                <label className="label">
-                  <a
-                    href="#"
-                    className="label-text-alt text-blue-600 border-b border-blue-400"
-                  >
-                    Chance email?
-                  </a>
-                </label>
               </div>
               <div className="form-control mt-10">
                 <a href="#" className="text-gray-500 font-semibold">
