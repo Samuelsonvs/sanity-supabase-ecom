@@ -42,11 +42,10 @@ export const signUpSchema = yup
 export const settingsSchema = yup
   .object()
   .shape({
-    username,
-    email,
-    password,
+    username
   })
-  .required();
+  .required()
+  
 
 export const footerSchema = yup
   .object()

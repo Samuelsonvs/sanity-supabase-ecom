@@ -21,7 +21,7 @@ export namespace App {
   }
 
   interface Updates {
-    username: string | null;
+    username?: string | null;
     avatar_url?: string;
   }
 

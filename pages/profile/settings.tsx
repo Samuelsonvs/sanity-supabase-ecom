@@ -15,13 +15,14 @@ import withAuth from "@/container/AuthContainer";
 export const Account: NextPage = () => {
   const { user, setAvatarUrl, defaultName, setDefaultName } = useUser();
   const [loading, setLoading] = useState<boolean>(false);
-  const [username, setUsername] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
   const [tempAvatarUrl, setTempAvatarUrl] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<App.Path | null>(null);
   const { register, handleSubmit, errors } = useFormRef(settingsSchema);
   const router = useRouter();
-  const handleUpdate: SubmitHandler<App.FormValues> = async () => {
+  const handleUpdate: SubmitHandler<App.FormValues> = async (data) => {
+    const { username } = data
+    console.log(username)
+    console.log(avatarPath)
     try {
       setLoading(true);
 
@@ -34,7 +35,6 @@ export const Account: NextPage = () => {
         if (error) throw error;
 
         updates = {
-          username: username ?? defaultName,
           avatar_url: filePath,
         };
 
@@ -45,17 +45,18 @@ export const Account: NextPage = () => {
         };
       }
 
-      if (user) {
-        const { error } = await setUserProfiles(user, updates);
+      if (updates) {
+        const { error } = await setUserProfiles(user!, updates);
         if (error) {
           throw error;
         } else {
-          setDefaultName(username);
+          username && setDefaultName(username);
         }
       }
+      
     } catch (error) {
       if (error instanceof Error) {
-        alert(error.message);
+        console.error(error.message);
       }
     } finally {
       setLoading(false);
@@ -75,7 +76,7 @@ export const Account: NextPage = () => {
             />
           </div>
           <div>
-            <form onSubmit={handleSubmit(handleUpdate)} className="custom-card">
+            <form onSubmit={handleSubmit((data) => handleUpdate(data))} className="custom-card">
               <div className="form-control sm:w-96">
                 <label className="label">
                   <span className="label-text">Username</span>
@@ -92,13 +93,13 @@ export const Account: NextPage = () => {
                 <label className="label">
                   <span className="label-text">Password</span>
                 </label>
-                <Input
-                  type={"password"}
-                  placeholder={"Your password"}
-                  name={"password"}
-                  registerRef={register}
+                <input
+                  type="password"
+                  className="input input-bordered"
+                  placeholder="Your password"
+                  name="password"
                   defaultValue="**********"
-                  disabled={true}
+                  disabled
                 />
                 <label className="label">
                   <a
@@ -113,13 +114,13 @@ export const Account: NextPage = () => {
                 <label className="label">
                   <span className="label-text">Email</span>
                 </label>
-                <Input
-                  type={"email"}
-                  placeholder={"Your email"}
-                  name={"email"}
-                  registerRef={register}
+                <input
+                  type="email"
+                  className="input input-bordered"
+                  placeholder="Your email"
+                  name="email"
                   defaultValue={user?.email}
-                  disabled={true}
+                  disabled
                 />
                 <label className="label">
                   <a
@@ -143,13 +144,13 @@ export const Account: NextPage = () => {
                 </div>
               </div>
               <div className="form-control flex-row justify-evenly mt-6">
-                <input
-                  disabled={loading}
-                  className="btn w-20 bg-yellow-600 hover:bg-yellow-600 border-none"
-                  type="submit"
-                  value="save"
-                />
                 <button
+                  disabled={loading}
+                  className={`btn px-6 bg-yellow-600 hover:bg-yellow-600 ${loading ? 'loading' : ''}`}
+                  type="submit"
+                >Save</button>
+                <button
+                  type="button"
                   onClick={() => router.reload()}
                   disabled={loading}
                   className="btn bg-yellow-600 hover:bg-yellow-600"
